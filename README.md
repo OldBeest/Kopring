@@ -3,6 +3,7 @@
 
 ## 변경 사항
 Java -> Kotlin<br>
+Maven -> Gradle<br>
 JSP -> React<br>
 Oracle -> MySQL<br>
 Mybatis -> JPA<br>
