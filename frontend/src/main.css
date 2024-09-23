@@ -1,0 +1,42 @@
+.main-image{
+    height: 50%;
+}
+video{
+    width: 100%;
+    height: 70vh;
+    object-fit: cover;
+}
+.main-middle{
+    display: flex;
+    justify-content: center;
+}
+.news-card{
+    width: 30%;
+}
+.news-title{
+    background-color: yellow;
+}
+.news-content{
+    background-color: green;
+}
+.news-link{
+    background-color: red;
+}
+.video-list{
+    width: 30%;
+}
+.ad-facility{
+    width: 30%;
+
+}
+.map-recommend{
+    display: flex;
+    height: 500px;
+    background-color: aquamarine;
+}
+.map{
+    width: 45%;
+}
+.recommend{
+    width: 45%;
+}
