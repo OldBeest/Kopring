@@ -13,8 +13,4 @@ class FrontController(private var mainPageDto: MainPageDto) {
     fun home(): MainPageDto {
         return mainPageDto
     }
-    @GetMapping("api/demo")
-    fun apiDemo(): List<String>{
-        return listOf("리액트 스프링", "스프링 연결 성공")
-    }
 }

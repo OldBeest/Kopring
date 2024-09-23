@@ -7,9 +7,12 @@ function Main(){
     const [list, setList] = useState('');
     useEffect(()=>{
       axios.get("/index")
-      .then(response => setList(response.data))
+      .then(response => {setList(response.data)
+        console.log(list)
+        
+      })
       .catch(error => console.log(error))
-    }, []);
+    },[]);
     return(
         <div className="main-wrap">
             <div className="main-image">
@@ -21,14 +24,19 @@ function Main(){
                 <div className="news-card">
                     <h3>뉴스카드</h3>
                     <div>
-                        <div className="news-title">뉴스제목</div>
-                        <div className="news-content">뉴스내용</div>
-                        <div className="news-link">뉴스링크</div>
+                        <div className="news-title">{list.crawllist[0].news_title}</div>
+                        <div className="news-content">{list.crawllist[0].news_content}</div>
+                        <a href={list.crawllist[0].news_url}><div className="news-link">보러가기</div></a>
                     </div>
                 </div>
                 <div className="video-list">
                     <h3>건강영상</h3>
-                    <div className="video-content">영상내용</div>
+                    <div className="video-content">
+                    <iframe width="560" height="215"
+                                src={list.crawllist[2].video_url}
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen></iframe>
+                    </div>
                 </div>
                 <div className="ad-facility">
                     <h3>시설광고</h3>
@@ -50,9 +58,9 @@ function Main(){
                 </div>
             </div>
             <div className="map-recommend">
-                <div className="map">
+                <div className="map-wrapper">
                     <div>카카오맵</div>
-                    <div></div>
+                    <div id="map" style={{width:"90%" , height:"40vh", backgroundColor:"white"}}></div>
                 </div>
                 <div className="recommend">
                     <div>지도 기반 시설</div>
@@ -61,5 +69,6 @@ function Main(){
             </div>
         </div>
     );
+    
 }
 export default Main;
