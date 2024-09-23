@@ -7,8 +7,8 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/new_schema?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username:
-    password:
+    username: root
+    password: kali7601**
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: mysql
