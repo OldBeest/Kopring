@@ -1,15 +1,15 @@
 import React from "react";
 import './main.css';
 import video1 from './main1.mp4';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Map, MapMarker } from "react-kakao-maps-sdk"
+
 function Main(){
     const [list, setList] = useState('');
     useEffect(()=>{
       axios.get("/index")
       .then(response => {setList(response.data)
-        console.log(list)
-        
       })
       .catch(error => console.log(error))
     },[]);
@@ -60,11 +60,32 @@ function Main(){
             <div className="map-recommend">
                 <div className="map-wrapper">
                     <div>카카오맵</div>
-                    <div id="map" style={{width:"90%" , height:"40vh", backgroundColor:"white"}}></div>
+                    <div>
+                    <Map center={{ lat: 33.450701, lng: 126.570667 }}
+                        style={{ width: '100vh', height: '50vh' }}
+                        level={3}>
+                    <MapMarker position={{ lat: 33.450701, lng: 126.570667 }}>
+                        <div style={{color:"#FBA"}}>Hello World!</div>
+                    </MapMarker>
+                    </Map> 
+                    </div>
                 </div>
                 <div className="recommend">
                     <div>지도 기반 시설</div>
-                    <div></div>
+                    <div>
+                        <div>
+                            {list.near_faciliry[0].name}
+                        </div>
+                        <div>
+                            {list.near_faciliry[0].address}
+                        </div>
+                        <div>
+                            {list.near_faciliry[0].disease}
+                        </div>
+                        <div>
+                            {list.near_faciliry[0].feature}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

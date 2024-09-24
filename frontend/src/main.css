@@ -39,7 +39,6 @@ a{
 .map-recommend{
     display: flex;
     height: 500px;
-    background-color: aquamarine;
 }
 .map-wrapper{
     width: 45%;
