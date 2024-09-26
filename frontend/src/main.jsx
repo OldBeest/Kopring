@@ -4,7 +4,7 @@ import video1 from './main1.mp4';
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Map, MapMarker } from "react-kakao-maps-sdk"
-
+import Login from "./login";
 
 function Main(){
     const [list, setList] = useState([]);
