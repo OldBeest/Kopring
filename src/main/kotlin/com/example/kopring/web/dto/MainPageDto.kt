@@ -18,5 +18,5 @@ data class MainPageDto(
     val crawllist: List<CrawlEntities> = mainService.getList()
     val ad_facility: List<FacilityEntities> = facilityService.get_AD_Facility()
     //로그인 하면 유저의 좌표를 받아와서 입력
-    val near_faciliry: List<FacilityEntities> = facilityService.get_near_Facility(37.56665299294161, 126.97853911737474)
+    val near_facility: List<FacilityEntities> = facilityService.get_near_Facility(37.56665299294161, 126.97853911737474)
 }
