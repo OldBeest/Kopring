@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Route } from "react-router-dom"
 import './header.css'
 function Header() {
     const [isHovering, setIsHovering] = useState(false);
-
+    const [auth, setAuth] = useState(false)
+    useEffect(() => {
+        axios.get("/auth")
+    .then(response => {setAuth(response.data)
+    })
+    }, [])
     const mouseOver = () => {
         setIsHovering(true);
     }
     const mouseOut = () => {
         setIsHovering(false)
     }
+    
   return (
     <div className="nav">
         <div className="left-nav">
@@ -37,7 +45,7 @@ function Header() {
                     </ul>
                 </li>
                 <li>회원가입</li>
-                <li>로그인</li>                
+                {auth == false ? <li>로그인</li> : <li>로그아웃</li> }                      
             </ul>
         </div>        
     </div>

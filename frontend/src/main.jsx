@@ -1,18 +1,19 @@
 import React from "react";
 import './main.css';
 import video1 from './main1.mp4';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Map, MapMarker } from "react-kakao-maps-sdk"
+
 
 function Main(){
     const [list, setList] = useState([]);
     useEffect(()=>{
       axios.get("/index")
-      .then(response => {setList(response.data);
+      .then(response => {setList(response.data)
     })
       .catch(error => console.log(error))
-    },[list]);
+    },[]);
     
     return(
         <div className="main-wrap">
@@ -44,11 +45,22 @@ function Main(){
                 <div className="ad-facility">
                     <h3>시설광고</h3>
                     <div className="facility-content">
-                        {list.ad_facility && list.ad_facility.length > 0 ? <div>
-                            {list.ad_facility[0].name}
+                        {list.ad_facility && list.ad_facility.length > 0 ? 
+                        <div>
+                            <div>
+                                {list.ad_facility[0].name}
+                            </div>
+                            <div>
+                                {list.ad_facility[0].address}
+                            </div>
+                            <div>
+                                {list.ad_facility[0].disease}
+                            </div>
+                            <div>
+                                {list.ad_facility[0].feature}
+                            </div>
                         </div>
-                         : <div>데이터 로딩중...</div>}
-                        
+                         : <div>데이터 로딩중...</div>}      
                     </div>
                 </div>
             </div>
@@ -68,8 +80,20 @@ function Main(){
                 <div className="recommend">
                     <div>지도 기반 시설</div>
                     <div>
-                        {list.near_facility && list.near_facility.length > 0 ? <div>
-                            {list.near_facility[0].name}
+                        {list.near_facility && list.near_facility.length > 0 ? 
+                        <div>
+                            <div>
+                                {list.near_facility[0].name}
+                            </div>
+                            <div>
+                                {list.near_facility[0].address}
+                            </div>
+                            <div>
+                                {list.near_facility[0].disease}
+                            </div>
+                            <div>
+                                {list.near_facility[0].feature}
+                            </div>
                         </div>
                          : <div>데이터 로딩중...</div>}
                     </div>
@@ -80,4 +104,5 @@ function Main(){
     
     
 }
+
 export default Main;
