@@ -6,9 +6,9 @@ function Header() {
     const [auth, setAuth] = useState(false)
     useEffect(() => {
         axios.get("/auth")
-    .then(response => {setAuth(response.data)
-    })
-    .then(console.log("auth :",auth))
+        .then(response => {setAuth(response.data)
+        })
+        .then(console.log("auth :",auth))
     }, [])
     const mouseOver = () => {
         setIsHovering(true);

@@ -1,0 +1,20 @@
+/* board.css */
+
+.boardWrapper{
+    background-color:chocolate
+}
+.boardTop{
+    background-color: yellowgreen;
+}
+.noticeBoard{
+    background-color: blue;
+}
+.contentBoard{
+    background-color: green;
+}
+.boardMenu{
+    background-color: bisque;
+}
+.paging{
+    background-color: yellow;
+}

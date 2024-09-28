@@ -11,7 +11,8 @@ class PostController(private val postService: PostService) {
 
     @ResponseBody
     @GetMapping("/board")
-    fun testList() {
+    fun testList(): List<PostEntities> {
         var list: List<PostEntities> = postService.getList()
+        return list
     }
 }
