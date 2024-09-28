@@ -17,6 +17,7 @@ ul{
     list-style-type: none;
     text-align: center;
     vertical-align: middle;
+    margin: 0;
 }
 li{
     position: relative;

@@ -1,7 +1,6 @@
 /* board.css */
 
 .boardWrapper{
-    background-color:chocolate
 }
 .boardTop{
     background-color: yellowgreen;
@@ -10,7 +9,7 @@
     background-color: blue;
 }
 .contentBoard{
-    background-color: green;
+
 }
 .boardMenu{
     background-color: bisque;

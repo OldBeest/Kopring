@@ -8,7 +8,7 @@ function Board() {
         .then(response => {setboardList(response.data)
             console.log("board0 :", boardList)
         })
-
+        .then(console.log("board1 :", boardList))
         .catch(error => console.log(error))
     }, []);
     
@@ -31,15 +31,27 @@ function Board() {
                 </div>
                 <div className={boardStyles.contentBoard}>
                     <ul className={boardStyles.list}>
-                        <li style={{width: "5%"}}>{boardList[26].post_no}</li>
-                        <li style={{width: "40%"}}>{boardList[26].post_title}</li>
-                        <li style={{width: "10%"}}>{boardList[26].id}</li>
-                        <li style={{width: "15%"}}>{boardList[26].post_reg_date}</li>
-                        <li style={{width: "5%"}}>{boardList[26].post_hit}</li>
+                        <li style={{width: "5%"}}>{boardList[1].post_no}</li>
+                        <li style={{width: "40%"}}>{boardList[1].post_title}</li>
+                        <li style={{width: "10%"}}>{boardList[1].id}</li>
+                        <li style={{width: "15%"}}>{boardList[1].post_reg_date}</li>
+                        <li style={{width: "5%"}}>{boardList[1].post_hit}</li>
                     </ul>
-                </div>
+                    <ul className={boardStyles.list}>
+                        <li style={{width: "5%"}}>{boardList[2].post_no}</li>
+                        <li style={{width: "40%"}}>{boardList[2].post_title}</li>
+                        <li style={{width: "10%"}}>{boardList[2].id}</li>
+                        <li style={{width: "15%"}}>{boardList[2].post_reg_date}</li>
+                        <li style={{width: "5%"}}>{boardList[2].post_hit}</li>
+                    </ul>
+                </div>                
                 <div className={boardStyles.boardMenu}>
-                    게시판 메뉴
+                    <div style={{display: "flex", justifyContent: "right"}}>
+                        <input type="text"></input><button>검색하기</button>
+                        <ul>
+                            <li>글쓰기</li>                        
+                        </ul>
+                    </div>
                 </div>
                 <div className={boardStyles.paging}>
                     하단 페이징

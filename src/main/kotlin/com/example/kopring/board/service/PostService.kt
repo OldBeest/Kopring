@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service
 @Service
 class PostService(private val postRepository : PostRepository) {
 
-    fun getList(): List<PostEntities> = postRepository.findAll()
+    fun getList(): List<PostEntities> = postRepository.getList()
 }
