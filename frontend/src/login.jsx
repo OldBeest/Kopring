@@ -20,13 +20,26 @@ function Login() {
 
     return (
     <div>
+        <h2>로그인 페이지</h2>
         <div>
-        아이디 입력 : <input className="login_id" name="id" type='text' value={idValue} onChange={changeId}></input>
+        아이디:  <input className="login_id" name="id" type='text' value={idValue} onChange={changeId}></input>
         </div>
         <div>
-        비밀번호 입력 : <input className="login_pw" name="pw" type='password' value={pwValue} onChange={changePw}></input>
+        비밀번호: <input className="login_pw" name="pw" type='password' value={pwValue} onChange={changePw}></input>
         </div>
-        <button onClick={submit(idValue, pwValue)}>로그인</button>
+        <div>
+            <button>회원가입</button>
+            <button onClick={() => {submit(idValue, pwValue)}}>로그인</button>
+        </div>
+        <div>
+            카카오 로그인
+        </div>
+        <div>
+            네이버 로그인
+        </div>
+        <div>
+            구글 로그인
+        </div>
     </div>
         
   );

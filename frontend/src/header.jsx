@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Route } from "react-router-dom"
 import './header.css'
-import Login from "./login";
 function Header() {
     const [isHovering, setIsHovering] = useState(false);
     const [auth, setAuth] = useState(false)
@@ -10,6 +8,7 @@ function Header() {
         axios.get("/auth")
     .then(response => {setAuth(response.data)
     })
+    .then(console.log("auth :",auth))
     }, [])
     const mouseOver = () => {
         setIsHovering(true);
@@ -39,19 +38,20 @@ function Header() {
             </div>
             <div className="right-nav">
                 <ul>
-                    <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut}>고객지원
-                        <ul className="side-menu">
-                            <li>자주묻는 질문</li>
-                            <li>질문 게시판</li>
-                            <li>1:1 문의</li>
-                        </ul>
-                    </li>
+                    <a href="/board">
+                        <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut} style={{color: "black"}}>고객지원
+                            <ul className="side-menu">
+                                    <li>자주묻는 질문</li>
+                                    <li>질문 게시판</li>
+                                    <li>1:1 문의</li>
+                            </ul>
+                        </li>
+                    </a>
                     <li>회원가입</li>
-                    {auth == false ? <li>로그인</li> : <li>로그아웃</li> }                      
+                    {auth == false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/logout"><li style={{color: "black"}}>로그인</li></a> }                      
                 </ul>
             </div>        
         </div>
-        {auth == false ? <Login/> : <div></div>}
     </div>
   );
 }
