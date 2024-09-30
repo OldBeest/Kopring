@@ -1,4 +1,4 @@
-package com.example.kopring.user.service
+package com.example.kopring.auth.service
 
 import com.example.kopring.user.repository.UserRepository
 import org.springframework.stereotype.Service

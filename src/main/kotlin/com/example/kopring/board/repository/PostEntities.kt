@@ -1,5 +1,6 @@
 package com.example.kopring.facility.repository
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -34,6 +35,7 @@ class PostEntities {
     @Column(name = "post_hit")
     var post_hit: Int? = 0
 
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "post_reg_date")
     var post_reg_date: Timestamp? = null
 

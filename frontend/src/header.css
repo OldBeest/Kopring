@@ -12,12 +12,13 @@
     width: 40%;
 }
 /* 메뉴바 설정*/
-ul{
+ul{ 
+    padding-top: 15px;
     position: relative;
     list-style-type: none;
     text-align: center;
     vertical-align: middle;
-    margin: 0;
+    margin: 5px;
 }
 li{
     position: relative;

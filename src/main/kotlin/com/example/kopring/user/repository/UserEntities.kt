@@ -1,5 +1,6 @@
 package com.example.kopring.user.repository
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.*
 import java.sql.Timestamp
 
@@ -19,6 +20,7 @@ class UserEntities (
     @Column(name = "email")
     var email: String?,
 
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "birth_date")
     var birth_date: Timestamp?,
 
@@ -34,6 +36,7 @@ class UserEntities (
     @Column(name = "gender")
     var gender: String?,
 
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "join_date")
     var join_date: Timestamp?,
 

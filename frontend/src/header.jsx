@@ -5,10 +5,10 @@ function Header() {
     const [isHovering, setIsHovering] = useState(false);
     const [auth, setAuth] = useState(false)
     useEffect(() => {
-        axios.get("/auth")
+        axios.post("/auth/check_auth", {id: "test2", pw: "1111"}, 
+            { withCredentials: true })
         .then(response => {setAuth(response.data)
         })
-        .then(console.log("auth :",auth))
     }, [])
     const mouseOver = () => {
         setIsHovering(true);
@@ -34,7 +34,7 @@ function Header() {
                 </ul>
             </div>
             <div className="center-nav">
-                <h1>이미지</h1>   
+                <a href="/"><h1>홈 이미지</h1></a>
             </div>
             <div className="right-nav">
                 <ul>
@@ -48,7 +48,7 @@ function Header() {
                         </li>
                     </a>
                     <li>회원가입</li>
-                    {auth == false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/logout"><li style={{color: "black"}}>로그인</li></a> }                      
+                    {auth == false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/logout"><li style={{color: "black"}}>로그아웃</li></a> }                      
                 </ul>
             </div>        
         </div>

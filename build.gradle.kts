@@ -33,6 +33,7 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation("com.googlecode.json-simple:json-simple:1.1.1")
 }
 
 kotlin {

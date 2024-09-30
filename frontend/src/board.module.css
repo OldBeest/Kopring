@@ -1,4 +1,4 @@
-/* board.css */
+/* board.module.css */
 
 .boardWrapper{
 }
@@ -7,6 +7,7 @@
 }
 .noticeBoard{
     background-color: blue;
+    color: white;
 }
 .contentBoard{
 

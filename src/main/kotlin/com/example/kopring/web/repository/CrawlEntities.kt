@@ -14,4 +14,7 @@ class CrawlEntities(
 
     @Column(name="news_url")
     var news_url: String?,
+
+    @Column(name="video_url")
+    var video_url: String?,
 )

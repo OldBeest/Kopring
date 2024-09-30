@@ -23,10 +23,10 @@ video{
 
 }
 .news-link{
+    color: white;
     background-color: green;
 }
 a{  
-    color: white;
     text-decoration: none;
 }
 .video-list{

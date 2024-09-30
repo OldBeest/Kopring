@@ -36,7 +36,7 @@ function Main(){
                 <div className="video-list">
                     <h3>건강영상</h3>
                     <div className="video-content">
-                    {list.crawllist && list.crawllist.length > 0 ? <iframe width="560" height="215"
+                    {list.crawllist && list.crawllist.length > 0 ? <iframe width="560" height="315"
                                 src={list.crawllist[2].video_url}
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen></iframe> : <div>데이터 로딩중...</div>}
