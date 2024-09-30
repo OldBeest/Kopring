@@ -15,4 +15,8 @@ class PostService(private val postRepository : PostRepository,
     fun getNoticeList(): List<NoticeEntities> = noticeRepository.getNoticeList()
     //fun addNotice(notice : NoticeEntities) {}
     fun getList(): List<PostEntities> = postRepository.getList()
+
+    fun getPost(post_no: Int): PostEntities{
+        return postRepository.findByPostNo(post_no)
+    }
 }

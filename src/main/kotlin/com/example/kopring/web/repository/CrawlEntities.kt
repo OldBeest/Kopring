@@ -7,14 +7,14 @@ import jakarta.persistence.*
 class CrawlEntities(
     @Id
     @Column(name="news_title")
-    var news_title: String?,
+    var newsTitle: String?,
 
     @Column(name="news_content")
-    var news_content: String?,
+    var newsContent: String?,
 
     @Column(name="news_url")
-    var news_url: String?,
+    var newsUrl: String?,
 
     @Column(name="video_url")
-    var video_url: String?,
+    var videoUrl: String?,
 )

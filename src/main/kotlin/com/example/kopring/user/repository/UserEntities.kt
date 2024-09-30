@@ -22,13 +22,13 @@ class UserEntities (
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "birth_date")
-    var birth_date: Timestamp?,
+    var birthDate: Timestamp?,
 
     @Column(name = "phone")
     var phone: String?,
 
     @Column(name = "auto_login_token")
-    var auto_login_token: String?,
+    var autoLoginToken: String?,
 
     @Column(name = "temppw")
     var temppw: String?,
@@ -38,7 +38,7 @@ class UserEntities (
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "join_date")
-    var join_date: Timestamp?,
+    var joinDate: Timestamp?,
 
     @Column(name = "disease")
     var disease: String?,

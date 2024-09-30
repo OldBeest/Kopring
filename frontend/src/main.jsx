@@ -27,9 +27,9 @@ function Main(){
                 <div className="news-card">
                     <h3>뉴스카드</h3>
                     {list.crawllist && list.crawllist.length > 0 ? <div>
-                        <div className="news-title">{list.crawllist[0].news_title}</div>
-                        <div className="news-content">{list.crawllist[0].news_content}</div>
-                        <a href={list.crawllist[0].news_url}><div className="news-link">보러가기</div></a>
+                        <div className="news-title">{list.crawllist[0].newsTitle}</div>
+                        <div className="news-content">{list.crawllist[0].newsContent}</div>
+                        <a href={list.crawllist[0].newsUrl}><div className="news-link">보러가기</div></a>
                     </div> : <div>데이터 로딩중...</div>}
                     
                 </div>
@@ -37,7 +37,7 @@ function Main(){
                     <h3>건강영상</h3>
                     <div className="video-content">
                     {list.crawllist && list.crawllist.length > 0 ? <iframe width="560" height="315"
-                                src={list.crawllist[2].video_url}
+                                src={list.crawllist[2].videoUrl}
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen></iframe> : <div>데이터 로딩중...</div>}
                     
