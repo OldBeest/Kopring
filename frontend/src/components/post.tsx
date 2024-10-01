@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import postStyles from '../styles/post.module.css'
 
@@ -10,13 +10,12 @@ function Post(){
             try{
             const response = await axios.get('/post', {params:{post_id: 93}})            
             setPost(response.data)
-            console.log(post)
         }catch(error){
             console.log(error)
         }
     }  
     fetchPost();    
-    }, []);
+    }, [post]);
     return(
         <div>
             <h1>질문게시판</h1>

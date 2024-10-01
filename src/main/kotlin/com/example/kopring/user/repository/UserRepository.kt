@@ -11,4 +11,6 @@ interface UserRepository: CrudRepository<UserEntities, String> {
 
     fun existsByIdAndPw(@Param("user_id") id: String, @Param("user_pw") pw: String) :Boolean
 
+    override fun existsById(@Param("user_id") id: String): Boolean
+
 }

@@ -2,9 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import '../styles/header.css'
+
 function Header() {
     const [isHovering, setIsHovering] = useState(false);
     const [auth, setAuth] = useState(false)
+
     useEffect(() => {
         const check_auth = async () => {
             try{
@@ -18,8 +20,8 @@ function Header() {
             }
         }
         check_auth();
-        console.log(axios.defaults.headers.common)
     }, [])
+
     const mouseOver = () => {
         setIsHovering(true);
     }
@@ -57,7 +59,7 @@ function Header() {
                             </ul>
                         </li>
                     </a>
-                    <li>회원가입</li>
+                    <a href="/signup"><li style={{color: "black"}}>회원가입</li></a>
                     {auth == false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/logout"><li style={{color: "black"}}>로그아웃</li></a> }                      
                 </ul>
             </div>        

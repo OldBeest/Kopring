@@ -2,9 +2,10 @@ import React from 'react';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import boardStyles from '../styles/board.module.css';
+
 function Board() {
     const [boardList, setboardList] = useState<any | null>([]); // 게시판 데이터(공지, 일반 게시물)
-    const [postMax, setPostMax] = useState<number>(10); //한 화면에 등록 개수(5, 10, 20)
+    const [postMax, setPostMax] = useState<number>(5); //한 화면에 등록 개수(5, 10, 20)
     const [limit, setLimit] = useState<number>(5); // 페이징 단위(5, 10)
     const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
     const [counts, setCounts] = useState<number>(1); // 일반 게시물 개수
@@ -14,15 +15,13 @@ function Board() {
 
     useEffect(() =>{
         async function fetchBoard() {
-            try{
+            
             const response = await axios.get('/board')            
             setboardList(response.data)
             setCounts(response.data.postDto.length)
             setPages(Math.ceil(response.data.postDto.length/limit))
             setPageArr(CreateArr(pages))            
-        }catch(error){
-            console.log(error)
-        }
+        
     }   
         const CreateArr = (pages: number) => {
             let arr = new Array(pages).fill(0)
@@ -33,25 +32,28 @@ function Board() {
             
         }
         fetchBoard();
-        console.log("boardList :", boardList)
-        console.log("counts : ", counts)
+
     }, [pages, limit]);
     
     //첫 페이지
     function goFirst(){
-
+        return setCurrentPage(1)
     }
     //마지막 페이지
     function goLast(){
-        
+        return setCurrentPage(pages)
     }
     //이전 페이지
     function goPrevious(){
-        
+        if(currentPage>1){
+            return setCurrentPage(currentPage - 1)
+        }
     }
     //다음 페이지
     function goNext(){
-        
+        if(currentPage < limit + 1){
+            return setCurrentPage(currentPage + 1)
+        }
     }
     //특정 페이지
     function goPageNum(){
@@ -63,6 +65,7 @@ function Board() {
         setPostMax(event.target.value)
         setLimit(event.target.value)
     }
+
     return (
         <div>
             <h1>질문게시판</h1>   
@@ -124,11 +127,11 @@ function Board() {
                         </div>
                         <div>
                             <div>
-                                <li>처음</li>
-                                <li>이전</li>
-                                {pageArr && pageArr.length > 0? pageArr.map((num: number) => {if(num <= limit + 1) return <li>{num}</li>}): <li>데이터 준비중...</li>}              
-                                <li>다음</li>
-                                <li>마지막</li>
+                                <li onClick={goFirst}>처음</li>
+                                <li onClick={goPrevious}>이전</li>
+                                {pageArr && pageArr.length > 0? pageArr.map((num: number) => {if(num <= limit + 1){if(num == currentPage){ return<li><span style={{color: "red"}}>{currentPage}</span></li> }} return <li>{num}</li> }): <li>데이터 준비중...</li>}              
+                                <li onClick={goNext}>다음</li>
+                                <li onClick={goLast}>마지막</li>
                                 <li></li>
                             </div>
                         </div>
