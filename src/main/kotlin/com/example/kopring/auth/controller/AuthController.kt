@@ -1,25 +1,46 @@
 package com.example.kopring.auth.controller
 
 import com.example.kopring.auth.service.AuthService
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.example.kopring.auth.service.JwtService
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.jsonMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.json.simple.JSONObject
-import org.json.simple.parser.JSONParser
+import org.springframework.http.HttpHeaders
+
 
 import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/auth")
 @RestController
-class AuthController(var authService: AuthService) {
+class AuthController(
+    var authService: AuthService,
+) {
 
     @PostMapping("/check_auth")
-    fun check_auth(@RequestBody data: String): Boolean{
+    fun check_auth(@RequestBody data: String): String?{
         var mapper: Map<String, String>  = jacksonObjectMapper().readValue(data)
         var id: String = mapper.get("id").toString()
         var pw: String = mapper.get("pw").toString()
         return authService.normal_Auth(id, pw)
     }
+
+    @PostMapping("/check_auth1")
+    fun check_auth1(@RequestParam("id") id: String, @RequestParam("pw") pw: String): String?{
+        return authService.normal_Auth(id, pw)
+
+    }
+
+    @PostMapping("/check_token")
+    fun check_token_vaild(@RequestHeader token: HttpHeaders): String?{
+        println("token: $token")
+
+        return ""
+    }
+
+    @PostMapping("/refresh_token")
+    fun refresh_token(@RequestBody data: String): String? {
+
+        return ""
+    }
+
+
 }

@@ -9,7 +9,7 @@ class CrawlEntities(
     @Column(name="news_title")
     var newsTitle: String?,
 
-    @Column(name="news_content")
+    @Column(name="news_content", length = 2000)
     var newsContent: String?,
 
     @Column(name="news_url")
