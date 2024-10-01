@@ -1,0 +1,47 @@
+.main-image{
+    height: 50%;
+}
+video{
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+}
+.main-middle{
+    display: flex;
+    justify-content: center;
+}
+.news-card{
+    width: 30%;
+}
+.news-title{
+    color: white;
+    background-color: green;
+}
+.news-content{
+    height: 12vh;
+    overflow: hidden;
+
+}
+.news-link{
+    color: white;
+    background-color: green;
+}
+a{  
+    text-decoration: none;
+}
+.video-list{
+    width: 30%;
+}
+.ad-facility{
+    width: 30%;
+}
+.map-recommend{
+    display: flex;
+    height: 500px;
+}
+.map-wrapper{
+    width: 45%;
+}
+.recommend{
+    width: 45%;
+}

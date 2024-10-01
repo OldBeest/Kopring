@@ -1,0 +1,38 @@
+.nav{
+    display: flex;
+}
+.left-nav{
+    width: 40%;
+}
+.center-nav{
+    width: 20%;
+    background-color: aquamarine;
+}
+.right-nav{
+    width: 40%;
+}
+/* 메뉴바 설정*/
+ul{ 
+    padding-top: 15px;
+    position: relative;
+    list-style-type: none;
+    text-align: center;
+    vertical-align: middle;
+    margin: 5px;
+}
+li{
+    position: relative;
+    margin: 10px 30px;
+    font-size: 15px;
+    font-weight: 700;
+    display: inline-block;
+}
+.side-menu{
+    position: relative;
+    width: 250px;
+    display: none;
+    background-color: red;
+}
+.slide .menu-1> .side-menu{
+    display: block;
+}
