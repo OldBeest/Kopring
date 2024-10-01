@@ -3,7 +3,7 @@
 }
 video{
     width: 100%;
-    height: 50vh;
+    height: 30vh;
     object-fit: cover;
 }
 .main-middle{
@@ -18,7 +18,7 @@ video{
     background-color: green;
 }
 .news-content{
-    height: 12vh;
+    height: 30vh;
     overflow: hidden;
 
 }

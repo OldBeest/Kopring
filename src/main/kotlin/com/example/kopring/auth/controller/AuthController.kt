@@ -31,8 +31,6 @@ class AuthController(
 
     @PostMapping("/check_token")
     fun check_token_vaild(@RequestHeader token: HttpHeaders): String?{
-        println("token: $token")
-
         return ""
     }
 
