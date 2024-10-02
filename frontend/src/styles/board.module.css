@@ -18,3 +18,9 @@
 .paging{
     background-color: yellow;
 }
+.active{
+    color: red;
+}
+.non-active{
+    color: white;
+}

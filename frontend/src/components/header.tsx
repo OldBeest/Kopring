@@ -42,7 +42,7 @@ function Header() {
                         </ul>
                     </li>
                     <li>시설검색</li>
-                    <li>정보</li>
+                    <a href="/boardTwo"><li>정보(board2)</li></a>
                 </ul>
             </div>
             <div className="center-nav">
@@ -51,7 +51,7 @@ function Header() {
             <div className="right-nav">
                 <ul>
                     <a href="/board">
-                        <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut} style={{color: "black"}}>고객지원
+                        <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut} style={{color: "black"}}>고객지원(post)
                             <ul className="side-menu">
                                     <li>자주묻는 질문</li>
                                     <li>질문 게시판</li>
@@ -60,7 +60,7 @@ function Header() {
                         </li>
                     </a>
                     <a href="/signup"><li style={{color: "black"}}>회원가입</li></a>
-                    {auth == false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/logout"><li style={{color: "black"}}>로그아웃</li></a> }                      
+                    {auth === false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/logout"><li style={{color: "black"}}>로그아웃</li></a> }                      
                 </ul>
             </div>        
         </div>
