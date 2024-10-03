@@ -12,7 +12,7 @@ import java.sql.Timestamp
 class PostEntities {
     @Id
     @Column(name = "post_no")
-    var postNo: Long = 0
+    var postNo: Int? = null
 
     @Column(name = "id")
     var id: String? = null
@@ -24,16 +24,16 @@ class PostEntities {
     var postContent: String? = null
 
     @Column(name = "post_group")
-    var postGroup: Int? = 0
+    var postGroup: Int? = null
 
     @Column(name = "post_step")
-    var postStep: Int? = 0
+    var postStep: Int? = null
 
     @Column(name = "post_indent")
-    var postIndent: Int? = 0
+    var postIndent: Int? = null
 
     @Column(name = "post_hit")
-    var postHit: Int? = 0
+    var postHit: Int? = null
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "post_reg_date")
@@ -43,6 +43,6 @@ class PostEntities {
     var postFile: String? = null
 
     @Column(name = "is_notice")
-    var isNotice: Int? = 0
+    var isNotice: Int? = null
 
 }

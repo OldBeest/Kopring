@@ -51,7 +51,7 @@ function Header() {
             <div className="right-nav">
                 <ul>
                     <a href="/board">
-                        <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut} style={{color: "black"}}>고객지원(post)
+                        <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut} style={{color: "black"}}>고객지원(board)
                             <ul className="side-menu">
                                     <li>자주묻는 질문</li>
                                     <li>질문 게시판</li>

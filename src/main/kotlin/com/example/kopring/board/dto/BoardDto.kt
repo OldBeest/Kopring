@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 
 @Component
 data class BoardDto(private val postService: PostService) {
-    companion object
-    var postDto: List<PostEntities> = postService.getList()
     var noticeDto: List<NoticeEntities> = postService.getNoticeList()
+    var postDto: List<PostEntities> = postService.getList()
 }

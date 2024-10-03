@@ -1,13 +1,28 @@
 package com.example.kopring.board.dto
 
-import com.example.kopring.board.service.PostService
 import com.example.kopring.facility.repository.PostEntities
-import org.springframework.stereotype.Component
+import java.sql.Timestamp
 
-@Component
-data class PostDto(private val postService: PostService) {
+data class PostDto(
+    private var postNo: Int? = null,
+   private var id: String? = null,
+   private var postTitle: String? = null,
+   private var postContent: String? = null,
+   private var postGroup: Int? = null,
+   private var postStep: Int? = null,
+   private var postIndent: Int? = null,
+   private var postHit: Int? = null,
+   private var postRegDate: Timestamp? = null,
+   private var postFile: String? = null,
+   private var isNotice: Int? = 0){
 
-    fun getPost(post_no: Int): PostEntities{
-        return postService.getPost(post_no)
+    init{
+        println("Post Dto 생성!")
+    }
+    fun toEntity(): PostEntities{
+        return
+    }
+    fun fromEntity(entities: PostEntities): PostDto{
+        return PostDto().apply {  }
     }
 }

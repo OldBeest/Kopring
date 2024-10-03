@@ -1,6 +1,7 @@
 package com.example.kopring.board.repository
 
 import com.example.kopring.facility.repository.PostEntities
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
@@ -14,5 +15,5 @@ interface PostRepository: CrudRepository<PostEntities, String> {
     @Query(value = "select * from postdb order by post_group desc, post_step asc", nativeQuery = true)
     fun getList(): List<PostEntities>
 
-    fun findByPostNo(@Param("post_no")post_no: Int): PostEntities
+    fun getByPostNo(postNo: Int?): PostEntities?
 }

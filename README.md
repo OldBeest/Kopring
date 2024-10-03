@@ -3,7 +3,7 @@
 
 ## 기능 개선 진행사항
 jwt토큰을 활용한 로그인 인증<br>
-리액트로 게시판 구현(페이징, CRUD)
+Dto, Entity 분리, api 개선
 
 ## 변경 사항
 Java -> Kotlin<br>
