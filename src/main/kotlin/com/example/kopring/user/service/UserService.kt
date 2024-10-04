@@ -1,6 +1,7 @@
 package com.example.kopring.user.service
 
 import com.example.kopring.facility.repository.FacilityEntities
+import com.example.kopring.user.dto.UserInfoDto
 import com.example.kopring.user.repository.UserEntities
 import com.example.kopring.user.repository.UserRepository
 import org.json.simple.JSONObject
@@ -24,6 +25,12 @@ class UserService(var userRepository: UserRepository) {
      }
         jo.put("result", "isValid")
         return jo.toString()
+    }
+
+    fun getUserInfo(id: String): UserInfoDto?{
+        return userRepository.findById(id)
+            .map{UserInfoDto.fromEntity(it)}
+            .orElse(null)
     }
 
     fun userMatch(id: String, pw: String): Boolean = userRepository.existsByIdAndPw(id, pw)

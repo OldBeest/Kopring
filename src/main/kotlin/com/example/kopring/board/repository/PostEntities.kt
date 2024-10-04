@@ -34,7 +34,7 @@ class PostEntities {
 
     @Column(name = "post_hit")
     var postHit: Int? = null
-
+    
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "post_reg_date")
     var postRegDate: Timestamp? = null

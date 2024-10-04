@@ -1,28 +1,54 @@
 package com.example.kopring.board.dto
 
 import com.example.kopring.facility.repository.PostEntities
+
 import java.sql.Timestamp
 
 data class PostDto(
-    private var postNo: Int? = null,
-   private var id: String? = null,
-   private var postTitle: String? = null,
-   private var postContent: String? = null,
-   private var postGroup: Int? = null,
-   private var postStep: Int? = null,
-   private var postIndent: Int? = null,
-   private var postHit: Int? = null,
-   private var postRegDate: Timestamp? = null,
-   private var postFile: String? = null,
-   private var isNotice: Int? = 0){
+   var postNo: Int? = null ,
+   var id: String? = null,
+   var postTitle: String? = null,
+   var postContent: String? = null,
+   var postGroup: Int? = null,
+   var postStep: Int? = null,
+   var postIndent: Int? = null,
+   var postHit: Int? = null,
+   var postRegDate: Timestamp? = null,
+   var postFile: String? = null,
+   var isNotice: Int? = 0)
+{
+    fun toEntity(entities: PostEntities): PostEntities{
+        return entities.apply {
+            postNo = this.postNo //this@PostDto.postNo도 가능
+            id = this.id
+            postTitle = this.postTitle
+            postContent = this.postContent
+            postGroup = this.postGroup
+            postStep = this.postStep
+            postIndent = this.postIndent
+            postHit = this.postHit
+            postRegDate = this.postRegDate
+            postFile = this.postFile
+            isNotice = this.isNotice
+        }
+    }
 
-    init{
-        println("Post Dto 생성!")
+    companion object {
+        fun fromEntity(entities: PostEntities): PostDto{
+            return PostDto(
+                postNo = entities.postNo,
+                id = entities.id,
+                postTitle = entities.postTitle,
+                postContent = entities.postContent,
+                postGroup = entities.postGroup,
+                postStep = entities.postStep,
+                postIndent = entities.postIndent,
+                postHit = entities.postHit,
+                postRegDate = entities.postRegDate,
+                postFile = entities.postFile,
+                isNotice = entities.isNotice
+            )
+        }
     }
-    fun toEntity(): PostEntities{
-        return
-    }
-    fun fromEntity(entities: PostEntities): PostDto{
-        return PostDto().apply {  }
-    }
+
 }

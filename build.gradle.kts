@@ -34,6 +34,8 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("com.googlecode.json-simple:json-simple:1.1.1")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
 	//JWT
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")

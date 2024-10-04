@@ -4,9 +4,29 @@ import axios from "axios";
 import boardStyles from '../styles/board.module.css';
 import { Link } from 'react-router-dom'
 
+interface PostDto{
+    postNo: number;
+    postTitle: string;
+    id: string;
+    postRegDate: string;
+    postHit: number;
+}
+
+interface NoticeDto{
+    post_id: string;
+    noticeTitle: string;
+    noticeRegDate: string;
+    noticeHit: number;
+
+}
+
+interface PostList{
+    noticeDto: NoticeDto[];
+    postDto: PostDto[];
+}
 
 function Board() {
-    const [postList, setPostList] = useState<any | null>({noticeDto: [], postDto: []}); // 게시판 데이터(공지, 일반 게시물)
+    const [postList, setPostList] = useState<PostList>({noticeDto: [], postDto: []}); // 게시판 데이터(공지, 일반 게시물)
     const [counts, setCounts] = useState<number>(1); // 일반 게시물 개수
     const [pages, setPages] = useState<number>(0); // 필요한 총 페이지
     const [postsPerPage, setPostsPerPage] = useState<number>(5); //한 페이지당 게시물 개수
@@ -16,7 +36,7 @@ function Board() {
     useEffect(() =>{
 
         const fetchBoard = async() => {
-            const response = await axios.get('/board')
+            const response = await axios.get<PostList>('/board')
             const data = response.data
 
             setPostList(data)
@@ -40,7 +60,7 @@ function Board() {
     const goNext = () => currentPage < pages && setCurrentPage(currentPage + 1)
     
     //게시글 표시 단위 페이지
-    function changePostMax(event: any){
+    function changePostMax(event: React.ChangeEvent<HTMLSelectElement>){
         let newPostsPerPage: number = +event.target.value
         setSelect(event.target.value)
         setPostsPerPage(newPostsPerPage)
@@ -63,7 +83,7 @@ function Board() {
                         </ul>
                     </div>
                     {postList.noticeDto.length > 0 ? <div className={boardStyles.noticeBoard}>
-                        {postList.noticeDto.map((item: any) => {return <ul className={boardStyles.list} key={item.post_id}>
+                        {postList.noticeDto.map((item) => {return <ul className={boardStyles.list} key={item.post_id}>
                                 <li style={{width: "5%"}}>공지</li>
                                 <li style={{width: "40%"}}>{item.noticeTitle}</li>
                                 <li style={{width: "10%"}}>관리자</li>
@@ -73,9 +93,9 @@ function Board() {
                         </div> : <div>데이터 로딩중...</div>}
                     {currentPosts.length > 0 ?( 
                         <div className={boardStyles.contentBoard}>
-                        {currentPosts.map((item: any) => (<ul className={boardStyles.list} key={item.postNo}>
+                        {currentPosts.map((item) => (<ul className={boardStyles.list} key={item.postNo}>
                             <li style={{width: "5%"}}>{item.postNo}</li>
-                            <Link to={"/post?post_id=" + item.postNo}><li style={{width: "40%"}}>{item.postTitle}</li></Link>
+                            <li style={{width: "40%"}}><Link to={"/post?post_id=" + item.postNo}>{item.postTitle}</Link></li>
                             <li style={{width: "10%"}}>{item.id}</li>
                             <li style={{width: "15%"}}>{item.postRegDate}</li>
                             <li style={{width: "5%"}}>{item.postHit}</li>
@@ -112,7 +132,7 @@ function Board() {
                             <div>
                                 <li onClick={goFirst}>처음</li>
                                 <li onClick={goPrevious}>이전</li>
-                                {[...Array(pages)].map((_, index:number) => (<li key={index + 1} onClick={() => {goPage(index + 1)}}><span className={currentPage === index + 1? boardStyles.active: ''}>{index + 1}</span></li>))}         
+                                {[...Array(pages)].map((_, index) => (<li key={index + 1} onClick={() => {goPage(index + 1)}}><span className={currentPage === index + 1? boardStyles.active: ''}>{index + 1}</span></li>))}         
                                 <li onClick={goNext}>다음</li>
                                 <li onClick={goLast}>마지막</li>
                                 <li></li>

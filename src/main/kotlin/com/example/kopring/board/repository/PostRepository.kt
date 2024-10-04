@@ -15,5 +15,9 @@ interface PostRepository: CrudRepository<PostEntities, String> {
     @Query(value = "select * from postdb order by post_group desc, post_step asc", nativeQuery = true)
     fun getList(): List<PostEntities>
 
-    fun getByPostNo(postNo: Int?): PostEntities?
+    //Create
+    fun save(entity: PostEntities): PostEntities
+    //Read
+    fun findByPostNo(postNo: Int?): PostEntities?
+
 }

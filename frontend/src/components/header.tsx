@@ -14,12 +14,12 @@ function Header() {
                     withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
                   })
                 setAuth(response.data);
-
             }catch(error){
                 console.log(error);
             }
         }
         check_auth();
+        console.log("auth status : ", auth)
     }, [])
 
     const mouseOver = () => {
