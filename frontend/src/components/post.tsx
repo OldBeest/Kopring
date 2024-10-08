@@ -1,38 +1,22 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import postStyles from '../styles/post.module.css'
 import { Link } from "react-router-dom";
 
 
-function writePost(){
-    alert("작성하시겠습니까?")
-    const getLastPostNum = async() =>{
-        const response = await axios.get('/board')
-        let lastPostNo = response.data.postDto[0].postNo
-        console.log(lastPostNo)
-        console.log(new Date().getTime())
-    }
-    getLastPostNum();
-    // window.location.href = "/board";
-}
 
-function updatePost(){
-    alert("수정하시겠습니까?")
-}
-
-function deletePost(){
-    if(window.confirm("삭제하시겠습니까?")){
-        alert("삭제되었습니다.")
-        window.location.href = "/board"
-    }else{
-        alert("취소되었습니다.")
-        window.location.reload();
-    }
+const getLastPostNum = async () =>{
+    const response = await axios.get('/board')
+    let lastPostNo = response.data.postDto[0].postNo
+    return lastPostNo + 1
+    
 }
 
 function Post(){
-    const [post, setPost] = useState<any | null>([]);
+    const [post, setPost] = useState<any | null>(null);
+    const titleRef = useRef<HTMLInputElement | null>(null);
+    const contentRef = useRef<HTMLTextAreaElement | null>(null);
     useEffect(()=>{
         async function getPost() {
             try{
@@ -51,12 +35,55 @@ function Post(){
     }
     getPost();    
     }, []);
+
+    const checkData = async () => {
+        const title = titleRef.current?.value;
+        const content = contentRef.current?.value;
+
+        if (!title || !content) {
+            alert("제목과 내용을 입력해주세요.");
+            return;
+        }
+
+        let lastPostId = await getLastPostNum();
+        console.log("요청 후 번호 + 1: ", lastPostId)
+        let data = {
+            postNo: lastPostId,
+            id: "test아이디1",
+            postTitle: title,
+            postContent: content
+        }; 
+        
+        await axios.post("/post", data)
+        
+    }
+
+    async function writePost(){
+        alert("작성하시겠습니까?")
+        await checkData()
+        window.location.href = "/board"
+    }
+    
+    function updatePost(){
+        alert("수정하시겠습니까?")
+    }
+    
+    function deletePost(){
+        if(window.confirm("삭제하시겠습니까?")){
+            alert("삭제되었습니다.")
+            window.location.href = "/board"
+        }else{
+            alert("취소되었습니다.")
+            window.location.reload();
+        }
+    }
+
     return(
         <div>
             <h1>질문게시판</h1>
-                {post.length < 1 ? (<div className={postStyles.postWrapper}><div className={postStyles.postId}>작성자 : 없음</div>
-                <div className={postStyles.postTitle}>제목<input type="text" placeholder="제목을 입력하세요"></input></div>
-                <div className={postStyles.postContent}>내용<textarea placeholder="내용을 입력하세요" ></textarea></div>
+                {!post ? (<div className={postStyles.postWrapper}><div className={postStyles.postId}>작성자 : 없음</div>
+                <div className={postStyles.postTitle}>제목<input type="text" placeholder="제목을 입력하세요" ref={titleRef}></input></div>
+                <div className={postStyles.postContent}>내용<textarea placeholder="내용을 입력하세요" ref={contentRef}></textarea></div>
                 <div className={postStyles.attachList}>
                     <div style={{display: "flex"}}>
                         <div>첨부 :</div>
@@ -72,7 +99,7 @@ function Post(){
                     </div>
                 </div></div>)}
                 <div className={postStyles.postMenu}>
-                    <Link to={post.length < 1? "/board/create": "/board/update"} onClick={post.length < 1? writePost: updatePost}><div className={postStyles.postMenuBox}>{post.length < 1 ? "작성" : "수정"}</div></Link>
+                    <Link to={!post? "/board/create": "/board/update"} onClick={!post? writePost: updatePost}><div className={postStyles.postMenuBox}>{!post? "작성" : "수정"}</div></Link>
                     <Link to="/board/delete"><div className={postStyles.postMenuBox} onClick={deletePost}>삭제</div></Link>
                     <Link to="/board"><div className={postStyles.postMenuBox}>취소</div></Link>
                 </div>

@@ -23,11 +23,13 @@ class AuthController(
         return authService.normal_Auth(id, pw)
     }
 
+    // 토큰키 부여
     @PostMapping("/check_auth1")
     fun check_auth1(@RequestParam("id") id: String, @RequestParam("pw") pw: String): String?{
         return authService.normal_Auth(id, pw)
-
     }
+
+    // 토큰 유효성 검사
 
     @PostMapping("/check_token")
     fun check_token_vaild(@RequestHeader token: HttpHeaders): String?{

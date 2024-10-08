@@ -45,7 +45,7 @@ function Board() {
         }   
         
         fetchBoard();
-
+    
     }, [postsPerPage]);
     
     const firstPageIdx = (currentPage - 1) * postsPerPage

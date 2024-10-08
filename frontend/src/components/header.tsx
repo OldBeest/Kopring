@@ -6,19 +6,30 @@ import '../styles/header.css'
 function Header() {
     const [isHovering, setIsHovering] = useState(false);
     const [auth, setAuth] = useState(false)
-
+    let token: object;
     useEffect(() => {
+        const getToken = async () => {
+            token = await axios.post("/auth/check_auth1", null, {params: {id: "test2", pw: "1111"}})
+            console.log(token.data)
+            
+        }
+        
         const check_auth = async () => {
             try{
                 const response = await axios.post("/auth/check_token", {
                     withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
-                  })
+                  }, token)
+                
                 setAuth(response.data);
+
             }catch(error){
                 console.log(error);
             }
         }
+        getToken();
+
         check_auth();
+
         console.log("auth status : ", auth)
     }, [])
 

@@ -15,7 +15,8 @@ class AuthService(
     fun normal_Auth(id: String, pw: String): String?{
         if(userRepository.existsByIdAndPw(id, pw)){
             token = jwtService.generateToken(id)
-            return token as String
+            println("token : ${token}")
+            return token
         }
         return null
     }

@@ -12,7 +12,7 @@ import java.sql.Timestamp
 class PostEntities {
     @Id
     @Column(name = "post_no")
-    var postNo: Int? = null
+    var postNo: Int? = 0
 
     @Column(name = "id")
     var id: String? = null

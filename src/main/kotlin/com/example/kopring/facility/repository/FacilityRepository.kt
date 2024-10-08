@@ -1,12 +1,13 @@
 package com.example.kopring.facility.repository
 
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 
 @Repository
-interface FacilityRepository: CrudRepository<FacilityEntities, String> {
+interface FacilityRepository: JpaRepository<FacilityEntities, String> {
     override fun findAll(): List<FacilityEntities>
     fun findByAdstatus(ad_Status: Int): List<FacilityEntities>
 

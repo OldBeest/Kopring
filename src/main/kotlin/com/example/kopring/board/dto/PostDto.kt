@@ -17,19 +17,20 @@ data class PostDto(
    var postFile: String? = null,
    var isNotice: Int? = 0)
 {
-    fun toEntity(entities: PostEntities): PostEntities{
-        return entities.apply {
-            postNo = this.postNo //this@PostDto.postNo도 가능
-            id = this.id
-            postTitle = this.postTitle
-            postContent = this.postContent
-            postGroup = this.postGroup
-            postStep = this.postStep
-            postIndent = this.postIndent
-            postHit = this.postHit
-            postRegDate = this.postRegDate
-            postFile = this.postFile
-            isNotice = this.isNotice
+    fun toEntity(postDto: PostDto): PostEntities{
+        return PostEntities().apply {
+            postNo = postDto.postNo //this@PostDto.postNo도 가능
+            id = postDto.id
+            postTitle = postDto.postTitle
+            postContent = postDto.postContent
+            postGroup = postDto.postGroup
+            postStep = postDto.postStep
+            postIndent = postDto.postIndent
+            postHit = postDto.postHit
+            postRegDate = postDto.postRegDate
+            postFile = postDto.postFile
+            isNotice = postDto.isNotice
+
         }
     }
 
