@@ -3,6 +3,14 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { redirect } from "react-router-dom";
 
+
+const getToken = async () => {
+    token = await axios.post("/auth/get_token1", null, {params: {id: "test2", pw: "1111"}})
+
+    localStorage.setItem("access-token", token.headers.get("access-token"))         
+}
+let token: any;
+
 const submit = (idValue: string, pwValue: string) => {
     const userInfo = {
         id: idValue,
@@ -11,10 +19,13 @@ const submit = (idValue: string, pwValue: string) => {
     
     const onLogin = async () =>{
         try{
-            const response = await axios.post("/auth/check_auth", userInfo)
-            const accessToken = response.data
+            console.log(userInfo)
+            const response = await axios.post("/auth/get_token1", null, {params: userInfo})
+            const accessToken = response
             if(accessToken){
-                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+                
+                console.log(accessToken.headers)
+                localStorage.setItem("access-token", accessToken.headers["access-token"])
                 alert("로그인에 성공했습니다.")
                 window.location.href = "/"
             }
@@ -27,6 +38,7 @@ const submit = (idValue: string, pwValue: string) => {
         }
     }
     onLogin();
+    
 }
 
 

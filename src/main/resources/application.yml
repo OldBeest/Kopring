@@ -22,7 +22,13 @@ spring:
         use_sql_comments: true
     open-in-view: false
 
+
 springdoc:
   swagger-ui:
     path: /api-test
     operations-sorter: method
+
+jwt:
+  header: Authorization
+  secret: pWqAb8znKpEtkhfQNlyLcH1dKE1TxESS75phjL9kfA
+  token-validity-in-seconds: 86400
