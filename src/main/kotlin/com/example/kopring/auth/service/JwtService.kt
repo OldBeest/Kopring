@@ -1,5 +1,6 @@
 package com.example.kopring.auth.service
 
+import com.example.kopring.auth.dto.JwtToken
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -9,6 +10,7 @@ import io.jsonwebtoken.Jwt
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.security.Key
@@ -20,7 +22,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @Component
 object JwtService{
 
-    private val TEN_MINUTES: Long = 60 * 10 * 1000L
+    private val TEN_MINUTES: Long = 60 * 10 * 1000L / 2
     private val ONE_DAY: Long = 24 * 60 * 60 * 1000L
     val EXPIRATION_TIME: Long = TEN_MINUTES
     private val SECRET_KEY: String = "your-secret-key-is-very-important"
@@ -71,20 +73,35 @@ object JwtService{
     }
 
     fun checkValidToken(token: String): Boolean{
-        var valid = Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJws(token)
-        println(valid.body)
-        var exptime = valid.body.get("exp").toString().toLong()
-        var nowtime = Date().time / 1000
-        if(exptime >= nowtime){
-            return true
+        try{
+            var valid = Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJws(token)
+            var exptime = valid.body.get("exp").toString().toLong()
+            var nowtime = Date().time / 1000
+            if(exptime >= nowtime){
+                return true
+            }
+        } catch (e: Exception){
+            println(e.message)
+            return false
         }
         return false
-
     }
 
-    fun refreshToken(){
-
+    fun checkRefreshToken(token: String): Boolean {
+        try {
+            var valid = Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJws(token)
+            var exptime = valid.body.get("exp").toString().toLong()
+            var nowtime = Date().time / 1000
+            if (exptime >= nowtime) {
+                return true
+            }
+        } catch (e: Exception) {
+            println(e.message)
+            return false
+        }
+        return false
     }
+
 
     fun checkRole(token: String): Boolean{
         return true

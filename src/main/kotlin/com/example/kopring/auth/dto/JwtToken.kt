@@ -1,8 +1,8 @@
 package com.example.kopring.auth.dto
 
-data class JwtToken(
-    private val accessToken: String,
-    private val refreshToken: String,
-    private val tokenType: String,
-    private val expiresIn: Int
-)
+data class JwtToken(val id: String){
+    var accessToken: String? = null
+    var refreshToken: String? = null
+    var tokenType: String? = null
+    var issuedAt: String? = null
+}

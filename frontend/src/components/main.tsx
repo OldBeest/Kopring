@@ -11,7 +11,6 @@ function Main(){
     useEffect(()=>{
       axios.get("/index")
       .then(response => {setList(response.data)
-        console.log("data :", response.data)
     })
       .catch(error => console.log(error))
     },[]);

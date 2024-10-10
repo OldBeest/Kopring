@@ -55,7 +55,7 @@ function Member() {
       }
       else{
         setIsEqualPw("isNotValid")
-        setValidPw("비밀번호가 일치하지 않습니다")
+        setEqualPw("비밀번호가 일치하지 않습니다")
       }
       
     }else{
@@ -75,7 +75,7 @@ function Member() {
             비밀번호 <input type="password" onChange={checkValidPw}></input><span className={isValidPw}>{validPw}</span>
         </div>
         <div>
-            비밀번호확인 <input type="password" onChange={checkEqualPw}></input><span className={isEqualPw}>{validPw}</span>
+            비밀번호확인 <input type="password" onChange={checkEqualPw}></input><span className={isEqualPw}>{equalPw}</span>
         </div>
         <div>
             이메일 <input type="email"></input><button>중복확인</button><span>사용가능한 이메일 입니다.</span>

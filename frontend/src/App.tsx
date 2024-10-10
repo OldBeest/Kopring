@@ -10,8 +10,6 @@ import Post from './components/post';
 import Signup from './components/signup';
 import { Route, Routes } from 'react-router-dom';
 function App(){
-  
-  const[accessToken, setAccessToken] = useState([]);
 
   return (
     <div className="App">

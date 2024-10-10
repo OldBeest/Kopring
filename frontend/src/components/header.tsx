@@ -6,7 +6,7 @@ import '../styles/header.css'
 function Header() {
     const [isHovering, setIsHovering] = useState(false);
     const [auth, setAuth] = useState(false)
-    let token: any;
+
     useEffect(() => {
         
         const check_auth = async () => {
@@ -15,18 +15,27 @@ function Header() {
                     headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
                     withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
                   })
-                console.log(response.data)
-                setAuth(response.data);
-                console.log("요청 :", response)
-
+                  console.log("response :", response.data)
+                if(response.data !== false){
+                    setAuth(response.data);
+                }else{
+                    const refresh_response = await axios.post("/auth/refresh_token", null, {
+                        headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
+                        withCredentials: true, 
+                      })
+                      console.log(refresh_response)
+                    setAuth(refresh_response.data)
+                }
             }catch(error){
                 console.log(error);
             }
         }
+
         const process = async () =>{
             await check_auth();
-            console.log(auth)
+            console.log("auth status:", auth)
         }
+
         process();
     }, [])
 
@@ -35,6 +44,13 @@ function Header() {
     }
     const mouseOut = () => {
         setIsHovering(false)
+    }
+    const logOut = () => {
+        if(window.confirm("로그아웃 하시겠습니까?")){
+            localStorage.setItem("access-token", "")
+            document.cookie = ""
+            return false
+        }
     }
     
   return (
@@ -68,7 +84,7 @@ function Header() {
                         </li>
                     </a>
                     <a href="/signup"><li style={{color: "black"}}>회원가입</li></a>
-                    {auth === false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/logout"><li style={{color: "black"}}>로그아웃</li></a> }                      
+                    {auth === false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/" onClick={logOut}><li style={{color: "black"}}>로그아웃</li></a> }                      
                 </ul>
             </div>        
         </div>
