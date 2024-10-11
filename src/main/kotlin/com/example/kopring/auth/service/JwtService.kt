@@ -22,7 +22,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @Component
 object JwtService{
 
-    private val TEN_MINUTES: Long = 60 * 10 * 1000L / 2
+    private val TEN_MINUTES: Long = 60 * 10 * 1000L
     private val ONE_DAY: Long = 24 * 60 * 60 * 1000L
     val EXPIRATION_TIME: Long = TEN_MINUTES
     private val SECRET_KEY: String = "your-secret-key-is-very-important"
@@ -102,20 +102,5 @@ object JwtService{
         return false
     }
 
-
-    fun checkRole(token: String): Boolean{
-        return true
-    }
-
-    fun checkExpired(token: String): Boolean{
-
-        return true
-    }
-
-    fun decodeToken(token: String): Unit{
-        var parseData: Jwt<out Header<*>, *>? = Jwts.parserBuilder().setSigningKey(signingKey).build().parse(token)
-        println(parseData)
-
-    }
 
 }
