@@ -16,7 +16,6 @@ interface PostRepository: JpaRepository<PostEntities, String> {
     //Create, Update
     fun save(postEntities: PostEntities): Unit
 
-
     //Read
     fun findByPostNo(postNo: Int?): PostEntities?
 

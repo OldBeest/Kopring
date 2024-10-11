@@ -2,6 +2,7 @@ package com.example.kopring.board.controller
 
 import com.example.kopring.board.dto.BoardDto
 import com.example.kopring.board.dto.PostDto
+import com.example.kopring.board.dto.ReplyDto
 import com.example.kopring.board.service.PostService
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
@@ -28,6 +29,8 @@ class PostController(private var boardDto: BoardDto, private var postService: Po
     @GetMapping("/post/{post_id}")
     fun getPost(@PathVariable post_id: Int): PostDto? {
         var post: PostDto? = postService.getPost(post_id)
+        var replylist: List<ReplyDto>? = postService.getReplyList(post_id)
+        post?.replylist = replylist
         return post ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not found")
     }
 

@@ -15,7 +15,8 @@ data class PostDto(
    var postHit: Int? = null,
    var postRegDate: Timestamp? = null,
    var postFile: String? = null,
-   var isNotice: Int? = 0)
+   var isNotice: Int? = 0,
+   var replylist: List<ReplyDto>? = listOf(),)
 {
     fun toEntity(postDto: PostDto): PostEntities {
         return PostEntities().apply {

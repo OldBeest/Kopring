@@ -4,7 +4,14 @@ import axios from "axios";
 import postStyles from '../styles/post.module.css'
 import { Link } from "react-router-dom";
 
-
+interface ReplyDto{
+    postNo: number;
+    id: string;
+    replyDate: any;
+    replyContent: string;
+    replyOrder: number;
+    
+}
 
 const getLastPostNum = async () =>{
     const response = await axios.get('/board')
@@ -102,6 +109,42 @@ function Post(){
                     <Link to={!post? "/board/create": "/board/update"} onClick={!post? writePost: updatePost}><div className={postStyles.postMenuBox}>{!post? "작성" : "수정"}</div></Link>
                     <Link to="/board/delete"><div className={postStyles.postMenuBox} onClick={deletePost}>삭제</div></Link>
                     <Link to="/board"><div className={postStyles.postMenuBox}>취소</div></Link>
+                </div>
+                <div className="replyWrapper">
+                    <div>
+                        <ul>
+                            <li>작성자</li>
+                            <li>작성일</li>
+                        </ul>
+                    </div>
+                    <div className="replyMiddle">
+                        <textarea>댓글 내용을 작성하세요</textarea>
+                    </div>
+                    <div className="replyBottom">
+                        <ul className={postStyles.replyWritable}>
+                            <li><button>작성</button></li>
+                            <li><button>취소</button></li>
+                        </ul>
+                    </div>  
+                    {post ? (post.replylist.map((item: ReplyDto) => (<div>
+                        <div className="replyTop" key={item.postNo}>
+                            <ul>
+                                <li>{item.id}</li>
+                                <li>{item.replyDate}</li>
+                            </ul>
+                        </div>
+                        <div className="replyMiddle">
+                            {item.replyContent}
+                        </div>
+                        <div className="replyBottom">
+                            {item.id == "test1" ? (<ul className={postStyles.replyWritable}>
+                                <li>수정</li>
+                                <li>삭제</li>
+                            </ul>) : (<ul className={postStyles.replyWritable}>
+                            </ul>)}
+                        </div>
+                    </div>)))
+                    : <div>댓글 로딩중...</div>}
                 </div>
             </div>
          
