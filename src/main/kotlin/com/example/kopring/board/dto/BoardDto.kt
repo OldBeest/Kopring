@@ -1,8 +1,8 @@
 package com.example.kopring.board.dto
 
-import com.example.kopring.board.repository.NoticeEntities
+import com.example.kopring.board.entity.NoticeEntities
 import com.example.kopring.board.service.PostService
-import com.example.kopring.facility.repository.PostEntities
+import com.example.kopring.board.entity.PostEntities
 import org.springframework.stereotype.Component
 
 @Component

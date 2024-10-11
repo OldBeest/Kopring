@@ -6,38 +6,38 @@ import '../styles/header.css'
 function Header() {
     const [isHovering, setIsHovering] = useState(false);
     const [auth, setAuth] = useState(false)
+    const [isLogin, setIsLogin] = useState(false)
 
     useEffect(() => {
         
         const check_auth = async () => {
-            try{
-                const response = await axios.post("/auth/check_token", null, {
-                    headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
-                    withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
-                  })
-                  console.log("response :", response.data)
-                if(response.data !== false){
-                    setAuth(response.data);
-                }else{
-                    const refresh_response = await axios.post("/auth/refresh_token", null, {
+                try{
+                    const response = await axios.post("/auth/check_token", null, {
                         headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
-                        withCredentials: true, 
+                        withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
                       })
-                      console.log(refresh_response)
-                    setAuth(refresh_response.data)
+                      console.log("from access response :", response)
+                    if(response.data != false){
+                        console.log("access success!")
+                        setAuth(true);
+                    }else{
+                        const refresh_response = await axios.post("/auth/refresh_token", null, {
+                            headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
+                            withCredentials: true, 
+                          })
+                          localStorage.setItem("access-token", refresh_response.data.accessToken)
+                          console.log("from refresh response :",refresh_response)
+                    }
+                }catch(error){
+                    console.log(error);
                 }
-            }catch(error){
-                console.log(error);
-            }
         }
 
         const process = async () =>{
             await check_auth();
-            console.log("auth status:", auth)
         }
-
         process();
-    }, [])
+    }, [auth])
 
     const mouseOver = () => {
         setIsHovering(true);
@@ -45,11 +45,16 @@ function Header() {
     const mouseOut = () => {
         setIsHovering(false)
     }
-    const logOut = () => {
+    const logOut = async() => {
         if(window.confirm("로그아웃 하시겠습니까?")){
+            const response = await axios.post("/auth/logout", null, {
+                headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
+                withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+              })
+            console.log("logout :", response)
             localStorage.setItem("access-token", "")
             document.cookie = ""
-            return false
+            setAuth(false)
         }
     }
     
@@ -84,7 +89,7 @@ function Header() {
                         </li>
                     </a>
                     <a href="/signup"><li style={{color: "black"}}>회원가입</li></a>
-                    {auth === false ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/" onClick={logOut}><li style={{color: "black"}}>로그아웃</li></a> }                      
+                    {!auth ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/" onClick={logOut}><li style={{color: "black"}}>로그아웃</li></a> }                      
                 </ul>
             </div>        
         </div>

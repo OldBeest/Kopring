@@ -1,4 +1,4 @@
-package com.example.kopring.web.repository
+package com.example.kopring.web.entity
 
 import jakarta.persistence.*
 

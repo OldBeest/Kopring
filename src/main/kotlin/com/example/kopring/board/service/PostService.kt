@@ -1,10 +1,10 @@
 package com.example.kopring.board.service
 
 import com.example.kopring.board.dto.PostDto
-import com.example.kopring.board.repository.NoticeEntities
+import com.example.kopring.board.entity.NoticeEntities
 import com.example.kopring.board.repository.NoticeRepository
 import com.example.kopring.board.repository.PostRepository
-import com.example.kopring.facility.repository.PostEntities
+import com.example.kopring.board.entity.PostEntities
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

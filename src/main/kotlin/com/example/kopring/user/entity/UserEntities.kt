@@ -1,4 +1,4 @@
-package com.example.kopring.user.repository
+package com.example.kopring.user.entity
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.*

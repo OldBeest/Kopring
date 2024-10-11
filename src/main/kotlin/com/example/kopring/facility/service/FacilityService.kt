@@ -1,8 +1,7 @@
 package com.example.kopring.facility.service
 
-import com.example.kopring.facility.repository.FacilityEntities
+import com.example.kopring.facility.entity.FacilityEntities
 import com.example.kopring.facility.repository.FacilityRepository
-import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Service
 
 @Service

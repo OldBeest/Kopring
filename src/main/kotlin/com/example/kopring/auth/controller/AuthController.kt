@@ -52,5 +52,17 @@ class AuthController(
 
     }
 
+    @PostMapping("/logout")
+    fun logout(@RequestHeader headers: HttpHeaders, response: HttpServletResponse): Unit{
+        val token: String = headers["Cookie"].toString().substringAfter("refreshToken=")
+        authService.blacklist_token(token)
+
+        val cookie: Cookie = Cookie("refreshToken", null).apply{
+            maxAge = 0
+            path = "/"
+        }
+        response.addCookie(cookie)
+    }
+
 
 }

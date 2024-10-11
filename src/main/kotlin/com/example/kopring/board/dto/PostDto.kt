@@ -1,6 +1,6 @@
 package com.example.kopring.board.dto
 
-import com.example.kopring.facility.repository.PostEntities
+import com.example.kopring.board.entity.PostEntities
 
 import java.sql.Timestamp
 
@@ -17,7 +17,7 @@ data class PostDto(
    var postFile: String? = null,
    var isNotice: Int? = 0)
 {
-    fun toEntity(postDto: PostDto): PostEntities{
+    fun toEntity(postDto: PostDto): PostEntities {
         return PostEntities().apply {
             postNo = postDto.postNo //this@PostDto.postNo도 가능
             id = postDto.id

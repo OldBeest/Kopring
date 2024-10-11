@@ -1,9 +1,8 @@
 package com.example.kopring.board.repository
 
-import com.example.kopring.facility.repository.PostEntities
+import com.example.kopring.board.entity.NoticeEntities
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.CrudRepository
 
 interface NoticeRepository: JpaRepository<NoticeEntities, Long> {
 

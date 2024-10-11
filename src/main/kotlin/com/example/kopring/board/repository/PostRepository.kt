@@ -1,12 +1,8 @@
 package com.example.kopring.board.repository
 
-import com.example.kopring.board.dto.PostDto
-import com.example.kopring.facility.repository.PostEntities
-import org.springframework.data.domain.Pageable
+import com.example.kopring.board.entity.PostEntities
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.CrudRepository
-import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 
 @Repository

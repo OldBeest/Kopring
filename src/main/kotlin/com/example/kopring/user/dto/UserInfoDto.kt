@@ -1,8 +1,6 @@
 package com.example.kopring.user.dto
 
-import com.example.kopring.board.dto.PostDto
-import com.example.kopring.facility.repository.PostEntities
-import com.example.kopring.user.repository.UserEntities
+import com.example.kopring.user.entity.UserEntities
 
 data class UserInfoDto (
     val id : String? = null,

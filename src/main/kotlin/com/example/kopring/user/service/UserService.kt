@@ -1,15 +1,11 @@
 package com.example.kopring.user.service
 
-import com.example.kopring.facility.repository.FacilityEntities
 import com.example.kopring.user.dto.UserInfoDto
-import com.example.kopring.user.repository.UserEntities
+import com.example.kopring.user.entity.UserEntities
 import com.example.kopring.user.repository.UserRepository
 import org.json.simple.JSONObject
-import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Service
 class UserService(var userRepository: UserRepository) {
