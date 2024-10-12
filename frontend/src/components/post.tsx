@@ -7,9 +7,11 @@ import { Link } from "react-router-dom";
 interface ReplyDto{
     postNo: number;
     id: string;
-    replyDate: any;
+    replyRegDate: any;
     replyContent: string;
     replyOrder: number;
+    replyId: number;
+    replyLike: number;
     
 }
 
@@ -22,6 +24,7 @@ const getLastPostNum = async () =>{
 
 function Post(){
     const [post, setPost] = useState<any | null>(null);
+    const [replys, setReplys] = useState<ReplyDto>();
     const titleRef = useRef<HTMLInputElement | null>(null);
     const contentRef = useRef<HTMLTextAreaElement | null>(null);
     useEffect(()=>{
@@ -35,13 +38,14 @@ function Post(){
                 const post_id = url.get("post_id")
                 const response = await axios.get('/post/' + post_id)
                 setPost(response.data)
+                setReplys(response.data.replyList)
             }
         }catch(error){
             console.log(error)
         }
     }
     getPost();    
-    }, []);
+    }, [replys]);
 
     const checkData = async () => {
         const title = titleRef.current?.value;
@@ -66,17 +70,20 @@ function Post(){
     }
 
     async function writePost(){
-        alert("작성하시겠습니까?")
+        alert("작성하시겠습니까 ?")
         await checkData()
         window.location.href = "/board"
     }
     
     function updatePost(){
-        alert("수정하시겠습니까?")
+        alert("수정하시겠습니까 ?")
     }
     
-    function deletePost(){
-        if(window.confirm("삭제하시겠습니까?")){
+    async function deletePost(){
+        if(window.confirm("삭제하시겠습니까 ?")){
+            let urlParams = new URLSearchParams(window.location.search)
+            let postNo = urlParams.get("post_id")
+            await axios.delete('/post', {params: {postNo: postNo}})  
             alert("삭제되었습니다.")
             window.location.href = "/board"
         }else{
@@ -85,12 +92,47 @@ function Post(){
         }
     }
 
+    const writeReply = async() => {
+        //alert("작성하시겠습니까 ?")
+        let urlParams = new URLSearchParams(window.location.search)
+        let postNo = parseInt(urlParams.get("post_id") as string)
+        let replyDto: ReplyDto = {
+            
+            postNo: postNo,
+            id: "testID",
+            replyRegDate: Date.now(),
+            replyContent: "내용테스트5",
+            replyOrder: 3,
+            replyId: 5,
+            replyLike: 0
+
+        }
+        console.log(replyDto)
+        await axios.post("/post/reply", replyDto)
+    }
+
+    const modifyReply = () => {
+        alert("수정하시겠습니까 ?")
+    }
+    
+    const cancelReply = () => {
+        alert("취소하시겠습니까 ?")
+    }
+
+    const deleteReply = () => {
+        alert("삭제하시겠습니까 ?")
+    }
+
+    const recommendReply = () => {
+        alert("댓글을 추천하시겠습니까 ?")
+    }
+
     return(
         <div>
             <h1>질문게시판</h1>
                 {!post ? (<div className={postStyles.postWrapper}><div className={postStyles.postId}>작성자 : 없음</div>
                 <div className={postStyles.postTitle}>제목<input type="text" placeholder="제목을 입력하세요" ref={titleRef}></input></div>
-                <div className={postStyles.postContent}>내용<textarea placeholder="내용을 입력하세요" ref={contentRef}></textarea></div>
+                <div className={postStyles.postContent}><textarea placeholder="내용을 입력하세요" ref={contentRef}></textarea></div>
                 <div className={postStyles.attachList}>
                     <div style={{display: "flex"}}>
                         <div>첨부 :</div>
@@ -107,44 +149,50 @@ function Post(){
                 </div></div>)}
                 <div className={postStyles.postMenu}>
                     <Link to={!post? "/board/create": "/board/update"} onClick={!post? writePost: updatePost}><div className={postStyles.postMenuBox}>{!post? "작성" : "수정"}</div></Link>
-                    <Link to="/board/delete"><div className={postStyles.postMenuBox} onClick={deletePost}>삭제</div></Link>
+                    <Link to="/board"><div className={postStyles.postMenuBox} onClick={deletePost}>삭제</div></Link>
                     <Link to="/board"><div className={postStyles.postMenuBox}>취소</div></Link>
                 </div>
-                <div className="replyWrapper">
-                    <div>
+                <div className={postStyles.replyWrapper}>
+                    <div className={postStyles.replyBox}>
+                    <div className={postStyles.replyTop}>
                         <ul>
-                            <li>작성자</li>
-                            <li>작성일</li>
+                            <li>test1</li>
+                            <li>{Date.now()}</li>
                         </ul>
                     </div>
-                    <div className="replyMiddle">
-                        <textarea>댓글 내용을 작성하세요</textarea>
+                    <div className={postStyles.replyMiddle}>
+                        <textarea className={postStyles.replyWrite} placeholder="댓글 내용을 작성하세요."></textarea>
                     </div>
-                    <div className="replyBottom">
+                    <div className={postStyles.replyBottom}>
                         <ul className={postStyles.replyWritable}>
-                            <li><button>작성</button></li>
-                            <li><button>취소</button></li>
+                            <li className={postStyles.replyMenu} onClick={writeReply}>작성</li>
+                            <li className={postStyles.replyMenu} onClick={cancelReply}>취소</li>
                         </ul>
-                    </div>  
-                    {post ? (post.replylist.map((item: ReplyDto) => (<div>
-                        <div className="replyTop" key={item.postNo}>
+                    </div> 
+                    </div>                  
+                    {post ? (post.replylist.map((item: ReplyDto) => (<div className={postStyles.replyBox}>
+                        <div className={postStyles.replyTop} key={item.postNo}>
                             <ul>
                                 <li>{item.id}</li>
-                                <li>{item.replyDate}</li>
+                                <li>{item.replyRegDate}</li>
+                                <li>👍 {item.replyLike}</li>
                             </ul>
                         </div>
-                        <div className="replyMiddle">
+                        <div className={postStyles.replyMiddle}>
                             {item.replyContent}
                         </div>
-                        <div className="replyBottom">
-                            {item.id == "test1" ? (<ul className={postStyles.replyWritable}>
-                                <li>수정</li>
-                                <li>삭제</li>
-                            </ul>) : (<ul className={postStyles.replyWritable}>
+                        <div className={postStyles.replyBottom}>
+                            {item.id === "testID" ? (<ul className={postStyles.replyWritable}>
+                                <li className={postStyles.replyMenu} onClick={modifyReply}>수정</li>
+                                <li className={postStyles.replyMenu} onClick={cancelReply}>취소</li>
+                                <li className={postStyles.replyMenu} onClick={deleteReply}>삭제</li>
+                            </ul>) : (<ul className={postStyles.replyNonWritable}>
+                                <li className={postStyles.replyMenu} onClick={recommendReply}>👍 추천하기</li>
                             </ul>)}
                         </div>
                     </div>)))
                     : <div>댓글 로딩중...</div>}
+                    <div className={postStyles.replyMore}> 댓글 더보기</div>
                 </div>
             </div>
          

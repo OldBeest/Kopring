@@ -95,7 +95,7 @@ function Board() {
                         <div className={boardStyles.contentBoard}>
                         {currentPosts.map((item) => (<ul className={boardStyles.list} key={item.postNo}>
                             <li style={{width: "5%"}}>{item.postNo}</li>
-                            <li style={{width: "40%"}}><Link to={"/post?post_id=" + item.postNo}>{item.postTitle}</Link></li>
+                            <li style={{width: "40%"}}><Link to={"/post?post_id=" + item.postNo}>{item.postTitle} [{"댓글 개수"}]</Link></li>
                             <li style={{width: "10%"}}>{item.id}</li>
                             <li style={{width: "15%"}}>{item.postRegDate}</li>
                             <li style={{width: "5%"}}>{item.postHit}</li>

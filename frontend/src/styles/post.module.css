@@ -1,44 +1,53 @@
 /* post.module.css */
 
+/* 게시글 부분*/
 .postWrapper{
     margin: 0 auto;
     width: 120vh;
-    height: 40vh;
+    border: 3px solid black;
 }
+
 .postId{
     font-size: 20px;
     font-weight: 700;
     text-align: left;
     height: 10%;
-    background-color: red;
+    box-sizing: border-box;
+    border-bottom: 3px solid black;
 }
+
 .postTitle{
     font-size: 20px;
     font-weight: 700;
     text-align: left;
     height: 10%;
-    background-color: orange;
+    box-sizing: border-box;
+    border-bottom: 3px solid black;
 }
+
 .postContent{
     flex-direction: column;
     font-size: 15px;
     text-align: justify;
-    height: 70%;
-    background-color: yellow;
+    height: 20vh;
+    box-sizing: border-box;
+    border-bottom: 3px solid black;
 }
+
 textarea{
     margin: 1vh;
     width: 90%;
     height: 90%;
     resize: none;
 }
+
 .attachList{
     font-size: 20px;
     font-weight: 700;
-    height: 10%;
     background-color: green;
     color: white
 }
+
 .postMenu{
     margin: 0 auto;
     width: 118vh;
@@ -48,6 +57,7 @@ textarea{
     height: 20%;
     color: white
 }
+
 .postMenuBox{
     margin: 1.5vh;
     margin-right: 5px;
@@ -57,4 +67,65 @@ textarea{
     height: 5vh;
     line-height: 5vh;
     border: 2px solid black;
+}
+/* 댓글 부분*/
+.replyBox{
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 80vh;
+    border: 3px solid black;
+}
+
+.replyTop{
+    text-align: center;
+    border-bottom: 2px solid black;
+}
+
+.replyMiddle{
+    display: flex;
+    height: 10vh;
+    text-align: justify;
+    border-bottom: 2px solid black;
+}
+
+.replyMiddle > textarea{
+    margin: 0 auto;
+    margin-top: 2px;
+    padding: 0;
+    width: 98%;
+    border: 2px solid black;
+}
+
+.replyBottom{
+    padding: 0;
+}
+
+.replyBottom > ul{
+    margin: 0;
+    padding: 0;
+}
+
+.replyMenu{
+    padding: 5px 15px;
+    border: 3px solid black;
+    background-color: white;
+    color: black;
+}
+
+.replyMenu:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.replyMore{
+    margin: 0 auto;
+    padding: 5px 20px;
+    font-size: 20px;
+    font-weight: 700;
+    width: 10vh;
+    background-color: black;
+    border: 3px solid black;
+    background-color: white;
+    color: black;
 }

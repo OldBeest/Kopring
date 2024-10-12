@@ -27,6 +27,8 @@ class AuthService(
             token?.tokenType = "Bearer"
             token?.issuedAt = LocalDateTime.now().toString()
 
+            println("access : ${token?.accessToken}")
+            println("refresh : ${token?.refreshToken}")
             return token
         }
         return null

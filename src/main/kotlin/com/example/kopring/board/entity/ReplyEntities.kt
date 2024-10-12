@@ -21,12 +21,15 @@ class ReplyEntities {
     var id: String? = null
 
     @Column(name = "reply_reg_date" )
-    var replyDate: Timestamp? = null
+    var replyRegDate: Timestamp? = null
 
     @Column(name = "reply_content")
     var replyContent: String? = null
 
     @Column(name = "reply_order")
     var replyOrder: Int? = null
+
+    @Column(name = "reply_like")
+    var replyLike: Int? = null
 
 }

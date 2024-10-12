@@ -5,6 +5,7 @@ import com.example.kopring.board.dto.PostDto
 import com.example.kopring.board.dto.ReplyDto
 import com.example.kopring.board.service.PostService
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,6 +23,7 @@ class PostController(private var boardDto: BoardDto, private var postService: Po
     @ResponseBody
     @GetMapping("/board")
     fun boardList(): BoardDto {
+        boardDto.refreshData()
         return boardDto
     }
 
@@ -45,12 +47,33 @@ class PostController(private var boardDto: BoardDto, private var postService: Po
     @PatchMapping("/post")
     fun updatePost(@RequestBody postDto: PostDto): String {
         postService.updatePost(postDto)
-        return "rediriect:/board"
+        return "rediriect:/post"
     }
 
     @DeleteMapping("/post")
-    fun deletePost(@RequestParam postNo: Int): String {
+    fun deletePost(@RequestParam postNo: Int): ResponseEntity<Void> {
         postService.deletePost(postNo)
-        return "rediriect:/board"
+        return ResponseEntity.noContent().build()
+    }
+
+    @ResponseBody
+    @PostMapping("/post/reply")
+    fun createReply(@RequestBody replyDto: ReplyDto): String {
+        println(replyDto)
+        postService.createReply(replyDto)
+        return "rediriect:/post"
+    }
+
+    @ResponseBody
+    @PatchMapping("/post/reply")
+    fun updateReply(@RequestBody replyDto: ReplyDto): String {
+        postService.updateReply(replyDto)
+        return "rediriect:/post"
+    }
+
+    @DeleteMapping("/post/reply")
+    fun deleteReply(@RequestParam replyId: Int): String {
+        postService.deleteReply(replyId)
+        return "rediriect:/post"
     }
 }

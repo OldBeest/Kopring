@@ -20,7 +20,8 @@ class PostService(
     // 공지사항 부분
     fun getNoticeList(): List<NoticeEntities> = noticeRepository.getNoticeList()
 
-    fun getList(): List<PostEntities> = postRepository.getList()
+    fun getList(): List<PostEntities> = postRepository.findAllByOrderByPostNoDescPostGroupDescPostStepAsc()
+
 
     fun getPost(postNo: Int?): PostDto?{
         return postRepository.findByPostNo(postNo)?.let { PostDto.fromEntity(it) }
@@ -41,6 +42,18 @@ class PostService(
 
     fun getReplyList(postNo: Int): List<ReplyDto>?{
         return replyRepository.findAllByPostNoOrderByReplyOrderDesc(postNo)?.map{ReplyDto.fromEntity(it)}
+    }
+
+    fun createReply(replyDto: ReplyDto): Unit{
+        replyRepository.save(replyDto.toEntity(replyDto))
+    }
+
+    fun updateReply(replyDto: ReplyDto): Unit{
+        replyRepository.save(replyDto.toEntity(replyDto))
+    }
+    @Transactional
+    fun deleteReply(replyId: Int): Unit{
+        replyRepository.deleteByReplyId(replyId)
     }
 
 }

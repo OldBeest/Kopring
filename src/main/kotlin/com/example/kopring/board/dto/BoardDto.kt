@@ -7,6 +7,15 @@ import org.springframework.stereotype.Component
 
 @Component
 data class BoardDto(private val postService: PostService) {
-    var noticeDto: List<NoticeEntities> = postService.getNoticeList()
-    var postDto: List<PostEntities> = postService.getList()
+    var noticeDto: List<NoticeEntities> = emptyList()
+    var postDto: List<PostEntities> = emptyList()
+
+    init {
+        refreshData()
+    }
+
+    final fun refreshData() {
+        noticeDto = postService.getNoticeList()
+        postDto = postService.getList()
+    }
 }

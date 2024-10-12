@@ -13,8 +13,8 @@ const submit = (idValue: string, pwValue: string) => {
         try{
             console.log(userInfo)
             const response = await axios.post("/auth/get_token", null, {params: userInfo})
-            const accessToken = response
-            if(accessToken){          
+            const accessToken = response            
+            if(accessToken.data != ""){          
                 localStorage.setItem("access-token", accessToken.data["accessToken"])
                 alert("로그인에 성공했습니다.")
                 window.location.href = "/"

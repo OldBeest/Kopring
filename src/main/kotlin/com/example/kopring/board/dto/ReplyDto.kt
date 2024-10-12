@@ -7,17 +7,21 @@ import java.sql.Timestamp
 data class ReplyDto(
     var postNo: Int? = null,
     var id: String? = null,
+    var replyRegDate: Timestamp? = null,
     var replyContent: String? = null,
-    var replyDate: Timestamp? = null,
-    var replyOrder: Int? = null)
+    var replyOrder: Int? = null,
+    var replyId: Int? = null,
+    var replyLike: Int? = null)
 {
     fun toEntity(replyDto: ReplyDto): ReplyEntities {
         return ReplyEntities().apply {
            postNo = replyDto.postNo
             id = replyDto.id
             replyContent = replyDto.replyContent
-            replyDate = replyDto.replyDate
+            replyRegDate = replyDto.replyRegDate
             replyOrder = replyDto.replyOrder
+            replyId = replyDto.replyId
+            replyLike = replyDto.replyLike
         }
     }
 
@@ -27,8 +31,10 @@ data class ReplyDto(
                 postNo = entities.postNo,
                 id = entities.id,
                 replyContent = entities.replyContent,
-                replyDate = entities.replyDate,
-                replyOrder = entities.replyOrder
+                replyRegDate = entities.replyRegDate,
+                replyOrder = entities.replyOrder,
+                replyId = entities.replyId,
+                replyLike = entities.replyLike
             )
         }
     }

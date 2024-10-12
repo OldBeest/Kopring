@@ -77,6 +77,9 @@ function Main(){
                     </Map> 
                     </div>
                 </div>
+                <div>
+                    
+                </div>
                 <div className="recommend">
                     <div>지도 기반 시설</div>
                     <div>
@@ -97,6 +100,10 @@ function Main(){
                         </div>
                          : <div>데이터 로딩중...</div>}
                     </div>
+                </div>
+                <div className="favorite">
+                    <div>⭐나의 즐겨찾기⭐</div>
+                    <div>즐겨찾기 목록</div>
                 </div>
             </div>
         </div>
