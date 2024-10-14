@@ -71,7 +71,7 @@ function Header() {
                         </ul>
                     </li>
                     <li>시설검색</li>
-                    <a href="/boardTwo"><li>정보(board2)</li></a>
+                    <a href="/"><li>정보</li></a>
                 </ul>
             </div>
             <div className="center-nav">

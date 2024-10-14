@@ -10,6 +10,7 @@ interface PostDto{
     id: string;
     postRegDate: string;
     postHit: number;
+    replyCount: number;
 }
 
 interface NoticeDto{
@@ -41,7 +42,8 @@ function Board() {
 
             setPostList(data)
             setCounts(data.postDto.length)
-            setPages(Math.ceil(data.postDto.length / postsPerPage))      
+            setPages(Math.ceil(data.postDto.length / postsPerPage))
+            console.log(data)      
         }   
         
         fetchBoard();
@@ -69,8 +71,7 @@ function Board() {
 
     return (
         <div>
-            <h1>질문게시판(페이지네이션1)</h1>
-            <h1>전체 테이블을 가져온 후 페이지네이션 진행</h1>   
+            <h1>질문게시판</h1>
             <div className={boardStyles.boardWrapper}>
                 <div>
                     <div className={boardStyles.boardTop}>
@@ -95,7 +96,7 @@ function Board() {
                         <div className={boardStyles.contentBoard}>
                         {currentPosts.map((item) => (<ul className={boardStyles.list} key={item.postNo}>
                             <li style={{width: "5%"}}>{item.postNo}</li>
-                            <li style={{width: "40%"}}><Link to={"/post?post_id=" + item.postNo}>{item.postTitle} [{"댓글 개수"}]</Link></li>
+                            <li style={{width: "40%"}}><Link to={"/post?post_id=" + item.postNo}>{item.postTitle} {item.replyCount != 0 ? `[${item.replyCount}]` : ""}</Link></li>
                             <li style={{width: "10%"}}>{item.id}</li>
                             <li style={{width: "15%"}}>{item.postRegDate}</li>
                             <li style={{width: "5%"}}>{item.postHit}</li>
@@ -130,12 +131,14 @@ function Board() {
                         </div>
                         <div>
                             <div>
-                                <li onClick={goFirst}>처음</li>
-                                <li onClick={goPrevious}>이전</li>
-                                {[...Array(pages)].map((_, index) => (<li key={index + 1} onClick={() => {goPage(index + 1)}}><span className={currentPage === index + 1? boardStyles.active: ''}>{index + 1}</span></li>))}         
-                                <li onClick={goNext}>다음</li>
-                                <li onClick={goLast}>마지막</li>
-                                <li></li>
+                                <ul>
+                                    <li className={boardStyles.pagingBox} onClick={goFirst}>처음</li>
+                                    <li className={boardStyles.pagingBox} onClick={goPrevious}>이전</li>
+                                    {[...Array(pages)].map((_, index) => (<li key={index + 1} className={boardStyles.pagingBox} onClick={() => {goPage(index + 1)}}><span className={currentPage === index + 1? boardStyles.active: ''}>{index + 1}</span></li>))}         
+                                    <li className={boardStyles.pagingBox} onClick={goNext}>다음</li>
+                                    <li className={boardStyles.pagingBox} onClick={goLast}>마지막</li>
+                                    <li></li>
+                                </ul>
                             </div>
                         </div>
                     </div> 

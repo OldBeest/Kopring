@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PostRepository: JpaRepository<PostEntities, String> {
 
-    fun findAllByOrderByPostNoDescPostGroupDescPostStepAsc(): MutableList<PostEntities>
+    fun findAllByOrderByPostNoDescPostGroupDescPostStepAsc(): List<PostEntities>
 
     //Create, Update
     fun save(postEntities: PostEntities): Unit

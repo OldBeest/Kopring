@@ -22,6 +22,7 @@ class PostService(
 
     fun getList(): List<PostEntities> = postRepository.findAllByOrderByPostNoDescPostGroupDescPostStepAsc()
 
+    fun countByPostNo(postNo: Int): Int = replyRepository.countByPostNo(postNo)
 
     fun getPost(postNo: Int?): PostDto?{
         return postRepository.findByPostNo(postNo)?.let { PostDto.fromEntity(it) }

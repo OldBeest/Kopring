@@ -1,6 +1,8 @@
 package com.example.kopring.board.dto
 
 import com.example.kopring.board.entity.PostEntities
+import com.example.kopring.board.entity.ReplyEntities
+import com.example.kopring.board.repository.ReplyRepository
 
 import java.sql.Timestamp
 
@@ -15,8 +17,10 @@ data class PostDto(
    var postHit: Int? = null,
    var postRegDate: Timestamp? = null,
    var postFile: String? = null,
-   var isNotice: Int? = 0,
-   var replylist: List<ReplyDto>? = listOf(),)
+   var isNotice: Int? = null,
+   var replyCount: Int? = null,
+   var replyList: List<ReplyDto>? = null,
+    )
 {
     fun toEntity(postDto: PostDto): PostEntities {
         return PostEntities().apply {
@@ -31,12 +35,12 @@ data class PostDto(
             postRegDate = postDto.postRegDate
             postFile = postDto.postFile
             isNotice = postDto.isNotice
-
         }
     }
 
     companion object {
         fun fromEntity(entities: PostEntities): PostDto{
+
             return PostDto(
                 postNo = entities.postNo,
                 id = entities.id,
@@ -48,8 +52,9 @@ data class PostDto(
                 postHit = entities.postHit,
                 postRegDate = entities.postRegDate,
                 postFile = entities.postFile,
-                isNotice = entities.isNotice
+                isNotice = entities.isNotice,
             )
+
         }
     }
 

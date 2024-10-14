@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.server.ResponseStatusException
 
 @Controller
-class PostController(private var boardDto: BoardDto, private var postService: PostService) {
+class PostController(private var postService: PostService) {
 
     @ResponseBody
     @GetMapping("/board")
     fun boardList(): BoardDto {
-        boardDto.refreshData()
+        val boardDto = BoardDto(postService)
         return boardDto
     }
 
@@ -32,7 +32,8 @@ class PostController(private var boardDto: BoardDto, private var postService: Po
     fun getPost(@PathVariable post_id: Int): PostDto? {
         var post: PostDto? = postService.getPost(post_id)
         var replylist: List<ReplyDto>? = postService.getReplyList(post_id)
-        post?.replylist = replylist
+
+        post?.replyList = replylist
         return post ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not found")
     }
 

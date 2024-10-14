@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ReplyRepository: JpaRepository<ReplyEntities, Int> {
 
-    fun findAllByPostNoOrderByReplyOrderDesc(postId: Int): List<ReplyEntities>?
+    fun findAllByPostNoOrderByReplyOrderDesc(postId: Int?): List<ReplyEntities>?
+
+    fun countByPostNo(postId: Int?): Int
 
     fun save(replyEntities: ReplyEntities): Unit
 

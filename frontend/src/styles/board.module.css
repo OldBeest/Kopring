@@ -24,3 +24,11 @@
 .non-active{
     color: white;
 }
+.pagingBox{
+    
+}
+.pagingBox:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}

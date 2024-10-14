@@ -5,6 +5,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import jakarta.persistence.Transient
 import java.sql.Timestamp
 
 @Entity
@@ -44,5 +45,4 @@ class PostEntities {
 
     @Column(name = "is_notice")
     var isNotice: Int? = null
-
 }

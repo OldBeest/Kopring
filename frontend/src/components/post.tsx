@@ -24,7 +24,7 @@ const getLastPostNum = async () =>{
 
 function Post(){
     const [post, setPost] = useState<any | null>(null);
-    const [replys, setReplys] = useState<ReplyDto>();
+    const [replys, setReplys] = useState<ReplyDto[]>();
     const titleRef = useRef<HTMLInputElement | null>(null);
     const contentRef = useRef<HTMLTextAreaElement | null>(null);
     useEffect(()=>{
@@ -38,22 +38,26 @@ function Post(){
                 const post_id = url.get("post_id")
                 const response = await axios.get('/post/' + post_id)
                 setPost(response.data)
+                console.log(response.data.replyList)
                 setReplys(response.data.replyList)
             }
         }catch(error){
             console.log(error)
         }
+        
     }
-    getPost();    
-    }, [replys]);
+    getPost();
+
+       
+    }, []);
 
     const checkData = async () => {
         const title = titleRef.current?.value;
         const content = contentRef.current?.value;
 
         if (!title || !content) {
-            alert("제목과 내용을 입력해주세요.");
-            return;
+            alert("제목과 내용을 모두 입력해주세요.");
+            
         }
 
         let lastPostId = await getLastPostNum();
@@ -61,8 +65,10 @@ function Post(){
         let data = {
             postNo: lastPostId,
             id: "test아이디1",
+            postRegDate: Date.now(),
             postTitle: title,
-            postContent: content
+            postContent: content,
+            postHit: 0
         }; 
         
         await axios.post("/post", data)
@@ -72,7 +78,7 @@ function Post(){
     async function writePost(){
         alert("작성하시겠습니까 ?")
         await checkData()
-        window.location.href = "/board"
+        window.location.href = "/board"        
     }
     
     function updatePost(){
@@ -120,7 +126,7 @@ function Post(){
     }
 
     const deleteReply = () => {
-        alert("삭제하시겠습니까 ?")
+        alert("삭제하시겠습니까 ?")        
     }
 
     const recommendReply = () => {
@@ -170,7 +176,7 @@ function Post(){
                         </ul>
                     </div> 
                     </div>                  
-                    {post ? (post.replylist.map((item: ReplyDto) => (<div className={postStyles.replyBox}>
+                    {post ? (post.replyList.map((item: ReplyDto) => (<div className={postStyles.replyBox}>
                         <div className={postStyles.replyTop} key={item.postNo}>
                             <ul>
                                 <li>{item.id}</li>
