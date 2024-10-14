@@ -30,9 +30,8 @@ class PostController(private var postService: PostService) {
     @ResponseBody
     @GetMapping("/post/{post_id}")
     fun getPost(@PathVariable post_id: Int): PostDto? {
-        var post: PostDto? = postService.getPost(post_id)
-        var replylist: List<ReplyDto>? = postService.getReplyList(post_id)
-
+        val post: PostDto? = postService.getPost(post_id)
+        val replylist: List<ReplyDto>? = postService.getReplyList(post_id)
         post?.replyList = replylist
         return post ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Post not found")
     }
@@ -60,7 +59,7 @@ class PostController(private var postService: PostService) {
     @ResponseBody
     @PostMapping("/post/reply")
     fun createReply(@RequestBody replyDto: ReplyDto): String {
-        println(replyDto)
+        println("댓글정보 : ${replyDto}")
         postService.createReply(replyDto)
         return "rediriect:/post"
     }

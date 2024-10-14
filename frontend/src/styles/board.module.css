@@ -1,16 +1,12 @@
 /* board.module.css */
 
-.boardWrapper{
-}
+
 .boardTop{
     background-color: yellowgreen;
 }
 .noticeBoard{
     background-color: blue;
     color: white;
-}
-.contentBoard{
-
 }
 .boardMenu{
     background-color: bisque;
@@ -23,9 +19,6 @@
 }
 .non-active{
     color: white;
-}
-.pagingBox{
-    
 }
 .pagingBox:hover{
     background-color: black;

@@ -64,5 +64,13 @@ class AuthController(
         response.addCookie(cookie)
     }
 
+    @PostMapping("/get_userid")
+    fun get_userid(@RequestHeader headers: HttpHeaders): String? {
+        val token: String = headers["Authorization"].toString().substringAfter("Bearer ")
+        val userid: String? = authService.get_id_from_token(token)
+        println("userid: $userid")
+        return userid
+    }
+
 
 }

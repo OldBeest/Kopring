@@ -15,31 +15,47 @@ interface ReplyDto{
     
 }
 
-const getLastPostNum = async () =>{
+const getLastPostNum = async () => {
     const response = await axios.get('/board')
     let lastPostNo = response.data.postDto[0].postNo
     return lastPostNo + 1
     
 }
 
+const getLastReplyIdNum = async () => {
+
+}
+
 function Post(){
     const [post, setPost] = useState<any | null>(null);
     const [replys, setReplys] = useState<ReplyDto[]>();
+    const [userId, setUserId] = useState<string>("")
     const titleRef = useRef<HTMLInputElement | null>(null);
     const contentRef = useRef<HTMLTextAreaElement | null>(null);
+    
     useEffect(()=>{
         async function getPost() {
             try{
             const url = new URL(window.location.href).searchParams
             if(url.size === 0){
                 console.log("post :", post)
+                const responseId = await axios.post("/auth/get_userid", null, {
+                    headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
+                    withCredentials: true,
+                  })
+                  setUserId(responseId.data)
+                  console.log("아이디 :", responseId.data)
 
             }else{
                 const post_id = url.get("post_id")
                 const response = await axios.get('/post/' + post_id)
+                const responseId = await axios.post("/auth/get_userid", null, {
+                    headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
+                    withCredentials: true,
+                  })
                 setPost(response.data)
-                console.log(response.data.replyList)
                 setReplys(response.data.replyList)
+                setUserId(responseId.data)
             }
         }catch(error){
             console.log(error)
@@ -61,16 +77,16 @@ function Post(){
         }
 
         let lastPostId = await getLastPostNum();
-        console.log("요청 후 번호 + 1: ", lastPostId)
+        console.log("요청 후 번호 + 1: ", lastPostId)        
         let data = {
             postNo: lastPostId,
-            id: "test아이디1",
+            id: userId ? userId : "null",
             postRegDate: Date.now(),
             postTitle: title,
             postContent: content,
             postHit: 0
         }; 
-        
+        console.log("작성 아이디 :", userId)
         await axios.post("/post", data)
         
     }
@@ -105,16 +121,16 @@ function Post(){
         let replyDto: ReplyDto = {
             
             postNo: postNo,
-            id: "testID",
+            id: userId,
             replyRegDate: Date.now(),
             replyContent: "내용테스트5",
-            replyOrder: 3,
-            replyId: 5,
+            replyOrder: post.replyList.size + 1,
+            replyId: 7,
             replyLike: 0
 
         }
-        console.log(replyDto)
         await axios.post("/post/reply", replyDto)
+        window.location.reload()
     }
 
     const modifyReply = () => {
@@ -136,7 +152,7 @@ function Post(){
     return(
         <div>
             <h1>질문게시판</h1>
-                {!post ? (<div className={postStyles.postWrapper}><div className={postStyles.postId}>작성자 : 없음</div>
+                {!post ? (<div className={postStyles.postWrapper}><div className={postStyles.postId}>작성자 : {userId}</div>
                 <div className={postStyles.postTitle}>제목<input type="text" placeholder="제목을 입력하세요" ref={titleRef}></input></div>
                 <div className={postStyles.postContent}><textarea placeholder="내용을 입력하세요" ref={contentRef}></textarea></div>
                 <div className={postStyles.attachList}>
@@ -162,7 +178,7 @@ function Post(){
                     <div className={postStyles.replyBox}>
                     <div className={postStyles.replyTop}>
                         <ul>
-                            <li>test1</li>
+                            <li>{userId}</li>
                             <li>{Date.now()}</li>
                         </ul>
                     </div>

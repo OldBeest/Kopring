@@ -7,6 +7,7 @@ function Header() {
     const [isHovering, setIsHovering] = useState(false);
     const [auth, setAuth] = useState(false)
     const [isLogin, setIsLogin] = useState(false)
+    const [userId, setUserId] = useState("")
 
     useEffect(() => {
         
@@ -28,6 +29,11 @@ function Header() {
                           localStorage.setItem("access-token", refresh_response.data.accessToken)
                           console.log("from refresh response :",refresh_response)
                     }
+                    const responseId = await axios.post("/auth/get_userid", null, {
+                        headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
+                        withCredentials: true,
+                      })
+                    setUserId(responseId.data)
                 }catch(error){
                     console.log(error);
                 }
@@ -71,14 +77,6 @@ function Header() {
                         </ul>
                     </li>
                     <li>시설검색</li>
-                    <a href="/"><li>정보</li></a>
-                </ul>
-            </div>
-            <div className="center-nav">
-                <a href="/"><h1>홈 이미지</h1></a>
-            </div>
-            <div className="right-nav">
-                <ul>
                     <a href="/board">
                         <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut} style={{color: "black"}}>고객지원(board)
                             <ul className="side-menu">
@@ -88,7 +86,15 @@ function Header() {
                             </ul>
                         </li>
                     </a>
+                </ul>
+            </div>
+            <div className="center-nav">
+                <a href="/"><h1>홈 이미지</h1></a>
+            </div>
+            <div className="right-nav">
+                <ul>
                     <a href="/signup"><li style={{color: "black"}}>회원가입</li></a>
+                    {!userId ? <li></li> : <li style={{color: "black"}}>{userId} 님 환영합니다!</li> }
                     {!auth ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/" onClick={logOut}><li style={{color: "black"}}>로그아웃</li></a> }                      
                 </ul>
             </div>        

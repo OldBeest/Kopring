@@ -27,8 +27,6 @@ class AuthService(
             token?.tokenType = "Bearer"
             token?.issuedAt = LocalDateTime.now().toString()
 
-            println("access : ${token?.accessToken}")
-            println("refresh : ${token?.refreshToken}")
             return token
         }
         return null
@@ -37,21 +35,33 @@ class AuthService(
     //
     fun refresh_token(token: String): JwtToken?{
         if(jwtService.checkRefreshToken(token)){
-            val token: JwtToken = JwtToken(jwtService.getUserIDFromToken(token))
-            token.accessToken = jwtService.generateToken(token.id)
-            token.tokenType = "Bearer"
-            token.issuedAt = LocalDateTime.now().toString()
-            return token
+            val newToken: JwtToken = JwtToken(jwtService.getUserIDFromToken(token))
+            newToken.accessToken = jwtService.generateToken(newToken.id)
+            newToken.tokenType = "Bearer"
+            newToken.issuedAt = LocalDateTime.now().toString()
+            return newToken
         }
         else{
+            println("Token not found")
             return null
         }
     }
 
     fun blacklist_token(token: String){
-        var now = Timestamp.from(Instant.now())
-        var blacklist_token: BlackListTokenEntities = BlackListTokenEntities(token, now)
-        authRepository.save(blacklist_token)
+        val now = Timestamp.from(Instant.now())
+        val blacklistToken = BlackListTokenEntities(token, now)
+        authRepository.save(blacklistToken)
+    }
+
+    fun get_id_from_token(token: String): String?{
+        if(jwtService.checkRefreshToken(token)){
+            val userId: String = jwtService.getUserIDFromToken(token)
+            return userId
+        }
+        else{
+            println("Token not found")
+            return null
+        }
     }
 
 }

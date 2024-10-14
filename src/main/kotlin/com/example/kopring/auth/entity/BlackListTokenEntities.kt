@@ -10,6 +10,7 @@ import java.sql.Timestamp
 @Entity
 @Table(name = "blacklisttokendb")
 class BlackListTokenEntities(
+
     @Id
     @Column(name = "refresh_token")
     var refreshToken: String? = null,

@@ -8,25 +8,16 @@ import org.springframework.stereotype.Component
 @Component
 data class BoardDto(private val postService: PostService) {
     var noticeDto: List<NoticeEntities> = emptyList()
-    var postDto: MutableList<PostDto> = mutableListOf()
+    var postDto: List<PostEntities> = emptyList()
+    var replyCountList: List<ReplyCountDto> = emptyList()
 
     init {
         refreshData()
     }
 
-    final fun refreshData() {
+    private final fun refreshData() {
         noticeDto = postService.getNoticeList()
-
-        val entities: List<PostEntities> = postService.getList()
-
-        for(data in entities){
-            postDto.add(PostDto.fromEntity(data))
-
-        }
-        for(data in postDto){
-            data.replyCount = postService.countByPostNo(data.postNo!!)
-        }
-
-
+        postDto = postService.getList()
+        replyCountList = postService.countRepliesByPostNo()
     }
 }

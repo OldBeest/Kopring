@@ -18,16 +18,21 @@ interface NoticeDto{
     noticeTitle: string;
     noticeRegDate: string;
     noticeHit: number;
+}
 
+interface ReplyCountDto{
+    postNo: number;
+    count: number;
 }
 
 interface PostList{
     noticeDto: NoticeDto[];
     postDto: PostDto[];
+    replyCountList: ReplyCountDto[]
 }
 
 function Board() {
-    const [postList, setPostList] = useState<PostList>({noticeDto: [], postDto: []}); // 게시판 데이터(공지, 일반 게시물)
+    const [postList, setPostList] = useState<PostList>({noticeDto: [], postDto: [], replyCountList: []}); // 게시판 데이터(공지, 일반 게시물)
     const [counts, setCounts] = useState<number>(1); // 일반 게시물 개수
     const [pages, setPages] = useState<number>(0); // 필요한 총 페이지
     const [postsPerPage, setPostsPerPage] = useState<number>(5); //한 페이지당 게시물 개수
@@ -37,13 +42,18 @@ function Board() {
     useEffect(() =>{
 
         const fetchBoard = async() => {
-            const response = await axios.get<PostList>('/board')
-            const data = response.data
+            try{
+                const response = await axios.get<PostList>('/board')
+                const data = response.data
 
-            setPostList(data)
-            setCounts(data.postDto.length)
-            setPages(Math.ceil(data.postDto.length / postsPerPage))
-            console.log(data)      
+                setPostList(data)
+                setCounts(data.postDto.length)
+                setPages(Math.ceil(data.postDto.length / postsPerPage))
+                console.log(data)  
+            } catch(error){
+                console.error("데이터를 가져오는 중 오류 발생", error)
+            }
+                
         }   
         
         fetchBoard();
@@ -52,7 +62,18 @@ function Board() {
     
     const firstPageIdx = (currentPage - 1) * postsPerPage
     const lastPageIdx = firstPageIdx + postsPerPage
+    const replyCounts = postList.replyCountList.slice(firstPageIdx, lastPageIdx)
     const currentPosts = postList.postDto.slice(firstPageIdx, lastPageIdx)
+    
+    const postsWithCounts = currentPosts.map(post => {
+        const replyCount = replyCounts.find(reply => reply.postNo === post.postNo);
+
+        return {
+            ...post,
+            replyCount: replyCount ? replyCount.count : 0
+        };
+    });
+    
 
     // 페이지 이동
     const goPage = (pageNum: number) => {setCurrentPage(pageNum)}
@@ -94,7 +115,7 @@ function Board() {
                         </div> : <div>데이터 로딩중...</div>}
                     {currentPosts.length > 0 ?( 
                         <div className={boardStyles.contentBoard}>
-                        {currentPosts.map((item) => (<ul className={boardStyles.list} key={item.postNo}>
+                        {postsWithCounts.map((item) => (<ul className={boardStyles.list} key={item.postNo}>
                             <li style={{width: "5%"}}>{item.postNo}</li>
                             <li style={{width: "40%"}}><Link to={"/post?post_id=" + item.postNo}>{item.postTitle} {item.replyCount != 0 ? `[${item.replyCount}]` : ""}</Link></li>
                             <li style={{width: "10%"}}>{item.id}</li>

@@ -1,6 +1,7 @@
 package com.example.kopring.board.service
 
 import com.example.kopring.board.dto.PostDto
+import com.example.kopring.board.dto.ReplyCountDto
 import com.example.kopring.board.dto.ReplyDto
 import com.example.kopring.board.entity.NoticeEntities
 import com.example.kopring.board.repository.NoticeRepository
@@ -22,7 +23,16 @@ class PostService(
 
     fun getList(): List<PostEntities> = postRepository.findAllByOrderByPostNoDescPostGroupDescPostStepAsc()
 
-    fun countByPostNo(postNo: Int): Int = replyRepository.countByPostNo(postNo)
+    // 한 게시물에 대해 댓글 개수 가져오기
+    // fun countByPostNo(postNo: Int): Int = replyRepository.countByPostNo(postNo)
+
+    fun countRepliesByPostNo(): List<ReplyCountDto>{
+        var replyCountList: List<Any> = replyRepository.countRepliesByPostNo()
+        var replyCountResult: List<ReplyCountDto> = replyCountList.map{ new ->
+            val (postNo, count) = new as Array<*>
+            ReplyCountDto(postNo as Int, count as Long)}
+        return replyCountResult
+    }
 
     fun getPost(postNo: Int?): PostDto?{
         return postRepository.findByPostNo(postNo)?.let { PostDto.fromEntity(it) }
