@@ -2,11 +2,9 @@ package com.example.kopring.api.controller
 
 import com.example.kopring.api.service.APIService
 import com.example.kopring.user.dto.UserInfoDto
-import com.example.kopring.user.service.UserService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
 @RequestMapping("/api")

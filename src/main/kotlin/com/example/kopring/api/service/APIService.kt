@@ -2,7 +2,6 @@ package com.example.kopring.api.service
 
 import com.example.kopring.user.dto.UserInfoDto
 import com.example.kopring.user.service.UserService
-import org.apache.catalina.User
 import org.springframework.stereotype.Service
 
 @Service

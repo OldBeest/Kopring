@@ -9,44 +9,44 @@ import java.sql.Timestamp
 class UserEntities (
     @Id
     @Column(name = "id")
-    var id: String?,
+    var id: String? = null,
 
     @Column(name = "name")
-    var name: String?,
+    var name: String? = null,
 
     @Column(name = "pw")
-    var pw: String?,
+    var pw: String? = null,
 
     @Column(name = "email")
-    var email: String?,
+    var email: String? = null,
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "birth_date")
-    var birthDate: Timestamp?,
+    var birthDate: Timestamp? = null,
 
     @Column(name = "phone")
-    var phone: String?,
+    var phone: String? = null,
 
     @Column(name = "auto_login_token")
-    var autoLoginToken: String?,
+    var autoLoginToken: String? = null,
 
     @Column(name = "temppw")
-    var temppw: String?,
+    var temppw: String? = null,
 
     @Column(name = "gender")
-    var gender: String?,
+    var gender: String? = null,
 
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss", timezone="Asia/Seoul")
     @Column(name = "join_date")
-    var joinDate: Timestamp?,
+    var joinDate: Timestamp? = null,
 
     @Column(name = "disease")
-    var disease: String?,
+    var disease: String? = null,
 
     @Column(name = "feature")
-    var feature: String?,
+    var feature: String? = null,
 
     @Column(name = "address")
-    var address: String?,
+    var address: String? = null,
 
 )

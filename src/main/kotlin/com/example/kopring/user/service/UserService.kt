@@ -14,7 +14,7 @@ class UserService(var userRepository: UserRepository) {
     fun getList(): List<UserEntities> = userRepository.findAll()
 
     fun idMatch(id: String): String{
-        var jo: JSONObject = JSONObject()
+        val jo = JSONObject()
      if(userRepository.existsById(id)){
          jo.put("result", "isNotValid")
          return jo.toString()
@@ -31,5 +31,8 @@ class UserService(var userRepository: UserRepository) {
 
     fun userMatch(id: String, pw: String): Boolean = userRepository.existsByIdAndPw(id, pw)
 
+    fun createUser(userInfoDto: UserInfoDto): Unit{
+        userRepository.save(userInfoDto.toEntity(userInfoDto))
+    }
 }
 
