@@ -67,4 +67,8 @@ class PostService(
         replyRepository.deleteByReplyId(replyId)
     }
 
+    fun getReplyMaxId(): Int?{
+        return replyRepository.findMaxReplyId()
+    }
+
 }

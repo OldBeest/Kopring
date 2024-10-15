@@ -38,6 +38,7 @@ function Board() {
     const [postsPerPage, setPostsPerPage] = useState<number>(5); //한 페이지당 게시물 개수
     const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
     const [select, setSelect] = useState<string>(""); //옵션 기능
+    const [isLogin, setIsLogin] = useState<string>("")
     
     useEffect(() =>{
 
@@ -54,9 +55,18 @@ function Board() {
                 console.error("데이터를 가져오는 중 오류 발생", error)
             }
                 
+        }
+        const checkLogin = async () => {
+            const responseId = await axios.post("/auth/get_userid", null, {
+                headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
+                withCredentials: true,
+              })
+              
+            setIsLogin(responseId.data)
         }   
         
         fetchBoard();
+        checkLogin();
     
     }, [postsPerPage]);
     
@@ -89,6 +99,8 @@ function Board() {
         setPostsPerPage(newPostsPerPage)
         setCurrentPage(1)
     }
+    
+    
 
     return (
         <div>
@@ -136,7 +148,7 @@ function Board() {
                             </div>
                             <input type="text"></input><button>검색하기</button>
                             <ul>
-                                <Link to='/post'><li>글쓰기</li></Link>
+                                {isLogin ? (<Link to="/post"><li >글쓰기</li></Link>) : <li></li>}
                             </ul>
                         </div>
                     </div>

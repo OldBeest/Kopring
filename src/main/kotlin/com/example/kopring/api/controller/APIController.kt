@@ -1,6 +1,7 @@
 package com.example.kopring.api.controller
 
 import com.example.kopring.api.service.APIService
+import com.example.kopring.board.service.PostService
 import com.example.kopring.user.dto.UserInfoDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -31,5 +32,10 @@ class APIController(private val apiService: APIService) {
     @GetMapping("user-info")
     fun userInfo(@RequestParam("userName") userName: String): UserInfoDto? {
         return apiService.getUserInfo(userName)
+    }
+
+    @GetMapping("/reply_id_max")
+    fun getReplyMaxId(): Int?{
+        return apiService.getReplyMaxId()
     }
 }

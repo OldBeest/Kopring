@@ -23,4 +23,7 @@ interface ReplyRepository: JpaRepository<ReplyEntities, Int> {
     fun save(replyEntities: ReplyEntities): Unit
 
     fun deleteByReplyId(replyId: Int): Unit
+
+    @Query("SELECT MAX(reply_id) from replydb order by reply_id desc", nativeQuery = true)
+    fun findMaxReplyId(): Int?
 }

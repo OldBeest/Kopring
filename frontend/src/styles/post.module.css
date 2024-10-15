@@ -66,8 +66,15 @@ textarea{
     width: 10vh;
     height: 5vh;
     line-height: 5vh;
+    color: black;
     border: 2px solid black;
 }
+.postMenuBox:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
 /* 댓글 부분*/
 .replyBox{
     margin: 0 auto;
@@ -111,6 +118,10 @@ textarea{
     background-color: white;
     color: black;
 }
+.replyMenu:hover{
+    background-color: black;
+    color: white;
+}
 
 .replyMenu:hover{
     background-color: black;
@@ -128,4 +139,8 @@ textarea{
     border: 3px solid black;
     background-color: white;
     color: black;
+}
+
+.replyWrite{
+    
 }

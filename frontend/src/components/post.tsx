@@ -8,7 +8,7 @@ interface ReplyDto{
     postNo: number;
     id: string;
     replyRegDate: any;
-    replyContent: string;
+    replyContent: string | undefined;
     replyOrder: number;
     replyId: number;
     replyLike: number;
@@ -22,16 +22,14 @@ const getLastPostNum = async () => {
     
 }
 
-const getLastReplyIdNum = async () => {
-
-}
-
 function Post(){
     const [post, setPost] = useState<any | null>(null);
     const [replys, setReplys] = useState<ReplyDto[]>();
     const [userId, setUserId] = useState<string>("")
+    const [writeMode, setwriteMode] = useState<boolean>(false)
     const titleRef = useRef<HTMLInputElement | null>(null);
     const contentRef = useRef<HTMLTextAreaElement | null>(null);
+    const replyRef = useRef<HTMLTextAreaElement | null>(null);
     
     useEffect(()=>{
         async function getPost() {
@@ -63,8 +61,7 @@ function Post(){
         
     }
     getPost();
-
-       
+          
     }, []);
 
     const checkData = async () => {
@@ -73,22 +70,34 @@ function Post(){
 
         if (!title || !content) {
             alert("제목과 내용을 모두 입력해주세요.");
-            
+            return window.location.reload()
         }
+        let data;
+        if (writeMode && post){
+            data = {
+                postNo: post.postNo,
+                id: userId ? userId : "null",
+                postRegDate: post.postRegDate,
+                postTitle: title,
+                postContent: content,
+                postHit: post.postHit
 
-        let lastPostId = await getLastPostNum();
-        console.log("요청 후 번호 + 1: ", lastPostId)        
-        let data = {
-            postNo: lastPostId,
-            id: userId ? userId : "null",
-            postRegDate: Date.now(),
-            postTitle: title,
-            postContent: content,
-            postHit: 0
-        }; 
-        console.log("작성 아이디 :", userId)
-        await axios.post("/post", data)
-        
+            }
+            await axios.put("/post", data)
+        } else {
+            let lastPostId = await getLastPostNum();
+            data = {
+                postNo: lastPostId,
+                id: userId ? userId : "null",
+                postRegDate: Date.now(),
+                postTitle: title,
+                postContent: content,
+                postHit: 0
+
+            }
+            await axios.post("/post", data)
+        }
+        window.location.href = "/board"
     }
 
     async function writePost(){
@@ -99,6 +108,7 @@ function Post(){
     
     function updatePost(){
         alert("수정하시겠습니까 ?")
+        setwriteMode(true)
     }
     
     async function deletePost(){
@@ -118,14 +128,16 @@ function Post(){
         //alert("작성하시겠습니까 ?")
         let urlParams = new URLSearchParams(window.location.search)
         let postNo = parseInt(urlParams.get("post_id") as string)
+        let lastReplyNo = (await axios.get("/api/reply_id_max")).data
+        console.log(replys)
         let replyDto: ReplyDto = {
             
             postNo: postNo,
             id: userId,
             replyRegDate: Date.now(),
-            replyContent: "내용테스트5",
-            replyOrder: post.replyList.size + 1,
-            replyId: 7,
+            replyContent: document.querySelector("textarea")?.value,
+            replyOrder: replys?.length ? replys.length + 1 : 1,
+            replyId: lastReplyNo + 1,
             replyLike: 0
 
         }
@@ -152,7 +164,7 @@ function Post(){
     return(
         <div>
             <h1>질문게시판</h1>
-                {!post ? (<div className={postStyles.postWrapper}><div className={postStyles.postId}>작성자 : {userId}</div>
+                {writeMode || !post ? (<div className={postStyles.postWrapper}><div className={postStyles.postId}>작성자 : {userId}</div>
                 <div className={postStyles.postTitle}>제목<input type="text" placeholder="제목을 입력하세요" ref={titleRef}></input></div>
                 <div className={postStyles.postContent}><textarea placeholder="내용을 입력하세요" ref={contentRef}></textarea></div>
                 <div className={postStyles.attachList}>
@@ -170,16 +182,23 @@ function Post(){
                     </div>
                 </div></div>)}
                 <div className={postStyles.postMenu}>
-                    <Link to={!post? "/board/create": "/board/update"} onClick={!post? writePost: updatePost}><div className={postStyles.postMenuBox}>{!post? "작성" : "수정"}</div></Link>
-                    <Link to="/board"><div className={postStyles.postMenuBox} onClick={deletePost}>삭제</div></Link>
-                    <Link to="/board"><div className={postStyles.postMenuBox}>취소</div></Link>
+                    {post && post.id === userId ? (
+                        <>
+                            <div className={postStyles.postMenuBox} onClick={updatePost}>수정</div>
+                            <div className={postStyles.postMenuBox} onClick={deletePost}>삭제</div>
+                        </>
+                    ) : (<div className={postStyles.postMenuBox} onClick={writePost}>작성</div>)
+                    }
+                    <Link to="/board">
+                        <div className={postStyles.postMenuBox}>돌아가기</div>
+                    </Link>
                 </div>
                 <div className={postStyles.replyWrapper}>
-                    <div className={postStyles.replyBox}>
+                    {userId ? (<div className={postStyles.replyBox}>
                     <div className={postStyles.replyTop}>
                         <ul>
                             <li>{userId}</li>
-                            <li>{Date.now()}</li>
+                            <li>{new Date().toLocaleString()}</li>
                         </ul>
                     </div>
                     <div className={postStyles.replyMiddle}>
@@ -191,7 +210,8 @@ function Post(){
                             <li className={postStyles.replyMenu} onClick={cancelReply}>취소</li>
                         </ul>
                     </div> 
-                    </div>                  
+                    </div> ): <div></div>}
+                                     
                     {post ? (post.replyList.map((item: ReplyDto) => (<div className={postStyles.replyBox}>
                         <div className={postStyles.replyTop} key={item.postNo}>
                             <ul>
@@ -204,16 +224,16 @@ function Post(){
                             {item.replyContent}
                         </div>
                         <div className={postStyles.replyBottom}>
-                            {item.id === "testID" ? (<ul className={postStyles.replyWritable}>
+                            {item.id === userId? (<ul className={postStyles.replyWritable}>
                                 <li className={postStyles.replyMenu} onClick={modifyReply}>수정</li>
-                                <li className={postStyles.replyMenu} onClick={cancelReply}>취소</li>
+                                {/* <li className={postStyles.replyMenu} onClick={cancelReply}>취소</li> */}
                                 <li className={postStyles.replyMenu} onClick={deleteReply}>삭제</li>
                             </ul>) : (<ul className={postStyles.replyNonWritable}>
                                 <li className={postStyles.replyMenu} onClick={recommendReply}>👍 추천하기</li>
                             </ul>)}
                         </div>
                     </div>)))
-                    : <div>댓글 로딩중...</div>}
+                    : <div></div>}
                     <div className={postStyles.replyMore}> 댓글 더보기</div>
                 </div>
             </div>
