@@ -58,15 +58,15 @@ class PostController(private var postService: PostService) {
     }
 
     @ResponseBody
-    @PatchMapping("/post/reply")
+    @PutMapping("/post/reply")
     fun updateReply(@RequestBody replyDto: ReplyDto): String {
         postService.updateReply(replyDto)
         return "rediriect:/post"
     }
 
     @DeleteMapping("/post/reply")
-    fun deleteReply(@RequestParam replyId: Int): String {
+    fun deleteReply(@RequestParam replyId: Int): ResponseEntity<Void> {
         postService.deleteReply(replyId)
-        return "rediriect:/post"
+        return ResponseEntity.noContent().build()
     }
 }

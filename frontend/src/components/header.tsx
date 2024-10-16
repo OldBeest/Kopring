@@ -94,7 +94,7 @@ function Header() {
             <div className="right-nav">
                 <ul>
                     <a href="/signup"><li style={{color: "black"}}>회원가입</li></a>
-                    {!userId ? <li></li> : <li style={{color: "black"}}>{userId} 님 환영합니다!</li> }
+                    {!auth && !userId ? <li></li> : <li style={{color: "black"}}>{userId} 님 환영합니다!</li> }
                     {!auth ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/" onClick={logOut}><li style={{color: "black"}}>로그아웃</li></a> }                      
                 </ul>
             </div>        
