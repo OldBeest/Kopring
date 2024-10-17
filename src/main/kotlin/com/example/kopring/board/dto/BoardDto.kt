@@ -5,19 +5,24 @@ import com.example.kopring.board.service.PostService
 import com.example.kopring.board.entity.PostEntities
 import org.springframework.stereotype.Component
 
-@Component
-data class BoardDto(private val postService: PostService) {
+data class BoardDto(private val postService: PostService, val category: String?, val value: String?) {
     var noticeDto: List<NoticeEntities> = emptyList()
     var postDto: List<PostEntities> = emptyList()
     var replyCountList: List<ReplyCountDto> = emptyList()
 
     init {
-        refreshData()
+        refreshData(category, value)
+        println("category: $category")
+        println("content: $value")
     }
 
-    private final fun refreshData() {
+    private fun refreshData(category: String?, value: String?) {
         noticeDto = postService.getNoticeList()
-        postDto = postService.getList()
+        if (category != null && value != null) {
+            postDto = postService.getCategoryList(category, value)
+        }else{
+            postDto = postService.getList()
+        }
         replyCountList = postService.countRepliesByPostNo()
     }
 }

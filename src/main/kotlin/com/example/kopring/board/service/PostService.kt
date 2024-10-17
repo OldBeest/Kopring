@@ -23,8 +23,7 @@ class PostService(
 
     fun getList(): List<PostEntities> = postRepository.findAllByOrderByPostNoDescPostGroupDescPostStepAsc()
 
-    // 한 게시물에 대해 댓글 개수 가져오기
-    // fun countByPostNo(postNo: Int): Int = replyRepository.countByPostNo(postNo)
+    fun getCategoryList(category: String, value: String): List<PostEntities> = postRepository.findAllByPostTitleContains(category, value)
 
     fun countRepliesByPostNo(): List<ReplyCountDto>{
         var replyCountList: List<Any> = replyRepository.countRepliesByPostNo()

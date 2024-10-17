@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import boardStyles from '../styles/board.module.css';
@@ -39,35 +39,46 @@ function Board() {
     const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지
     const [select, setSelect] = useState<string>(""); //옵션 기능
     const [isLogin, setIsLogin] = useState<string>("")
+    const [searchType, setSearchType] = useState<string>("title")
+    const searchContent = useRef<HTMLInputElement | null>(null)
+
     
-    useEffect(() =>{
+    const fetchBoard = async() => {
+        try{
+            const response = await axios.get<PostList>('/board')
+            const data = response.data
 
-        const fetchBoard = async() => {
-            try{
-                const response = await axios.get<PostList>('/board')
-                const data = response.data
-
-                setPostList(data)
-                setCounts(data.postDto.length)
-                setPages(Math.ceil(data.postDto.length / postsPerPage))
-                console.log(data)  
-            } catch(error){
-                console.error("데이터를 가져오는 중 오류 발생", error)
-            }
-                
+            setPostList(data)
+            setCounts(data.postDto.length)
+            setPages(Math.ceil(data.postDto.length / postsPerPage))
+            console.log("보드 페이지 응답",data)  
+        } catch(error){
+            console.error("데이터를 가져오는 중 오류 발생", error)
         }
-        const checkLogin = async () => {
-            const responseId = await axios.post("/auth/get_userid", null, {
-                headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
-                withCredentials: true,
-              })
-              
-            setIsLogin(responseId.data)
-        }   
-        
+            
+    }
+    const checkLogin = async () => {
+        const responseId = await axios.post("/auth/get_userid", null, {
+            headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
+            withCredentials: true,
+          })
+          
+        setIsLogin(responseId.data)
+    }  
+
+    const newFetch = async (type: string) => {
+        let value = searchContent.current?.value
+        const response = await axios.get("/board",{params: {category: type, value: value}})
+        console.log("뉴 패치 응답 :",response.data)
+        setPostList(response.data)
+        setCounts(response.data.postDto.length)
+        setPages(Math.ceil(response.data.postDto.length / postsPerPage))
+    }
+
+    useEffect(() =>{                 
         fetchBoard();
         checkLogin();
-    
+        
     }, [postsPerPage]);
     
     const firstPageIdx = (currentPage - 1) * postsPerPage
@@ -99,8 +110,11 @@ function Board() {
         setPostsPerPage(newPostsPerPage)
         setCurrentPage(1)
     }
-    
-    
+
+    function changeSearchType(event: React.ChangeEvent<HTMLSelectElement>){
+        let newSearchType: string = event.target.value.toString()
+        setSearchType(newSearchType)
+    }
 
     return (
         <div>
@@ -146,7 +160,16 @@ function Board() {
                                     <option value={20}>20개씩 보기</option>
                                 </select>
                             </div>
-                            <input type="text"></input><button>검색하기</button>
+                            <div>
+                                <label htmlFor="searchSelect"></label>
+                                <select className="searchSelect" onChange={changeSearchType} value={searchType}>
+                                    <option value="title" >제목</option>
+                                    <option value="id">작성자</option>
+                                    <option value="content">내용</option>
+                                    <option value="titleAndcontent">제목+내용</option>
+                                </select>
+                                <input type="text"  ref={searchContent}></input><button onClick={() => newFetch(searchType)}>검색하기</button>
+                            </div>
                             <ul>
                                 {isLogin ? (<Link to="/post"><li >글쓰기</li></Link>) : <li></li>}
                             </ul>

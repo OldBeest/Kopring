@@ -11,6 +11,15 @@ interface PostRepository: JpaRepository<PostEntities, String> {
 
     fun findAllByOrderByPostNoDescPostGroupDescPostStepAsc(): List<PostEntities>
 
+    @Query(""" select * from postdb 
+        where (:category = 'id' AND id LIKE %:value%)
+        or (:category = 'title' AND post_title LIKE %:value%)
+        or (:category = 'content' AND post_content LIKE %:value%)
+        or (:category = 'titleAndcontent' AND (post_title LIKE %:value% OR post_content LIKE %:value%))
+        order by post_no desc 
+    """, nativeQuery = true)
+    fun findAllByPostTitleContains(category: String, value: String): List<PostEntities>
+
     //Create, Update
     fun save(postEntities: PostEntities): Unit
 

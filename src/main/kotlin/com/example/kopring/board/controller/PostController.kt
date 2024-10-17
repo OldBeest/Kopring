@@ -15,8 +15,11 @@ class PostController(private var postService: PostService) {
 
     @ResponseBody
     @GetMapping("/board")
-    fun boardList(): BoardDto {
-        val boardDto = BoardDto(postService)
+    fun boardList(@RequestParam category: String?, @RequestParam value: String?): BoardDto {
+        if (category != null && value != null) {
+            return BoardDto(postService, category, value)
+        }
+        val boardDto = BoardDto(postService, category, value)
         return boardDto
     }
 
