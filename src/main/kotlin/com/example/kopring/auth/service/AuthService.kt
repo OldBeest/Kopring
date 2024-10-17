@@ -34,16 +34,22 @@ class AuthService(
 
     //
     fun refresh_token(token: String): JwtToken?{
-        if(jwtService.checkRefreshToken(token)){
-            val newToken: JwtToken = JwtToken(jwtService.getUserIDFromToken(token))
-            newToken.accessToken = jwtService.generateToken(newToken.id)
-            newToken.tokenType = "Bearer"
-            newToken.issuedAt = LocalDateTime.now().toString()
-            return newToken
+        if(authRepository.existsById(token)){
+            println("this token is expired.")
+            return null
         }
         else{
-            println("Token not found")
-            return null
+            if(jwtService.checkRefreshToken(token)){
+                val newToken = JwtToken(jwtService.getUserIDFromToken(token))
+                newToken.accessToken = jwtService.generateToken(newToken.id)
+                newToken.tokenType = "Bearer"
+                newToken.issuedAt = LocalDateTime.now().toString()
+                return newToken
+            }
+            else{
+                println("Token not found")
+                return null
+            }
         }
     }
 
