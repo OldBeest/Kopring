@@ -28,7 +28,12 @@ class APIService(
     }
 
     fun getNearFacility(y_cor: Double, x_cor: Double): List<FacilityEntities>{
-        println(y_cor)
         return facilityService.get_near_Facility(y_cor, x_cor)
     }
+
+    fun getFavoriteFacility(user_id: String): List<FacilityEntities>{
+        return facilityService.getFavoriteFacility(user_id)
+    }
+
+
 }

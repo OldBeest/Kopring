@@ -47,6 +47,7 @@ function Main(){
     const [userInfo, setUserInfo] = useState<userInfoDto | null>();
     const [coord, setCoord] = useState<Coordinate>({y_cor: 37.56424720827924, x_cor: 126.61761089074419});
     const [nearFacility, setNearFacility] = useState<facilityDto[] | null>();
+    const [favorite, setFavorite] = useState<facilityDto[] | null>();
     useEffect(()=>{
       axios.get("/index")
       .then(response => {setList(response.data)
@@ -91,6 +92,15 @@ function Main(){
             console.log(userInfo?.address)
         } 
     }, [userInfo])    
+    
+    useEffect(() => {
+        const getFavorite = async () => {
+            const result = await axios.get("/api/favorite", {params: {user_id: "tlsfla"}})
+            setFavorite(result.data)
+        }
+        getFavorite();
+    }, [])
+    
 
     return(
         <div className="main-wrap">
@@ -173,8 +183,16 @@ function Main(){
                     </div>
                 </div>
                 <div className="favorite">
-                    <div>⭐나의 즐겨찾기⭐</div>
-                    <div>즐겨찾기 목록</div>
+                    <div>⭐나의 즐겨찾기⭐</div>                    
+                    {favorite && favorite.length > 0 ? favorite.map((_, index) => 
+                        (<div>
+                        <div>{favorite[index].name}</div>
+                        <div>{favorite[index].address}</div>
+                        <div>{favorite[index].disease}</div>
+                        <div>{favorite[index].feature}</div>
+                        </div>)): 
+                            <div>로딩중...</div>}
+                    
                 </div>
             </div>
         </div>

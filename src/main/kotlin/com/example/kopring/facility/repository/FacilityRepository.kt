@@ -14,5 +14,8 @@ interface FacilityRepository: JpaRepository<FacilityEntities, String> {
 
     @Query(value = "select u.*, pow(:ycor - y_cor, 2) + pow(:xcor - x_cor, 2) as distance from facilitydb u order by distance asc", nativeQuery = true)
     fun sortNearFacility(@Param("ycor") y_cor: Double, @Param("xcor")x_cor: Double): List<FacilityEntities>
-
+    @Query(value = """
+       select  u.user_id, f.* from facilitydb f, favoritedb u where u.facility_address = f.address 
+    """, nativeQuery = true)
+    fun getFavoriteFacility(@Param("user_id") user_id: String): List<FacilityEntities>
 }

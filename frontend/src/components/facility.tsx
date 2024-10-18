@@ -35,6 +35,8 @@ function Facility() {
     
     const addFavorite = async (item: facilityDto) => {
         console.log(item)
+        const result = await axios.get("/api/favorite", {params: {user_id: "tlsfla", facility_address: item.address}})
+        console.log(result.data)
     }
 
   return (

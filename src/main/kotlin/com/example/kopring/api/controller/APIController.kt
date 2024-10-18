@@ -43,4 +43,9 @@ class APIController(private val apiService: APIService) {
     fun getNearFacility(@RequestParam("y_cor") y_cor: Double, @RequestParam("x_cor") x_cor: Double): List<FacilityEntities>{
         return apiService.getNearFacility(y_cor, x_cor)
     }
+
+    @GetMapping("/favorite")
+    fun getFavoriteFacility(@RequestParam("user_id") user_id: String): List<FacilityEntities>{
+        return apiService.getFavoriteFacility(user_id)
+    }
 }
