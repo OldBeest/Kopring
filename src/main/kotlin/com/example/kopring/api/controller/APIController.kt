@@ -1,7 +1,7 @@
 package com.example.kopring.api.controller
 
 import com.example.kopring.api.service.APIService
-import com.example.kopring.board.service.PostService
+import com.example.kopring.facility.entity.FacilityEntities
 import com.example.kopring.user.dto.UserInfoDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -29,7 +29,7 @@ class APIController(private val apiService: APIService) {
     }
 
     //아이디로 유저 정보 받아오기
-    @GetMapping("user-info")
+    @GetMapping("/user_info")
     fun userInfo(@RequestParam("userName") userName: String): UserInfoDto? {
         return apiService.getUserInfo(userName)
     }
@@ -37,5 +37,10 @@ class APIController(private val apiService: APIService) {
     @GetMapping("/reply_id_max")
     fun getReplyMaxId(): Int?{
         return apiService.getReplyMaxId()
+    }
+
+    @GetMapping("/near_facility")
+    fun getNearFacility(@RequestParam("y_cor") y_cor: Double, @RequestParam("x_cor") x_cor: Double): List<FacilityEntities>{
+        return apiService.getNearFacility(y_cor, x_cor)
     }
 }

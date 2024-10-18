@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface FacilityRepository: JpaRepository<FacilityEntities, String> {
     override fun findAll(): List<FacilityEntities>
+
     fun findByAdstatus(ad_Status: Int): List<FacilityEntities>
 
     @Query(value = "select u.*, pow(:ycor - y_cor, 2) + pow(:xcor - x_cor, 2) as distance from facilitydb u order by distance asc", nativeQuery = true)

@@ -76,7 +76,7 @@ function Header() {
                             <li>플랫폼 기술</li>
                         </ul>
                     </li>
-                    <li>시설검색</li>
+                    <a href="/facility"><li style={{color: "black"}}>시설검색</li></a>
                     <a href="/board">
                         <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut} style={{color: "black"}}>고객지원(board)
                             <ul className="side-menu">
