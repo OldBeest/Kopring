@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
 import '../styles/main.css';
+import '../styles/news_card.css';
+import '../styles/facility_card.css'
 import video from '../assets/main1.mp4';
+import facilty_img from '../assets/facility.jpg'
 import axios from 'axios';
-import { Map, MapMarker } from "react-kakao-maps-sdk"
-
+import Facility_card from "./facility_card";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
+import 'zingchart/es6';
+import Zingchart from 'zingchart-react';
+import 'zingchart/modules-es6/zingchart-depth.min.js';
+import { myConfig } from '../assets/wordcloud'
 interface userInfoDto{    
         
         id: string;
@@ -48,6 +55,8 @@ function Main(){
     const [coord, setCoord] = useState<Coordinate>({y_cor: 37.56424720827924, x_cor: 126.61761089074419});
     const [nearFacility, setNearFacility] = useState<facilityDto[] | null>();
     const [favorite, setFavorite] = useState<facilityDto[] | null>();
+    const quote = "지난 수년간 오직 더 나은 미래와 행복한 노후를 위해 고민해왔습니다.\n 가족, 노후의 가장 소중한 친구"
+
     useEffect(()=>{
       axios.get("/index")
       .then(response => {setList(response.data)
@@ -100,7 +109,6 @@ function Main(){
         }
         getFavorite();
     }, [])
-    
 
     return(
         <div className="main-wrap">
@@ -109,18 +117,29 @@ function Main(){
                     <source src={video} type="video/mp4"/>
                 </video>
             </div>
+            <div>
+                <div className="scroll-icon">    <i className="fas fa-chevron-down"></i></div>
+                <div className="tit1">
+                    <h2 className="main-title">S I L V E R&nbsp;&nbsp;&nbsp;T O W N</h2>
+                </div>
+                <div className="tit2">
+                    <h2 className="main-quote">
+                        {quote}
+                    </h2>
+                </div>
+            </div>
             <div className="main-middle">
-                <div className="news-card">
-                    <h3>뉴스카드</h3>
+                <div className="news">
+                    <h2>📰오늘의 뉴스</h2>
                     {list.crawllist && list.crawllist.length > 0 ? <div>
-                        <div className="news-title">{list.crawllist[0].newsTitle}</div>
-                        <div className="news-content">{list.crawllist[0].newsContent}</div>
-                        <a href={list.crawllist[0].newsUrl}><div className="news-link">보러가기</div></a>
+                        <div className="news-header">{list.crawllist[0].newsTitle}</div>
+                        <div className="news-body"><p>{list.crawllist[0].newsContent}</p></div>
+                        <a href={list.crawllist[0].newsUrl}><div className="news-footer">보러가기</div></a>
                     </div> : <div>데이터 로딩중...</div>}
                     
                 </div>
                 <div className="video-list">
-                    <h3>건강영상</h3>
+                    <h2>🎞️오늘의 영상</h2>
                     <div className="video-content">
                     {list.crawllist && list.crawllist.length > 0 ? <iframe width="560" height="315"
                                 src={list.crawllist[1].videoUrl}
@@ -129,37 +148,27 @@ function Main(){
                     
                     </div>
                 </div>
-                <div className="ad-facility">
-                    <h3>시설광고</h3>
-                    <div className="facility-content">
-                        {list.ad_facility && list.ad_facility.length > 0 ? 
-                        <div>
-                            <div>
-                                {list.ad_facility[0].name}
-                            </div>
-                            <div>
-                                {list.ad_facility[0].address}
-                            </div>
-                            <div>
-                                {list.ad_facility[0].disease}
-                            </div>
-                            <div>
-                                {list.ad_facility[0].feature}
-                            </div>
-                        </div>
-                         : <div>데이터 로딩중...</div>}      
+                <div className="ad-facility" style={{display: "flex", position: "relative", overflow:"hidden"}}>
+                    <div className="card" style={{position:"absolute"}}>
+                    <h2>👍실버타운이 추천합니다!</h2>
+                        {list.ad_facility && list.ad_facility.length > 0 ?
+                        list.ad_facility.map((item: facilityDto, index:number) => (
+                            <Facility_card key={index} {...item}>    
+                        </Facility_card> 
+
+                        )): <div>데이터 로딩중...</div>}      
                     </div>
                 </div>
             </div>
             <div className="map-recommend">
                 <div className="map-wrapper">
-                    <div>카카오맵</div>
+                    <h2>🗺️시설 지도</h2>
                     <div>
                     <Map center={{ lat: coord?.y_cor, lng: coord.x_cor }}
-                        style={{ margin: "0 auto", width: '70vh', height: '40vh' }}
+                        style={{ margin: "0 auto", width: "80%", height: '40vh' }}
                         level={3}>
                     <MapMarker position={{ lat: coord?.y_cor, lng: coord.x_cor }}>
-                        <div style={{color:"black"}}>IM HERE!</div>
+                        <div style={{color:"black"}}><p>IM HERE!</p></div>
                     </MapMarker>
                     </Map> 
                     </div>
@@ -168,28 +177,31 @@ function Main(){
                     
                 </div>
                 <div className="recommend">
-                    <div>가까운 시설 추천</div>
-                    <div>
+                    <h2>🙋‍♂️가까운 시설 추천</h2>
+                    <div className="recommend-facility" style={{position: "relative"}}>  
                         {nearFacility&& nearFacility.length > 0 ? 
-                        nearFacility.slice(0, 3).map((item ,index) => (
-                        <div key={index}>
-                            <div>{item.name}</div>
-                            <div>{item.address}</div>
-                            <div>{item.disease}</div>
-                            <div>{item.feature}</div>
-                            <p>------</p>
-                        </div>))
+                        nearFacility.slice(0, 3).map((item: facilityDto, index) => (
+                            <Facility_card key={index} {...item}>
+                            
+                        </Facility_card>
+                        ))
                          : <div>데이터 로딩중...</div>}
                     </div>
                 </div>
+                <div className="wordcloud">
+                    <h2>📊회원님 정보 분석</h2>
+                    {myConfig !== null && <Zingchart data={myConfig}/>}
+                    
+                </div>
                 <div className="favorite">
-                    <div>⭐나의 즐겨찾기⭐</div>                    
+                    <h2>⭐즐겨찾기⭐</h2>                    
                     {favorite && favorite.length > 0 ? favorite.map((_, index) => 
                         (<div>
                         <div>{favorite[index].name}</div>
                         <div>{favorite[index].address}</div>
                         <div>{favorite[index].disease}</div>
                         <div>{favorite[index].feature}</div>
+                        <div>-------------------------</div>
                         </div>)): 
                             <div>로딩중...</div>}
                     

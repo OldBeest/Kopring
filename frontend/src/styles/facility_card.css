@@ -1,0 +1,73 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	margin-bottom: 10px;
+}
+
+.card-header {
+	background-color: #0d790c; /* 초록색 */
+	color: white;
+	padding: 15px;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.card-body {
+	height: 20vh;
+	padding: 15px;
+	overflow: hidden;
+	text-align: justify;
+	display: flex;
+}
+
+.card-body h2 {
+	margin: 0;
+	font-size: 16px;
+	color: #333;
+}
+
+.card-body p {
+	color: #666;
+	height: 150px;
+	font-size: 15px;
+	line-height: 1.6;
+	overflow: hidden;
+	padding-bottom: 5px;
+}
+
+.card-footer {
+	background-color: #0d790c;
+	color: white;
+	text-align: center;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.facility-img{
+	width: 180px;
+}
+
+.body-left{
+	width: 40%;
+	margin: 0 auto;
+	padding-left: 30px;
+}
+.body-right{
+	align-items: center;
+	justify-items: baseline;
+	width: 70%;
+}
+.body-right > div{
+	
+	font-size: 25px;
+	font-weight: 700;
+	color: #666;
+	line-height: 1.7;
+}

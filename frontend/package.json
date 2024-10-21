@@ -19,7 +19,9 @@
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zingchart": "^2.9.15-3",
+    "zingchart-react": "^3.2.0"
   },
   "proxy": "http://localhost:8080",
   "scripts": {

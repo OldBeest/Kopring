@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import logo from '../assets/logo.jpg'
 import '../styles/header.css'
 
 function Header() {
@@ -68,34 +69,40 @@ function Header() {
     <div>
         <div className="nav">
             <div className="left-nav">
-                <ul>
-                    <li className={isHovering? "menu-1 slide" : "menu-1"} onMouseOver={mouseOver} onMouseOut={mouseOut}>소개
+                <ul className="main-menu">
+                    <li className={isHovering? "menu-1 slide" : "menu-1"} onMouseEnter={mouseOver} onMouseLeave={mouseOut}>소개
                         <ul className="side-menu">
-                            <li>사이트 스토리</li>
-                            <li>실버케어 플랫폼 소개</li>
-                            <li>플랫폼 기술</li>
+                            <li className="sub-menu">사이트 스토리</li>
+                            <li className="sub-menu">실버케어 플랫폼 소개</li>
+                            <li className="sub-menu">플랫폼 기술</li>
                         </ul>
                     </li>
-                    <a href="/facility"><li style={{color: "black"}}>시설검색</li></a>
-                    <a href="/board">
-                        <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseOver={mouseOver} onMouseOut={mouseOut} style={{color: "black"}}>고객지원(board)
-                            <ul className="side-menu">
-                                    <li>자주묻는 질문</li>
-                                    <li>질문 게시판</li>
-                                    <li>1:1 문의</li>
-                            </ul>
-                        </li>
-                    </a>
+                    <a href="/facility"><li className="menu-2">시설검색</li></a>
+                    <li className={isHovering? "menu-3 slide" : "menu-3"} onMouseEnter={mouseOver} onMouseLeave={mouseOut} style={{color: "black"}}>고객지원
+                        <ul className="side-menu">
+                            <li className="sub-menu">자주묻는 질문</li>
+                            <li className="sub-menu"><a href="/board">질문 게시판</a></li>
+                            <li className="sub-menu">1:1 문의</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div className="center-nav">
-                <a href="/"><h1>홈 이미지</h1></a>
+                <ul className="main-menu">
+                    <a href="/"><img src={logo} style={{width: "100px", height: "50px"}}></img></a>
+                </ul>
             </div>
             <div className="right-nav">
-                <ul>
-                    <a href="/signup"><li style={{color: "black"}}>회원가입</li></a>
-                    {!auth && !userId ? <li></li> : <li style={{color: "black"}}>{userId} 님 환영합니다!</li> }
-                    {!auth ? <a href="/login"><li style={{color: "black"}}>로그인</li></a> : <a href="/" onClick={logOut}><li style={{color: "black"}}>로그아웃</li></a> }                      
+                <ul className="main-menu">
+                    <a href="/signup"><li className="menu-4">회원가입</li></a>
+                    {!auth && !userId ? <li></li> : <li className={isHovering? "menu-4 slide" : "menu-4"} onMouseEnter={mouseOver} onMouseLeave={mouseOut} style={{color: "black"}}>{userId} 님 환영합니다!
+                        <ul className="side-menu">
+                            <li className="sub-menu">마이페이지</li>
+                            {userId === "admin" && <li className="sub-menu">관리자페이지</li>}
+                            {!auth ? <li className="sub-menu" style={{color: "black"}}><a href="/login">로그인</a></li> : <li className="sub-menu" style={{color: "black"}}><a href="/" onClick={logOut}>로그아웃</a></li> }        
+                        </ul>
+                    </li> }
+                    {!auth ? <a href="/login"><li className="menu-5" style={{color: "black"}}>로그인</li></a> : <div></div>}                      
                 </ul>
             </div>        
         </div>

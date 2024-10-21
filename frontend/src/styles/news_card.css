@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.news {
+    width: 30%;
+	height: 31vh;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	overflow: hidden;
+}
+
+.news-header {
+	background-color: #0d790c; /* 초록색 */
+	color: white;
+	padding: 15px;
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.news-body {
+	height: 15vh;
+	padding: 15px;
+	overflow: hidden;
+	text-align: justify;
+}
+
+.news-body h2 {
+	margin: 0;
+	font-size: 16px;
+	color: #333;
+}
+
+.news-body p {
+	color: #666;
+	height: 150px;
+	font-size: 15px;
+	line-height: 1.6;
+	overflow: hidden;
+	padding-bottom: 5px;
+}
+
+.news-footer {
+	background-color: #0d790c;
+	color: white;
+	text-align: center;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.facility-img{
+	width: 50%
+}

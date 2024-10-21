@@ -1,30 +1,18 @@
 .main-image{
     height: 50%;
 }
+.main-wrap{
+    position: relative;
+}
 video{
     width: 100%;
-    height: 30vh;
+    height: 50vh;
     object-fit: cover;
 }
 .main-middle{
+    margin-top: 10px;
     display: flex;
     justify-content: center;
-}
-.news-card{
-    width: 30%;
-}
-.news-title{
-    color: white;
-    background-color: green;
-}
-.news-content{
-    height: 30vh;
-    overflow: hidden;
-
-}
-.news-link{
-    color: white;
-    background-color: green;
 }
 a{  
     text-decoration: none;
@@ -40,12 +28,52 @@ a{
     height: 500px;
 }
 .map-wrapper{
-    width: 45%;
+    width: 35%;
 }
 .recommend{
-    width: 45%;
+    width: 30%;
+    height: 38.5vh;
+    overflow: hidden;
 }
 
 iframe{
     width: 90%;
+}
+.main-title{
+    position: absolute;
+    font-size: 80px;
+    font-weight: 400;
+    left: 32%;
+    top: 100px;
+    text-align: center;
+    color: white;
+    opacity: 0;
+	animation: blink 4s infinite;
+}
+.main-quote{
+    white-space: pre-line;
+    top: 250px;
+    left: 30%;
+    position: absolute;
+    font-size: 30px;
+    font-weight: 400;
+    color: white;
+    opacity: 0;
+	animation: blink 4s infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.recommend-facility{
+    height: 100vh;
+}
+.wordcloud{
+    width: 20%;
 }
