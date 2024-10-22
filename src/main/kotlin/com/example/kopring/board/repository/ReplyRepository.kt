@@ -4,7 +4,9 @@ import com.example.kopring.board.entity.PostEntities
 import com.example.kopring.board.entity.ReplyEntities
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.stereotype.Repository
 
+@Repository
 interface ReplyRepository: JpaRepository<ReplyEntities, Int> {
 
     fun findAllByPostNoOrderByReplyOrderDesc(postId: Int?): List<ReplyEntities>?

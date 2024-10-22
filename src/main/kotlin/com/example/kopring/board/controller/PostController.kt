@@ -4,12 +4,14 @@ import com.example.kopring.board.dto.BoardDto
 import com.example.kopring.board.dto.PostDto
 import com.example.kopring.board.dto.ReplyDto
 import com.example.kopring.board.service.PostService
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
+@Tag(name = "Post Controller", description = "게시글, 댓글 API")
 @Controller
 class PostController(private var postService: PostService) {
 

@@ -35,5 +35,13 @@ class APIService(
         return facilityService.getFavoriteFacility(user_id)
     }
 
+    fun addFavoriteFacility(user_id: String, facility_address: String): Unit{
+        return facilityService.addFavoriteFacility(user_id, facility_address)
+    }
+
+    fun deleteFavoriteFacility(facility_address: String){
+        return facilityService.deleteFavoriteFacility(facility_address)
+    }
+
 
 }

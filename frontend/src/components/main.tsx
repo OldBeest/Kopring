@@ -3,9 +3,8 @@ import '../styles/main.css';
 import '../styles/news_card.css';
 import '../styles/facility_card.css'
 import video from '../assets/main1.mp4';
-import facilty_img from '../assets/facility.jpg'
 import axios from 'axios';
-import Facility_card from "./facility_card";
+import FacilityCard from "./facilitycard";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import 'zingchart/es6';
 import Zingchart from 'zingchart-react';
@@ -54,7 +53,7 @@ function Main(){
     const [userInfo, setUserInfo] = useState<userInfoDto | null>();
     const [coord, setCoord] = useState<Coordinate>({y_cor: 37.56424720827924, x_cor: 126.61761089074419});
     const [nearFacility, setNearFacility] = useState<facilityDto[] | null>();
-    const [favorite, setFavorite] = useState<facilityDto[] | null>();
+    const [favorite, setFavorite] = useState<facilityDto[] | null>([]);
     const quote = "지난 수년간 오직 더 나은 미래와 행복한 노후를 위해 고민해왔습니다.\n 가족, 노후의 가장 소중한 친구"
 
     useEffect(()=>{
@@ -63,7 +62,7 @@ function Main(){
         console.log(response.data)
     })
       .catch(error => console.log(error))
-    },[]);
+    },[nearFacility]);
 
     useEffect(() => {
         const get_userId = async() => {
@@ -99,16 +98,24 @@ function Main(){
         if(userInfo && userInfo.address){
             get_coordinate(userInfo?.address)   
             console.log(userInfo?.address)
-        } 
-    }, [userInfo])    
-    
-    useEffect(() => {
-        const getFavorite = async () => {
-            const result = await axios.get("/api/favorite", {params: {user_id: "tlsfla"}})
+        }
+        const getFavorite = async (user_id: string) => {
+            const result = await axios.get("/api/favorite", {params: {user_id: user_id}})
             setFavorite(result.data)
         }
-        getFavorite();
-    }, [])
+        if(userInfo && userInfo.id){
+            getFavorite(userInfo.id);
+        } 
+    }, [userInfo])    
+
+    const deleteFavorite = async (address: string) => {
+        if(window.confirm("즐겨찾기를 삭제하시겠습니까 ?")){
+            await axios.delete("/api/favorite", {params: {facility_address: address}})
+            window.location.reload()
+        } else {
+            return;
+        }
+    }
 
     return(
         <div className="main-wrap">
@@ -135,8 +142,7 @@ function Main(){
                         <div className="news-header">{list.crawllist[0].newsTitle}</div>
                         <div className="news-body"><p>{list.crawllist[0].newsContent}</p></div>
                         <a href={list.crawllist[0].newsUrl}><div className="news-footer">보러가기</div></a>
-                    </div> : <div>데이터 로딩중...</div>}
-                    
+                    </div> : <div>데이터 로딩중...</div>}                   
                 </div>
                 <div className="video-list">
                     <h2>🎞️오늘의 영상</h2>
@@ -153,8 +159,8 @@ function Main(){
                     <h2>👍실버타운이 추천합니다!</h2>
                         {list.ad_facility && list.ad_facility.length > 0 ?
                         list.ad_facility.map((item: facilityDto, index:number) => (
-                            <Facility_card key={index} {...item}>    
-                        </Facility_card> 
+                            <FacilityCard key={index} {...item}>    
+                        </FacilityCard> 
 
                         )): <div>데이터 로딩중...</div>}      
                     </div>
@@ -168,7 +174,7 @@ function Main(){
                         style={{ margin: "0 auto", width: "80%", height: '40vh' }}
                         level={3}>
                     <MapMarker position={{ lat: coord?.y_cor, lng: coord.x_cor }}>
-                        <div style={{color:"black"}}><p>IM HERE!</p></div>
+                        {userInfo ? <div style={{color:"black"}}><p>IM HERE!</p></div> : <div style={{color:"black"}}><p>로그인을 해주세요!</p></div>}                        
                     </MapMarker>
                     </Map> 
                     </div>
@@ -181,29 +187,29 @@ function Main(){
                     <div className="recommend-facility" style={{position: "relative"}}>  
                         {nearFacility&& nearFacility.length > 0 ? 
                         nearFacility.slice(0, 3).map((item: facilityDto, index) => (
-                            <Facility_card key={index} {...item}>
+                            <FacilityCard key={index} {...item}>
                             
-                        </Facility_card>
+                        </FacilityCard>
                         ))
-                         : <div>데이터 로딩중...</div>}
+                         : <div>로그인이 필요합니다.</div>}
                     </div>
                 </div>
                 <div className="wordcloud">
                     <h2>📊회원님 정보 분석</h2>
-                    {myConfig !== null && <Zingchart data={myConfig}/>}
-                    
+                    {myConfig && <Zingchart data={myConfig}/>}                    
                 </div>
                 <div className="favorite">
                     <h2>⭐즐겨찾기⭐</h2>                    
-                    {favorite && favorite.length > 0 ? favorite.map((_, index) => 
+                    {userInfo && userInfo.id && favorite && favorite.length > 0 ? favorite.map((_, index) => 
                         (<div>
                         <div>{favorite[index].name}</div>
                         <div>{favorite[index].address}</div>
                         <div>{favorite[index].disease}</div>
                         <div>{favorite[index].feature}</div>
+                        <div><button onClick={() => deleteFavorite(favorite[index].address)}>즐겨찾기삭제</button></div>
                         <div>-------------------------</div>
                         </div>)): 
-                            <div>로딩중...</div>}
+                            <div>즐겨찾기 내역이 없습니다.</div>}
                     
                 </div>
             </div>

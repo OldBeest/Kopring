@@ -3,7 +3,9 @@ package com.example.kopring.board.repository
 import com.example.kopring.board.entity.NoticeEntities
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.stereotype.Repository
 
+@Repository
 interface NoticeRepository: JpaRepository<NoticeEntities, Long> {
 
     @Query(value = "select * from noticedb order by post_id desc", nativeQuery = true)

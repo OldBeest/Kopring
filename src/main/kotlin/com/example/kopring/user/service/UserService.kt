@@ -29,8 +29,6 @@ class UserService(var userRepository: UserRepository) {
             .orElse(null)
     }
 
-    fun userMatch(id: String, pw: String): Boolean = userRepository.existsByIdAndPw(id, pw)
-
     fun createUser(userInfoDto: UserInfoDto): Unit{
         userRepository.save(userInfoDto.toEntity(userInfoDto))
     }

@@ -11,7 +11,7 @@ interface FacilityCardProps {
   children?: any;
 }
 
-const Facility_card: React.FC<FacilityCardProps> = ({name, address, disease, feature, price}) => {
+const FacilityCard: React.FC<FacilityCardProps> = ({name, address, disease, feature, price}) => {
   return (
     <div className="card">
       <div className="card-header">{name}</div>
@@ -32,4 +32,4 @@ const Facility_card: React.FC<FacilityCardProps> = ({name, address, disease, fea
   );
 }
 
-export default Facility_card;
+export default FacilityCard;

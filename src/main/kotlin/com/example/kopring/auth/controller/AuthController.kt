@@ -3,6 +3,7 @@ package com.example.kopring.auth.controller
 import com.example.kopring.auth.dto.JwtToken
 import com.example.kopring.auth.service.AuthService
 import com.example.kopring.auth.service.JwtService
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.*
 import kotlin.reflect.typeOf
 
+@Tag(name = "Auth Controller", description = "인증 API")
 @RequestMapping("/auth")
 @RestController
 class AuthController(
