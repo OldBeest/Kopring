@@ -7,7 +7,9 @@ import com.example.kopring.board.entity.NoticeEntities
 import com.example.kopring.board.repository.NoticeRepository
 import com.example.kopring.board.repository.PostRepository
 import com.example.kopring.board.entity.PostEntities
+import com.example.kopring.board.entity.ThumbsUpEntities
 import com.example.kopring.board.repository.ReplyRepository
+import com.example.kopring.board.repository.ThumbsUpRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 class PostService(
     private val postRepository: PostRepository,
     private val noticeRepository: NoticeRepository,
-    private val replyRepository: ReplyRepository
+    private val replyRepository: ReplyRepository,
+    private val thumbsUpRepository: ThumbsUpRepository
 ) {
     // 공지사항 부분
     fun getNoticeList(): List<NoticeEntities> = noticeRepository.getNoticeList()
@@ -69,5 +72,21 @@ class PostService(
     fun getReplyMaxId(): Int?{
         return replyRepository.findMaxReplyId()
     }
+
+    fun checkThumbsUp(replyId: Int, userId: String): ThumbsUpEntities?{
+        val thumbsUpEntities = ThumbsUpEntities()
+        thumbsUpEntities.replyId = replyId
+        thumbsUpEntities.userId = userId
+        return thumbsUpRepository.findByReplyIdAndUserId(replyId, userId)
+    }
+
+    fun thumbsUpReply(replyId: Int, userId: String): Unit{
+        val thumbsUpEntities = ThumbsUpEntities()
+        thumbsUpEntities.replyId = replyId
+        thumbsUpEntities.userId = userId
+        return thumbsUpRepository.save(thumbsUpEntities)
+    }
+
+
 
 }

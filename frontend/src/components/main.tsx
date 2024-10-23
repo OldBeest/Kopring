@@ -187,8 +187,7 @@ function Main(){
                     <div className="recommend-facility" style={{position: "relative"}}>  
                         {nearFacility&& nearFacility.length > 0 ? 
                         nearFacility.slice(0, 3).map((item: facilityDto, index) => (
-                            <FacilityCard key={index} {...item}>
-                            
+                            <FacilityCard key={index} {...item}>                            
                         </FacilityCard>
                         ))
                          : <div>로그인이 필요합니다.</div>}
@@ -196,7 +195,7 @@ function Main(){
                 </div>
                 <div className="wordcloud">
                     <h2>📊회원님 정보 분석</h2>
-                    {myConfig && <Zingchart data={myConfig}/>}                    
+                    {/* {myConfig ? <Zingchart data={myConfig}/> : <div>정보 분석중...</div>}                     */}
                 </div>
                 <div className="favorite">
                     <h2>⭐즐겨찾기⭐</h2>                    

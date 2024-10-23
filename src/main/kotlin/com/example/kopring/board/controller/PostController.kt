@@ -38,14 +38,14 @@ class PostController(private var postService: PostService) {
     @PostMapping("/post")
     fun createPost(@RequestBody postDto: PostDto): String {
         postService.createPost(postDto)
-        return "rediriect:/board"
+        return "redirect:/board"
     }
 
     @ResponseBody
     @PutMapping("/post")
     fun updatePost(@RequestBody postDto: PostDto): String {
         postService.updatePost(postDto)
-        return "rediriect:/post"
+        return "redirect:/post"
     }
 
     @DeleteMapping("/post")
@@ -57,21 +57,36 @@ class PostController(private var postService: PostService) {
     @ResponseBody
     @PostMapping("/post/reply")
     fun createReply(@RequestBody replyDto: ReplyDto): String {
-        println("댓글정보 : ${replyDto}")
         postService.createReply(replyDto)
-        return "rediriect:/post"
+        return "redirect:/post"
     }
 
     @ResponseBody
     @PutMapping("/post/reply")
     fun updateReply(@RequestBody replyDto: ReplyDto): String {
         postService.updateReply(replyDto)
-        return "rediriect:/post"
+        return "redirect:/post"
     }
 
     @DeleteMapping("/post/reply")
     fun deleteReply(@RequestParam replyId: Int): ResponseEntity<Void> {
         postService.deleteReply(replyId)
         return ResponseEntity.noContent().build()
+    }
+
+    @GetMapping("/post/thumbsup")
+    fun checkThumbsUp(@RequestParam("replyId") replyId: Int, @RequestParam("userId") userId: String): ResponseEntity<Void> {
+        if(postService.checkThumbsUp(replyId, userId) != null) {
+            return ResponseEntity.ok().build()
+        } else{
+            return ResponseEntity.noContent().build()
+        }
+
+    }
+
+    @PostMapping("/post/thumbsup")
+    fun thumbsUp(@RequestParam("replyId") replyId: Int, @RequestParam("userId") userId: String): ResponseEntity<Void> {
+        postService.thumbsUpReply(replyId, userId)
+        return ResponseEntity.ok().build()
     }
 }

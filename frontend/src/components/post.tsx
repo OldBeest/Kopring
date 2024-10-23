@@ -202,8 +202,19 @@ function Post(){
         }        
     }
 
-    const recommendReply = () => {
-        alert("댓글을 추천하시겠습니까 ?")
+    const thumbsupReply = async (replyData: ReplyDto) => {
+        
+        const result = await axios.get("/post/thumbsup", {params: {replyId: replyData.replyId, userId: userId}})
+        console.log(result)
+        if(result.status === 204){
+            replyData.replyLike ++;
+            await axios.put("/post/reply", replyData)
+            await axios.post("/post/thumbsup", null,{params: {replyId: replyData.replyId, userId: userId}})
+            alert("이 댓글을 추천하였습니다.")
+            window.location.reload();
+        } else {
+            alert("이미 추천하였습니다.")
+        }
     }
 
     return(
@@ -283,7 +294,7 @@ function Post(){
                                 { replyWriteModes[index] ? <li className={postStyles.replyMenu} onClick={() => cancelReply()}>취소</li> : <li className={postStyles.replyMenu} onClick={(e: React.MouseEvent<HTMLLIElement>) => deleteReply(item.replyId, e)}>삭제</li>}
                                 
                             </ul>) : (<ul className={postStyles.replyNonWritable}>
-                                <li className={postStyles.replyMenu} onClick={recommendReply}>👍 추천하기</li>
+                                <li className={postStyles.replyMenu} onClick={() => thumbsupReply(item)}>👍 추천하기</li>
                             </ul>)}
                         </div>
                     </div>)))
