@@ -1,0 +1,68 @@
+.login-background{
+    padding-top: 330px;
+    height: 66.7vh;
+    background-image: url("../assets/signup.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.login-wrapper{
+    margin: 0 auto;
+    padding: 10px 10px;
+    width: 20%;
+    border: 2px solid white;
+    background-color: white;
+    border-radius: 10px;
+    opacity: 0.9;
+    justify-items: center;
+}
+h1{
+    color: green;
+}
+input{
+    font-size: 20px;
+    height: 30px;
+    font-weight: 400;
+    border: 2px solid black;
+    vertical-align: middle;
+}
+button{
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 0 20px;
+    vertical-align: middle;
+    border: 2px solid black;
+    background-color: white;
+    color: green;
+    font-size: 18px;
+}
+.isValid{
+    color: blue
+}
+.isNotValid{
+    color: red;
+}
+.kakao-login{
+    margin: 10px;
+    width: 183px;
+    height: 45px;
+    background-image: url('../assets/kakao_login.png');
+}
+.naver-login{
+    margin: 10px;
+    width: 183px;
+    height: 49px;
+    background-image: url('../assets/naver_login.png');
+}
+.google-login{
+    margin: 10px;
+    width: 183px;
+    height: 40px;
+    border-radius: 5px;
+    
+    display: flex;
+    font-size: 13px;
+    font-weight: 400;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

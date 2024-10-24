@@ -11,16 +11,23 @@
 }
 
 .card-header {
-	background-color: #0d790c; /* 초록색 */
-	color: white;
-	padding: 15px;
+	border-top: 2px solid #0d790c;
+	border-left: 2px solid #0d790c;
+	border-right: 2px solid #0d790c;
+	border-bottom: 2px solid #0d790c;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	color: #666;
+	padding: 10px;
 	text-align: center;
 	font-size: 18px;
 	font-weight: bold;
 }
 
 .card-body {
-	height: 20vh;
+	border-left: 2px solid #0d790c;
+	border-right: 2px solid #0d790c;
+	height: 22vh;
 	padding: 15px;
 	overflow: hidden;
 	text-align: justify;
@@ -43,15 +50,22 @@
 }
 
 .card-footer {
-	background-color: #0d790c;
-	color: white;
+	border-left: 2px solid #0d790c;
+	border-right: 2px solid #0d790c;
+	border-bottom: 2px solid #0d790c;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	color: #666;
 	text-align: center;
 	padding: 10px;
 	cursor: pointer;
 }
 
 .facility-img{
+	border: 3px solid #0d790c;
+	border-radius: 10px;
 	width: 180px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 .body-left{
@@ -60,14 +74,18 @@
 	padding-left: 30px;
 }
 .body-right{
-	align-items: center;
-	justify-items: baseline;
+	padding-left: 20px;
+	align-content: center;
 	width: 70%;
 }
 .body-right > div{
-	
-	font-size: 25px;
+	font-size: 15px;
 	font-weight: 700;
 	color: #666;
 	line-height: 1.7;
+}
+.facility-price{
+	font-size: 35px;
+	font-weight: 700;
+	color: red;
 }

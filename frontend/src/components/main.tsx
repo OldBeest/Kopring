@@ -170,11 +170,10 @@ function Main(){
                 <div className="map-wrapper">
                     <h2>🗺️시설 지도</h2>
                     <div>
-                    <Map center={{ lat: coord?.y_cor, lng: coord.x_cor }}
-                        style={{ margin: "0 auto", width: "80%", height: '40vh' }}
+                    <Map className="map-box" center={{ lat: coord?.y_cor, lng: coord.x_cor }}
                         level={3}>
                     <MapMarker position={{ lat: coord?.y_cor, lng: coord.x_cor }}>
-                        {userInfo ? <div style={{color:"black"}}><p>IM HERE!</p></div> : <div style={{color:"black"}}><p>로그인을 해주세요!</p></div>}                        
+                        {userInfo ? <div style={{color:"black"}}><p style={{alignItems: "center"}}>IM HERE!</p></div> : <div style={{color:"black"}}><p>로그인을 해주세요!</p></div>}                        
                     </MapMarker>
                     </Map> 
                     </div>
@@ -195,7 +194,7 @@ function Main(){
                 </div>
                 <div className="wordcloud">
                     <h2>📊회원님 정보 분석</h2>
-                    {/* {myConfig ? <Zingchart data={myConfig}/> : <div>정보 분석중...</div>}                     */}
+                    {/* {myConfig ? <Zingchart data={myConfig}/> : <div>정보 분석중...</div>} */}
                 </div>
                 <div className="favorite">
                     <h2>⭐즐겨찾기⭐</h2>                    
@@ -206,10 +205,8 @@ function Main(){
                         <div>{favorite[index].disease}</div>
                         <div>{favorite[index].feature}</div>
                         <div><button onClick={() => deleteFavorite(favorite[index].address)}>즐겨찾기삭제</button></div>
-                        <div>-------------------------</div>
                         </div>)): 
-                            <div>즐겨찾기 내역이 없습니다.</div>}
-                    
+                            <div>즐겨찾기 내역이 없습니다.</div>}                    
                 </div>
             </div>
         </div>

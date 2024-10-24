@@ -27,8 +27,14 @@ a{
     display: flex;
     height: 500px;
 }
-.map-wrapper{
+.map-wrapper{ 
     width: 35%;
+}
+.map-box{
+    height: 40vh;
+    border: 3px solid #0d790c;
+    border-radius: 10px;
+    margin: 10px;
 }
 .recommend{
     width: 30%;

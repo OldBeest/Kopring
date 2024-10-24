@@ -92,7 +92,7 @@ function Member() {
       }
       else{
         setIsEqualPw("isNotValid")
-        setEqualPw("비밀번호가 일치하지 않습니다")
+        setEqualPw("비밀번호가 일치하지 않습니다.")
       }
       
     }else{
@@ -160,73 +160,84 @@ function Member() {
 
 
   return(
-    <form>
-    <h1>회원가입</h1>
-    <div className="control">
-      <label>아이디</label>
-      <input type="text" name="id" ref={idInput} onChange={handleChange}></input><button onClick={checkValidId}>중복확인</button><span className={isValid}>{isValid ? (isValid === "isValid" ? "사용 가능한 아이디 입니다." : "사용 불가능한 아이디 입니다.") : "아이디를 입력해 주세요."}</span>
-    </div>
-    <p></p>
-    <div className="control">
-      <label>비밀번호</label>
-      <input type="password" name="pw" onChange={handleChange}></input><span className={isValidPw}>{validPw}</span>
-    </div>
-    <p></p>
-    <div className="control">
-      <label>비밀번호확인</label>
-      <input type="password" name="checkpw" onChange={handleChange}></input><span className={isEqualPw}>{equalPw}</span>
-    </div>
-    <p></p>
-    <div className="control">
-      <label>이메일</label>
-      <input type="email" name="email" onChange={handleChange}></input>
-    </div>
-    <p></p>
-    <div className="control">
-      <label>이름</label>
-      <input type="text" name="name" onChange={handleChange}></input>
-    </div>  
-    <p></p>
-    <div className="control">
-      <label>주소</label>
-      <input type="text" name="address" onChange={handleChange}></input><button>입력</button>
-    </div>  
-    <p></p>  
-    <div className="control">
-      <label>연락처</label>
-      <input type="text" name="phone" maxLength={13} onChange={handleChange}></input><button>입력</button>
-    </div>
-    <p></p>
-    <div className="control">
-      <label>생년월일</label>
-      <input type="date" name="birthDate" onChange={handleChange}></input><button>입력</button>
-    </div>
-    <p></p>
-    <div className="control">
-      <label>성별</label>
-      <input type="radio" id="male" name="gender" value="남성" onChange={handleChange}/>
-      <label htmlFor="male">남성</label>
-      <input type="radio" id="female" name="gender" value="여성" onChange={handleChange}/>
-      <label htmlFor="female">여성</label>
-    </div>
-    <p></p>
-    <div className="control">
-      <label>질환</label>
-        <p></p>
-      <div style={{display: "flex", justifyContent: "center"}}>
-        {diseases.map(disease => (<div key={disease}><input type="checkbox" name="disease" value={disease} onChange={handleChange}/>{disease}</div>))}
+    <div className="signup-background">
+        <div className="signup-wrapper">
+        <form>
+      <h1>회원가입</h1>
+      <div className="control">
+        <label className="signup-label">아이디</label>
+        <br></br>
+        <input type="text" name="id" ref={idInput} onChange={handleChange}></input><button onClick={checkValidId}>중복확인</button><span className={isValid}>{isValid ? (isValid === "isValid" ? "사용 가능한 아이디 입니다." : "사용 불가능한 아이디 입니다.") : "아이디를 입력해 주세요."}</span>
       </div>
-    </div>
-    <p></p>
-    <div className="control">
-      <label>특성</label>
+      <div className="control">
+        <label className="signup-label">비밀번호</label>
+        <br></br>
+        <input type="password" name="pw" onChange={handleChange}></input><span className={isValidPw}>{validPw}</span>
+      </div>
       <p></p>
-      <div style={{display: "flex", justifyContent: "center"}}>
-        {features.map(feature => (<div key={feature}><input type="checkbox" name="feature" value={feature} onChange={handleChange}/>{feature}</div>))}
+      <div className="control">
+        <label className="signup-label">비밀번호확인</label>
+        <br></br>
+        <input type="password" name="checkpw" onChange={handleChange}></input><span className={isEqualPw}>{equalPw}</span>
+      </div>
+      <p></p>
+      <div className="control">
+        <label className="signup-label">이메일</label>
+        <br></br>
+        <input type="email" name="email" onChange={handleChange}></input>
+      </div>
+      <p></p>
+      <div className="control">
+        <label className="signup-label">이름</label>
+        <br></br>
+        <input type="text" name="name" onChange={handleChange}></input>
+      </div>  
+      <p></p>
+      <div className="control">
+        <label className="signup-label">주소</label>
+        <br></br>
+        <input type="text" name="address" onChange={handleChange}></input><button>입력</button>
+      </div>  
+      <p></p>  
+      <div className="control">
+        <label className="signup-label">연락처</label>
+        <br></br>
+        <input type="text" name="phone" maxLength={13} onChange={handleChange}></input><button>입력</button>
+      </div>
+      <p></p>
+      <div className="control">
+        <label className="signup-label">생년월일</label>
+        <br></br>
+        <input type="date" name="birthDate" onChange={handleChange}></input><button>입력</button>
+      </div>
+      <p></p>
+      <div className="control">
+        <label className="signup-label">성별</label>
+        <br></br>
+        <input type="radio" id="male" name="gender" value="남성" onChange={handleChange}/>
+        <label htmlFor="male">남성</label>
+        <input type="radio" id="female" name="gender" value="여성" onChange={handleChange}/>
+        <label htmlFor="female">여성</label>
+      </div>
+      <p></p>
+      <div className="control">
+        <label className="signup-label">질환</label>
+        <div style={{display: "flex", justifyContent: "center"}}>
+          {diseases.map(disease => (<div key={disease}><input type="checkbox" name="disease" value={disease} onChange={handleChange}/>{disease}</div>))}
+        </div>
+      </div>
+      <div className="control">
+        <label className="signup-label">특성</label>
+        <div style={{display: "flex", justifyContent: "center"}}>
+          {features.map(feature => (<div key={feature}><input type="checkbox" name="feature" value={feature} onChange={handleChange}/>{feature}</div>))}
+        </div>
+      </div>
+      <div><button onClick={checkData}>회원가입하기</button></div>    
+    </form>
       </div>
     </div>
-    <div><button onClick={checkData}>회원가입하기</button></div>    
-  </form>
+    
+    
   
   );
 }

@@ -20,14 +20,14 @@ const FacilityCard: React.FC<FacilityCardProps> = ({name, address, disease, feat
           <img className="facility-img" src={facilty_img}></img>
         </div>
         <div className="body-right">
-          <div><span style={{color:"blue"}}>{address}</span></div>
-          <div>진료과목: <span style={{color:"red"}}>{disease}</span></div>
+          <div><span>{address}</span></div>
+          <div>진료과목: <span>{disease}</span></div>
+          <div>일 이용료 : <span className="facility-price">{price.toLocaleString()}원</span></div>
         </div>       
       </div>
       <div className="card-footer">
-          #{disease.split(',').join("#")}#{feature.split(',').join("#")}
-      </div>
-      <div>일 이용료 : {price}원</div>
+          #{disease.split(',').join(" #")}&nbsp;#{feature.split(',').join(" #")}
+      </div>      
   </div>
   );
 }

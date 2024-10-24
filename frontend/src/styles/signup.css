@@ -1,3 +1,45 @@
+.signup-background{
+    padding-top: 100px;
+    height: 100vh;
+    background-image: url("../assets/signup.jpg");
+    background-repeat: no-repeat;
+}
+.signup-wrapper{
+    margin: 0 auto;
+    padding: 10px 10px;
+    width: 30%;
+    border: 2px solid white;
+    background-color: white;
+    opacity: 0.85;
+    border-radius: 10px;
+}
+.signup-label{
+    font-size: 20px;
+    font-weight: 700;
+}
+h1{
+    color: green;
+}
+.control{
+    color: green;
+    text-align: left;
+    justify-items: left;
+    font-size: 15px;
+}
+input{
+    font-size: 20px;
+    height: 30px;
+    font-weight: 400;
+    border: 2px solid black;
+    vertical-align: middle;
+}
+button{
+    vertical-align: middle;
+    border: 2px solid black;
+    background-color: white;
+    color: green;
+    font-size: 18px;
+}
 .isValid{
     color: blue
 }

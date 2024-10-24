@@ -1,7 +1,9 @@
 import axios from "axios";
 import React from "react";
+import '../styles/login.css'
 import { useEffect, useState } from "react";
 import { redirect } from "react-router-dom";
+import googleImg from "../assets/google_login.png"
 
 const submit = (idValue: string, pwValue: string) => {
     const userInfo = {
@@ -45,28 +47,33 @@ function Login() {
     }
 
     return (
-    <div>
-        <h2>로그인 페이지</h2>
+    <div className="login-background">
+        <div className="login-wrapper">
+        <h1>로그인</h1>
+        <br></br>
         <div>
-        아이디:  <input className="login_id" name="id" type='text' value={idValue} onChange={changeId}></input>
+        아이디 &nbsp;&nbsp;&nbsp;<input className="login_id" name="id" type='text' value={idValue} onChange={changeId}></input>
+        </div>
+        <br></br>
+        <div>
+        비밀번호 <input className="login_pw" name="pw" type='password' value={pwValue} onChange={changePw}></input>
         </div>
         <div>
-        비밀번호: <input className="login_pw" name="pw" type='password' value={pwValue} onChange={changePw}></input>
+        <a href="/signup"><button>회원가입</button></a>
+            <button onClick={() => {submit(idValue, pwValue)}}>&nbsp;로그인&nbsp;</button>
         </div>
         <div>
-            <button>회원가입</button>
-            <button onClick={() => {submit(idValue, pwValue)}}>로그인</button>
+            <a href="/api/oauth/kakao"><div className="kakao-login"></div></a>
         </div>
         <div>
-            카카오 로그인
+            <a href="/api/oauth/naver"><div className="naver-login"></div></a>
         </div>
         <div>
-            네이버 로그인
-        </div>
-        <div>
-            구글 로그인
+            <a href="/api/oauth/google"><div className="google-login"><img src={googleImg}></img>&nbsp;&nbsp;Google 계정으로 로그인</div></a>
         </div>
     </div>
+    </div>
+    
         
   );
 }
