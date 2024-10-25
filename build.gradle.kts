@@ -44,6 +44,9 @@ dependencies {
 
 	//Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+
+	//
+	implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
 
 kotlin {

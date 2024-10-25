@@ -1,5 +1,4 @@
 import './App.css';
-import React, { useEffect, useState } from "react";
 import Header from './components/header';
 import Footer from './components/footer';
 import Main from './components/main';
@@ -8,6 +7,7 @@ import Board from './components/board';
 import Post from './components/post';
 import Signup from './components/signup';
 import Facility from './components/facility';
+import SocialLogin from './components/sociallogin';
 import { Route, Routes } from 'react-router-dom';
 function App(){
 
@@ -20,6 +20,8 @@ function App(){
         <Route path='/board' element={<div><Header/><Board/><Footer/></div>}></Route>
         <Route path='/post' element={<div><Header/><Post/><Footer/></div>}></Route>
         <Route path='/facility' element={<div><Header/><Facility></Facility><Footer/></div>}></Route>
+        <Route path='/sociallogin/kakao' element={<div><SocialLogin></SocialLogin></div>}></Route>
+        <Route path='/sociallogin/naver' element={<div><SocialLogin></SocialLogin></div>}></Route>
       </Routes>
     </div>
   );

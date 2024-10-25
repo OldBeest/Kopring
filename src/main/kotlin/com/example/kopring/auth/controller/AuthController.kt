@@ -3,11 +3,17 @@ package com.example.kopring.auth.controller
 import com.example.kopring.auth.dto.JwtToken
 import com.example.kopring.auth.service.AuthService
 import com.example.kopring.auth.service.JwtService
+import com.example.kopring.auth.service.SocialLoginService
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.json.simple.JSONObject
+import org.springframework.boot.json.GsonJsonParser
+import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
+import org.springframework.http.ResponseEntity
 
 import org.springframework.web.bind.annotation.*
 import kotlin.reflect.typeOf
@@ -17,6 +23,7 @@ import kotlin.reflect.typeOf
 @RestController
 class AuthController(
     var authService: AuthService,
+    var socialLoginService: SocialLoginService
 ) {
     // 토큰키 부여
     @PostMapping("/get_token")
@@ -74,5 +81,11 @@ class AuthController(
         return userid
     }
 
-
+    @ResponseBody
+    @PostMapping("/naver_login")
+    fun naver_login(@RequestBody body: JSONObject): ResponseEntity<Any> {
+        val jObject = JSONObject(body)
+        val code: String = jObject.getValue("code").toString()
+        return ResponseEntity.ok(socialLoginService.getNaverToken(code))
+    }
 }
