@@ -22,25 +22,24 @@ function SocialLogin() {
             
         }
         )
-        console.log(result)
+        
     }
 
     const naverLogin = async() => {
         const code = new URL(window.location.href).searchParams.get("code")
         const result = await axios.post("/auth/naver_login", {code: code})
-        console.log(result.data.access_token)
-        const result1 = await axios.post("https://openapi.naver.com/v1/nid/me", null,
-            {headers: {Authorization: `Bearer ${result.data.access_token}`}}
-        )
-        console.log(result1)
+        console.log(result.data)
+        const userInfo = await axios.get("https://openapi.naver.com/v1/nid/me", {headers: {"Authorization": `Bearer ${result.data.access_token}`}})
+        console.log(userInfo)
+        
     }
 
     if (loginType === "kakao"){
         kakaoLogin()
     } else if(loginType === "naver"){
         naverLogin()
-    }
 
+    }
     
 
   return (

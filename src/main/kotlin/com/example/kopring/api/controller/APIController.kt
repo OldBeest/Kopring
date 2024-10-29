@@ -55,8 +55,6 @@ class APIController(private val apiService: APIService) {
 
     @PostMapping("/favorite")
     fun addFavoriteFacility(@RequestParam("user_id") userId: String, @RequestParam("facility_address") address: String):Unit{
-        println(userId)
-        println(address)
         return apiService.addFavoriteFacility(userId, address)
     }
 
