@@ -86,7 +86,10 @@ class AuthController(
     fun naver_login(@RequestBody body: JSONObject): ResponseEntity<Any> {
         val jObject = JSONObject(body)
         val code: String = jObject.getValue("code").toString()
-        return ResponseEntity.ok(socialLoginService.getNaverToken(code))
+        val client_id: String = jObject.getValue("client_id").toString()
+        val client_secret: String = jObject.getValue("client_secret").toString()
+        val state: String = jObject.getValue("client_secret").toString()
+        return ResponseEntity.ok(socialLoginService.getNaverToken(code, client_id, client_secret, state))
     }
 
     @ResponseBody
@@ -94,8 +97,12 @@ class AuthController(
     fun google_login(@RequestBody body: JSONObject): ResponseEntity<Any> {
         val jObject = JSONObject(body)
         val access_token: String = jObject.getValue("access_token").toString()
-        println(access_token)
-        println(socialLoginService.getGoogleToken(access_token))
         return ResponseEntity.ok(socialLoginService.getGoogleToken(access_token))
+    }
+
+    @ResponseBody
+    @GetMapping("/naver_userinfo")
+    fun naver_userinfo(@RequestParam("access_token") accessToken: String): ResponseEntity<Any>? {
+        return ResponseEntity.ok(socialLoginService.getNaverUserInfo(accessToken))
     }
 }

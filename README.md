@@ -9,7 +9,7 @@ JWT를 이용한 로그인 인증<br>
 댓글 추천<br>
 소셜 로그인<br>
 ## 기능 개선 진행사항
-소셜로그인 정보 처리, 챗봇 개선 및 스프링 연동 
+소셜로그인 정보 처리, 챗봇 개선 및 스프링 연동, fastapi 
 
 ## 변경 사항
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) -> ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)<br>

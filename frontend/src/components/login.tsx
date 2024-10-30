@@ -68,13 +68,11 @@ function Login() {
         const NAVER_URL = `https://nid.naver.com/oauth2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&state=${STATE}`
 
         window.location.href = NAVER_URL
-        // dispatch(setLoginType('naver'))
         
     }
     
     const googleLogin = async() => {
         const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
-        console.log(CLIENT_ID)
         const REDIRECT_URI = "http://localhost:3000/sociallogin/google"
         const GOOGLE_URL = `https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&include_granted_scopes=true&response_type=code&redirect_uri=${REDIRECT_URI}&client_id=${CLIENT_ID}`
 

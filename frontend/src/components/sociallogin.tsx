@@ -28,10 +28,10 @@ function SocialLogin() {
 
     const naverLogin = async() => {
         const code = new URL(window.location.href).searchParams.get("code")
-        const result = await axios.post("/auth/naver_login", {code: code})
-        console.log(result.data)
-        const userInfo = await axios.get("https://openapi.naver.com/v1/nid/me", {headers: {"Authorization": `Bearer ${result.data.access_token}`}, withCredentials: true})
-        console.log(userInfo)
+        
+        const result = await axios.post("/auth/naver_login", {code: code, client_id: process.env.REACT_APP_NAVER_CLIENT_ID, client_secret: process.env.REACT_APP_NAVER_CLIENT_SECRET, state: "1234567890987654321"})
+        const userInfo = await axios.get("/auth/naver_userinfo", {params: {access_token : result.data.access_token}})
+        console.log("유저 정보:", userInfo)
         
     }
 
