@@ -53,18 +53,16 @@ function Login() {
     }
 
     const kakaoLogin = async() => {
-        const REST_API_KEY = "44102386908e102073a79562f84fbcf6"
+        const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY
         const REDIRECT_URI = "http://localhost:3000/sociallogin/kakao"   
         const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`  
         
         window.location.href = KAKAO_URL
-        // dispatch(setLoginType('kakao'))
-        // setTimeout(() => {window.location.href = KAKAO_URL}, 1000)
+
     }
 
     const naverLogin = async() => {
-        const CLIENT_ID = "KPEi6hT0KjE7sUpP8CFG"
-        const CLIENT_SECRET = "1_TX1xRfzH"
+        const CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID
         const STATE = "1234567890987654321"
         const REDIRECT_URI = "http://localhost:3000/sociallogin/naver"
         const NAVER_URL = `https://nid.naver.com/oauth2.0/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}&state=${STATE}`
@@ -72,6 +70,15 @@ function Login() {
         window.location.href = NAVER_URL
         // dispatch(setLoginType('naver'))
         
+    }
+    
+    const googleLogin = async() => {
+        const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
+        console.log(CLIENT_ID)
+        const REDIRECT_URI = "http://localhost:3000/sociallogin/google"
+        const GOOGLE_URL = `https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly&include_granted_scopes=true&response_type=code&redirect_uri=${REDIRECT_URI}&client_id=${CLIENT_ID}`
+
+        window.location.href = GOOGLE_URL
     }
 
     useEffect(() => {
@@ -101,7 +108,7 @@ function Login() {
             <a href="#"><div className="naver-login" onClick={() => {naverLogin()}}></div></a>
         </div>
         <div>
-            <a href="/api/oauth/google"><div className="google-login"><img src={googleImg}></img>&nbsp;&nbsp;Google 계정으로 로그인</div></a>
+            <a href="#"><div className="google-login" onClick={() => googleLogin()}><img src={googleImg}></img>&nbsp;&nbsp;Google 계정으로 로그인</div></a>
         </div>
     </div>
     </div>

@@ -36,4 +36,22 @@ class SocialLoginService {
 
 
     }
+
+    fun getGoogleToken(code: String): String? {
+
+        val client = okhttp3.OkHttpClient()
+
+        val url = "https://www.googleapis.com/oauth2/v3/userinfo"
+
+        val request = okhttp3.Request.Builder()
+            .addHeader("Authorization", "Bearer $code")
+            .addHeader("credentials", "include")
+            .url(url)
+            .get()
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            return response.body?.string()
+        }
+    }
 }

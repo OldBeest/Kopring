@@ -22,6 +22,7 @@ function App(){
         <Route path='/facility' element={<div><Header/><Facility></Facility><Footer/></div>}></Route>
         <Route path='/sociallogin/kakao' element={<div><SocialLogin></SocialLogin></div>}></Route>
         <Route path='/sociallogin/naver' element={<div><SocialLogin></SocialLogin></div>}></Route>
+        <Route path='/sociallogin/google' element={<div><SocialLogin></SocialLogin></div>}></Route>
       </Routes>
     </div>
   );

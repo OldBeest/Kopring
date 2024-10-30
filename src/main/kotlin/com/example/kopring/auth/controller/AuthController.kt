@@ -88,4 +88,14 @@ class AuthController(
         val code: String = jObject.getValue("code").toString()
         return ResponseEntity.ok(socialLoginService.getNaverToken(code))
     }
+
+    @ResponseBody
+    @PostMapping("/google_login")
+    fun google_login(@RequestBody body: JSONObject): ResponseEntity<Any> {
+        val jObject = JSONObject(body)
+        val access_token: String = jObject.getValue("access_token").toString()
+        println(access_token)
+        println(socialLoginService.getGoogleToken(access_token))
+        return ResponseEntity.ok(socialLoginService.getGoogleToken(access_token))
+    }
 }
