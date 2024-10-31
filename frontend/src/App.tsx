@@ -8,6 +8,7 @@ import Post from './components/post';
 import Signup from './components/signup';
 import Facility from './components/facility';
 import SocialLogin from './components/sociallogin';
+import Chatbot from './components/chatbot'
 import { Route, Routes } from 'react-router-dom';
 function App(){
 
@@ -23,6 +24,7 @@ function App(){
         <Route path='/sociallogin/kakao' element={<div><SocialLogin></SocialLogin></div>}></Route>
         <Route path='/sociallogin/naver' element={<div><SocialLogin></SocialLogin></div>}></Route>
         <Route path='/sociallogin/google' element={<div><SocialLogin></SocialLogin></div>}></Route>
+        <Route path='/nonblinker' element={<div><Header/><Chatbot></Chatbot><Footer/></div>}></Route>
       </Routes>
     </div>
   );

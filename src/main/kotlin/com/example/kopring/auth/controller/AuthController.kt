@@ -92,17 +92,29 @@ class AuthController(
         return ResponseEntity.ok(socialLoginService.getNaverToken(code, client_id, client_secret, state))
     }
 
+//    @ResponseBody
+//    @PostMapping("/google_login")
+//    fun google_login(@RequestBody body: JSONObject): ResponseEntity<Any> {
+//        val jObject = JSONObject(body)
+//        val access_token: String = jObject.getValue("access_token").toString()
+//        return ResponseEntity.ok(socialLoginService.getGoogleToken(access_token))
+//    }
+
     @ResponseBody
-    @PostMapping("/google_login")
-    fun google_login(@RequestBody body: JSONObject): ResponseEntity<Any> {
-        val jObject = JSONObject(body)
-        val access_token: String = jObject.getValue("access_token").toString()
-        return ResponseEntity.ok(socialLoginService.getGoogleToken(access_token))
+    @GetMapping("/kakao_user")
+    fun kakao_user_token(@RequestParam("access_token") accessToken: String): ResponseEntity<Any>? {
+        return ResponseEntity.ok(socialLoginService.getTokenForKakaoUser(accessToken))
     }
 
     @ResponseBody
-    @GetMapping("/naver_userinfo")
-    fun naver_userinfo(@RequestParam("access_token") accessToken: String): ResponseEntity<Any>? {
-        return ResponseEntity.ok(socialLoginService.getNaverUserInfo(accessToken))
+    @GetMapping("/naver_user")
+    fun naver_user_token(@RequestParam("access_token") accessToken: String): ResponseEntity<Any>? {
+        return ResponseEntity.ok(socialLoginService.getTokenForNaverUser(accessToken))
+    }
+
+    @ResponseBody
+    @GetMapping("/google_user")
+    fun google_user_token(@RequestParam("access_token") accessToken: String): ResponseEntity<Any>? {
+        return ResponseEntity.ok(socialLoginService.getTokenForGoogleUser(accessToken))
     }
 }

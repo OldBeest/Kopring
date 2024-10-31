@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import logo from '../assets/logo.jpg'
+import chatboticon from '../assets/chatbotlogo.png'
 import '../styles/header.css'
 
 function Header() {
@@ -14,6 +15,7 @@ function Header() {
         
         const check_auth = async () => {
                 try{
+                    console.log(localStorage.getItem("access-token"))
                     const response = await axios.post("/auth/check_token", null, {
                         headers:{ Authorization: `Bearer ${localStorage.getItem("access-token")}`},
                         withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
@@ -61,6 +63,7 @@ function Header() {
             console.log("logout :", response)
             localStorage.setItem("access-token", "")
             document.cookie = ""
+            console.log(localStorage.getItem("access-token"))
             setAuth(false)
         }
     }
@@ -90,6 +93,7 @@ function Header() {
             <div className="center-nav">
                 <ul className="main-menu">
                     <a href="/"><img src={logo} style={{width: "100px", height: "50px"}}></img></a>
+                    <a href="/nonblinker"><img src={chatboticon} style={{width: "50px", height: "50px"}}></img></a>
                 </ul>
             </div>
             <div className="right-nav">

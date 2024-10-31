@@ -1,0 +1,135 @@
+.chatbot-wrapper{
+    display: flex;
+    background-color: #359264;
+    color: white;
+}
+.chatbot-introduce{
+    box-sizing: border-box;
+    width: 70%;
+}
+.introduce-top{
+    padding-top: 50px;
+    display: flex;
+    font-size: 50px;
+}
+.introduce-top{
+    padding-left: 30px;
+    display: flex;
+}
+.introduce-top{
+    display: flex;
+}
+.introduce-wrapper{
+    display: flex;
+}
+.chatbot-box{
+    box-sizing: border-box;
+    width: 30%;
+}
+
+.box-wrapper{
+    font-family: "Sunflower", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+.conversation-box{
+    width : 500px;
+    height : 800px;
+    background-size : cover;
+    border: 2px solid black;
+    margin: auto;
+    position: relative;
+    font-size: 13px;
+}
+.box-top{
+    height: 5%;
+    text-align: center;
+    
+}
+.conversation-text{
+    height: 90%;
+    overflow-y: scroll;
+}
+.conversation-input{
+    width: 100%;
+    height: 5%;
+    bottom: 0px;
+    display: flex;
+    position: absolute;
+    text-align: right;
+}
+.talkbox{
+}
+.bot-said{
+    display: flex;
+    text-align: left;
+    justify-content: left;
+}
+.bot-text{
+    position:relative; 
+    margin: 10px; 
+    padding: 20px; 
+    width:200px; 
+    height:auto;
+    color: #000; 
+    border-radius: 10px; 
+    background-color: #FFF;}
+
+.bot-text:after {
+    content:""; 
+    position: absolute; 
+    top: 20px; 
+    left: -20px; 
+    border-right: 20px solid #fff; 
+    border-top: 10px solid transparent; 
+    border-bottom: 10px solid transparent;
+}
+.human-said{
+    text-align: left;
+    display: flex;
+    justify-content: right;
+}
+.human-text{
+    position:relative;
+    margin: 10px; 
+    padding: 20px; 
+    width:200px; 
+    height:auto; 
+    color: #000; 
+    border-radius: 10px; 
+    background-color: #FFF;}
+
+.human-text:after {
+    content:""; 
+    position: absolute; 
+    top: 20px; 
+    right: -20px; 
+    border-left: 20px solid #fff; 
+    border-top: 10px solid transparent; 
+    border-bottom: 10px solid transparent;
+}
+.text-input{
+    font-family: "Sunflower", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 20px;
+    width: 80%;
+    height: 88%;
+}
+#submit-text{
+    font-family: "Sunflower", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 20px;
+}
+.icon{
+    position: relative;
+    top: -20%;
+    height: 75px;
+    width: 75px;
+}
+button{
+    width: 20%;
+    height: 100%;
+    background-color: white;
+}

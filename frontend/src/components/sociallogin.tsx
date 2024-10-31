@@ -23,6 +23,10 @@ function SocialLogin() {
             
         }
         )
+        const userInfo = await axios.get("/auth/kakao_user", {params: {access_token : result.data.access_token}})
+        console.log(userInfo)
+        localStorage.setItem("access-token", userInfo.data)
+        window.location.href = "/"
         
     }
 
@@ -30,8 +34,10 @@ function SocialLogin() {
         const code = new URL(window.location.href).searchParams.get("code")
         
         const result = await axios.post("/auth/naver_login", {code: code, client_id: process.env.REACT_APP_NAVER_CLIENT_ID, client_secret: process.env.REACT_APP_NAVER_CLIENT_SECRET, state: "1234567890987654321"})
-        const userInfo = await axios.get("/auth/naver_userinfo", {params: {access_token : result.data.access_token}})
+        const userInfo = await axios.get("/auth/naver_user", {params: {access_token : result.data.access_token}})
         console.log("유저 정보:", userInfo)
+        localStorage.setItem("access-token", userInfo.data)
+        window.location.href = "/"
         
     }
 
@@ -47,13 +53,11 @@ function SocialLogin() {
             grant_type: "authorization_code"
         })
 
-        console.log(result.data)
-        console.log(result.data.access_token)
-        
         if (result.data.access_token !== ""){
-            // const userInfo = await axios.get("/auth/google_login", {headers: {Authorization: `Bearer ${result.data.access_token}`}})
-            const userInfo = await axios.get("https://www.googleapis.com/userinfo/v2/me", {headers: {Authorization: `Bearer ${result.data.access_token}`}})
-            console.log(userInfo.data)
+            const userInfo = await axios.get("/auth/google_user", {params: {access_token: result.data.access_token}})
+            console.log("jwt :", userInfo.data)
+            localStorage.setItem("access-token", userInfo.data)
+            window.location.href = "/"
         }
         
     }
