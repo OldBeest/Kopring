@@ -173,7 +173,7 @@ function Main(){
                     <Map className="map-box" center={{ lat: coord?.y_cor, lng: coord.x_cor }}
                         level={3}>
                     <MapMarker position={{ lat: coord?.y_cor, lng: coord.x_cor }}>
-                        {userInfo ? <div style={{color:"black"}}><p style={{alignItems: "center"}}>IM HERE!</p></div> : <div style={{color:"black"}}><p>로그인을 해주세요!</p></div>}                        
+                        {userInfo ? <div style={{color:"black"}}><p style={{textAlign: "center"}}>IM HERE!</p></div> : <div style={{color:"black", textAlign: "center"}}><p>로그인을 해주세요!</p></div>}                        
                     </MapMarker>
                     </Map> 
                     </div>

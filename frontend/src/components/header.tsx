@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import logo from '../assets/logo.jpg'
+import logo from '../assets/logo.png'
 import chatboticon from '../assets/chatbotlogo.png'
 import '../styles/header.css'
 
