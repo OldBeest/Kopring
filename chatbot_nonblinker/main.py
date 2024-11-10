@@ -1,11 +1,6 @@
-'''
-치매박사 안깜빡이 ver 0.2 designed by 🌱HP
-Dementia Docter Nonblinker ver 0.2
 
-Started at 2024. 10. 31
+# FASTAPI를 이용해 API 통신을 통해 질문을 입력받으면 모델에서 답변을 해 응답하는 구조
 
-Data Source from aihub.or.kr
-'''
 
 import model
 import preprocessing
@@ -15,6 +10,8 @@ from typing import Union
 from fastapi import FastAPI
 from fastapi import Body, Path, Query
 from pydantic import BaseModel
+import torch
+
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -49,8 +46,9 @@ def update_item(item_id: int, item: Item):
     return {"item_name" : item.name, "item_id": item_id}
 
 @app.get("/ask")
-async def answer(question: str):
+async def answer(question: str, ver: str):
     print(question)
+    print(ver)
     return {"answer" : "딸랑딸랑"}
 
 if __name__ == "__main__":
