@@ -1428,7 +1428,7 @@ gr.ChatInterface(
         fn=response,
         textbox=gr.Textbox(placeholder="무엇이든 물어보세요", container=False, scale=7),
         title="치매박사🌞안깜빡이에요~",
-        description="뇌신경질환(치매,알코올성치매,알츠하이머병,우을증)에 대해 무엇이든 물어보세요.",
+        description="뇌신경질환(치매,알코올성치매,알츠하이머병,우울증)에 대해 무엇이든 물어보세요.",
         theme="soft",
         examples=[["치매가 의심될때는 어떤 전문의를 방문해야 하나요?"], ["알코올성 치매를 예방하는 가장 효과적인 방법은요?"], ["우울증 약물의 부작용은요?"]],
         retry_btn="다시보내기 ✈",

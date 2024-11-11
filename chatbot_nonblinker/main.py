@@ -2,9 +2,9 @@
 # FASTAPI를 이용해 API 통신을 통해 질문을 입력받으면 모델에서 답변을 해 응답하는 구조
 
 
-import model
-import preprocessing
-import util
+import model # 훈련모델 관련
+import preprocessing # 전처리 관련
+import util # 분석 및 튜닝 그리고 시각화 관련
 
 from typing import Union
 from fastapi import FastAPI
