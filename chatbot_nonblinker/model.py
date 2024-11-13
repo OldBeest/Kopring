@@ -16,6 +16,7 @@ import numpy as np
 import preprocessing
 import time
 from preprocessing import TextPreprocessing, ChatbotDataset, WordDictionary
+import random
 
 FILE_PATH = preprocessing.FILE_PATH
 device = preprocessing.DEVICE
@@ -41,12 +42,14 @@ class DecoderLSTM(nn.Module):
         super(DecoderLSTM, self).__init__()
         self.hidden_size = hidden_size
         self.embedding = nn.Embedding(output_size, hidden_size)
+        self.dropout = nn.Dropout(0.2)
         self.lstm = nn.LSTM(hidden_size, hidden_size, num_layers=2)
         self.out = nn.Linear(hidden_size, output_size)
     
     # 순전파    
     def forward(self, input, hidden):
         output = self.embedding(input).view(1, 1, -1)
+        output = self.dropout(output)
         output = F.relu(output)
         output, hidden = self.lstm(output, hidden)
         output = self.out(output[0])
@@ -122,9 +125,15 @@ def train(model, input_tensor, target_tensor, hyper_parameters):
     decoder_hidden = encoder_hidden
     decoded_words = []
     
+    
+    teaching_ratio = 0.5
     for di in range(target_length):
         decoder_output, decoder_hidden = model.decoder(decoder_input, decoder_hidden)
-        topv, topi = decoder_output.topk(1)
+        if random.random() < teaching_ratio:
+            topv, topi = decoder_output.topk(1)
+        else:
+            topi = decoder_input = target_tensor[di]
+        
         decoder_input = topi.squeeze().detach()
         loss += hyper_parameters.criterion(decoder_output, target_tensor[di])
         
@@ -162,6 +171,7 @@ def predict(model, sentence):
         for di in range(300):
             decoder_output, decoder_hidden = model.decoder(decoder_input, decoder_hidden)
             topv, topi = decoder_output.data.topk(1)
+
             if topi.item() == 2:
                 decoded_words.append('<EOS>')
                 break
@@ -198,18 +208,23 @@ if __name__ == '__main__':
         testset = pickle.load(f)
     
 
-    model = extractModel("0.1", len(dict_list[0]), 256, len(dict_list[1]))
+    model = extractModel("0.1", len(dict_list[0]), 512, len(dict_list[1]))
     hyper_parameters = HyperParameter(model)
     
-    loss_total = 0
-    for i in range(1000):
-        loss_total += train(model, trainset.iloc[i]['question'], trainset.iloc[i]['answer'], hyper_parameters)
-        if(i % 100 == 0):
-            if(i == 0):
-                continue
-            print_lost_avg = loss_total / 100
-            print(f'Iteration : {i}, Loss : {print_lost_avg: .4f}')
-            loss_total = 0
+    epochs = 5
+    for epoch in range(epochs):
+        loss_total = 0
+        for i in range(len(trainset)):
+            loss_total += train(model, trainset.iloc[i]['question'], trainset.iloc[i]['answer'], hyper_parameters)
+            if(i % 1000 == 0):
+                if(i == 0):
+                    continue
+                print_lost_avg = loss_total / 1000
+                print(f'Iteration : {i}, Loss : {print_lost_avg: .4f}')
+                loss_total = 0
+        STATEDICT_PATH = 'seq2seq-chatbot-kor.pt'
+        model.state_dict(torch.load(f=STATEDICT_PATH))
+        torch.save(model.state_dict(), f'{STATEDICT_PATH}')    
     
     end = time.time()
     print(f"process time: {end - start}s")

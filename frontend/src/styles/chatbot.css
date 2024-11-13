@@ -189,3 +189,16 @@
     height: 98%;
     background-color: white;
 }
+
+.version-wrapper{
+    display: flex;
+    justify-content:center
+}
+
+.version{
+    width: 20%;
+    margin-left: 2px;
+    border: 2px solid black;
+    font-size: 20px;
+    font-weight: 700;
+}

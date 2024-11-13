@@ -118,7 +118,12 @@ function Chatbot(){
 
             </div>
             <div className='chatbot-box'>
-                챗봇 모듈
+                <div className='version-wrapper'>
+                    <div className='version version1'>ver 0.1</div>
+                    <div className='version version2'>ver 0.2</div>
+                    <div className='version version3'>ver 0.3</div>
+                    <div className='version version4'>ver 0.4</div>
+                </div>
                 <div className="box-wrapper">
                     <div className="conversation-box">
                     <div className="box-top">
@@ -128,10 +133,10 @@ function Chatbot(){
                             <img className="icon" src={chatbot_icon}/>
                             <div className="bot-text">안녕하세요? 저는 안깜빡이에요~! 어떤 내용이 궁금하신가요?</div>
                         </div>
-                        <div className="talkbox human-said">
-                            <div className="human-text">아으으으아아ㅏ</div>
+                        {/* <div className="talkbox human-said">
+                            <div className="human-text">알츠하이머 원인에 대해 알려줘.</div>
                             <img className="icon" src={human_icon}/>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="conversation-input">
                         <input className="text-input" type="text" placeholder="상담받을 내용을 입력하세요." ref={askText}/>
