@@ -35,6 +35,7 @@ class Item(BaseModel):
 
 @app.get("/")
 def read_root():
+
     return {"hello" : "World!"}
 
 @app.get("/items/{item_id}")
@@ -47,10 +48,10 @@ def update_item(item_id: int, item: Item):
 
 @app.get("/ask")
 async def answer(question: str, ver: str):
-    print(question)
-    print(ver)
-    return {"answer" : "딸랑딸랑"}
+    bot = model.load_model(model.dict_list)
+    return {"answer" : model.predict(bot, question).split('<EOS>')[0]}
 
+FILE_PATH = preprocessing.FILE_PATH
 if __name__ == "__main__":
+    pass
     
-    print("Hello! I'm nonblinker. Ask me anything!")

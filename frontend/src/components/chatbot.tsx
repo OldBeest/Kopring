@@ -18,14 +18,14 @@ function Chatbot(){
     const [currentText, setCurrentText] = useState<string>();
     const askText = useRef<HTMLInputElement | null>(null);
     const [inHtml, setInHtml] = useState<Element>();
+    const [question, setQuestion] = useState<string>();
+    const [answer, setAnswer] = useState<string>();
 
     const askToChatbot = async() => {
-        let a = document.querySelector('.conversation-text');
-        console.log(a)    
-
-        console.log(askText.current?.value)
-        const result = await axios.get("http://127.0.0.1:8000/ask", {params: {question: askText.current?.value}})
+        setQuestion(askText.current?.value)
+        const result = await axios.get("http://127.0.0.1:8000/ask", {params: {question: askText.current?.value, ver: 0.1}})
         console.log("chatbot response", result.data)
+        setAnswer(result.data.answer)
     }
 
     let typeInterval: any;
@@ -75,7 +75,7 @@ function Chatbot(){
 
     useEffect(() => {
 
-    }, [inHtml])
+    }, [answer])
     return(
         <div className='chatbot-wrapper'>
             <div className='chatbot-introduce'>
@@ -133,10 +133,14 @@ function Chatbot(){
                             <img className="icon" src={chatbot_icon}/>
                             <div className="bot-text">안녕하세요? 저는 안깜빡이에요~! 어떤 내용이 궁금하신가요?</div>
                         </div>
-                        {/* <div className="talkbox human-said">
-                            <div className="human-text">알츠하이머 원인에 대해 알려줘.</div>
+                        <div className="talkbox human-said">
+                            <div className="human-text">{question}</div>
                             <img className="icon" src={human_icon}/>
-                        </div> */}
+                            </div>
+                        <div className="talkbox bot-said">
+                            <img className="icon" src={chatbot_icon}/>
+                            <div className="bot-text">{answer}</div>
+                        </div>
                     </div>
                     <div className="conversation-input">
                         <input className="text-input" type="text" placeholder="상담받을 내용을 입력하세요." ref={askText}/>
