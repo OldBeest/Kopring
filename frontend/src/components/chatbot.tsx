@@ -20,10 +20,11 @@ function Chatbot(){
     const [inHtml, setInHtml] = useState<Element>();
     const [question, setQuestion] = useState<string>();
     const [answer, setAnswer] = useState<string>();
+    const [version, setVersion] = useState<number>(0.1);
 
     const askToChatbot = async() => {
         setQuestion(askText.current?.value)
-        const result = await axios.get("http://127.0.0.1:8000/ask", {params: {question: askText.current?.value, ver: 0.1}})
+        const result = await axios.get("http://127.0.0.1:8000/ask", {params: {question: askText.current?.value, ver: version}})
         console.log("chatbot response", result.data)
         setAnswer(result.data.answer)
     }
@@ -76,6 +77,14 @@ function Chatbot(){
     useEffect(() => {
 
     }, [answer])
+
+    const settingVersion = async(ver: number) => {
+        setVersion(ver)
+        
+    }
+    useEffect(() => {
+        alert(`version : ${version}`)
+    }, [version])
     return(
         <div className='chatbot-wrapper'>
             <div className='chatbot-introduce'>
@@ -119,10 +128,10 @@ function Chatbot(){
             </div>
             <div className='chatbot-box'>
                 <div className='version-wrapper'>
-                    <div className='version version1'>ver 0.1</div>
-                    <div className='version version2'>ver 0.2</div>
-                    <div className='version version3'>ver 0.3</div>
-                    <div className='version version4'>ver 0.4</div>
+                    <div className={version === 0.1 ? 'version select-version' : 'version'} onClick={() => settingVersion(0.1)}>ver 0.1</div>
+                    <div className={version === 0.2 ? 'version select-version' : 'version'} onClick={() => settingVersion(0.2)}>ver 0.2</div>
+                    <div className={version === 0.3 ? 'version select-version' : 'version'} onClick={() => settingVersion(0.3)}>ver 0.3</div>
+                    <div className={version === 0.4 ? 'version select-version' : 'version'} onClick={() => settingVersion(0.4)}>ver 0.4</div>
                 </div>
                 <div className="box-wrapper">
                     <div className="conversation-box">

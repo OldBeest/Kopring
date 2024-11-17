@@ -70,17 +70,17 @@ class WordDictionary:
     
     # 단어사전 저장
     def save_dict(self, word_to_idx_dict, idx_to_word_dict):
-        with open('word_to_idx.pkl', 'wb') as f:
+        with open('./dataset/word_to_idx.pkl', 'wb') as f:
             pickle.dump(word_to_idx_dict, f)
-        with open('idx_to_word.pkl', 'wb') as f:
+        with open('./dataset/idx_to_word.pkl', 'wb') as f:
             pickle.dump(idx_to_word_dict, f)            
     
     # 단어사전 불러오기
     def load_dict(self):
         try:
-            with open('word_to_idx.pkl', 'rb') as f:
+            with open('./dataset/word_to_idx.pkl', 'rb') as f:
                 self.word_to_idx = pickle.load(f)
-            with open('idx_to_word.pkl', 'rb') as f:
+            with open('./dataset/idx_to_word.pkl', 'rb') as f:
                 self.idx_to_word = pickle.load(f)
             print("단어사전을 찾았습니다.")
             self.dict_list = [self.word_to_idx, self.idx_to_word]
@@ -139,9 +139,8 @@ class ChatbotDataset:
         q1 = q_df.apply(lambda sentence : self.convert_to_tensor(self.sentence_to_index(sentence, 'question')))
         a1 = a_df.apply(lambda sentence : self.convert_to_tensor(self.sentence_to_index(sentence, 'answer')))
         d_set = pd.concat([q1, a1], axis=1)
-        trainset = d_set.sample(frac=0.8, random_state=42)
+        trainset = d_set.sample(frac=0.95, random_state=42)
         validset = d_set.drop(trainset.index).sample(frac=0.5, random_state=42)
         testset = d_set.drop(trainset.index).drop(validset.index)
         
         return trainset, validset, testset
-    

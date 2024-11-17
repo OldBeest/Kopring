@@ -48,8 +48,13 @@ def update_item(item_id: int, item: Item):
 
 @app.get("/ask")
 async def answer(question: str, ver: str):
-    bot = model.load_model(model.dict_list)
-    return {"answer" : model.predict(bot, question).split('<EOS>')[0]}
+    if (ver == "0.1"):
+        bot = model.load_model(model.dict_list, ver)
+        answer = model.predict(bot, question).split('<EOS>')[0]
+    if (ver == "0.2"):
+        bot = model.load_model(model.dict_list, ver)
+        answer = model.predict(bot, question).split('<EOS>')[0]
+    return {"answer" : answer}
 
 FILE_PATH = preprocessing.FILE_PATH
 if __name__ == "__main__":
