@@ -9,9 +9,9 @@ JWT를 이용한 로그인 인증<br>
 댓글 추천<br>
 소셜 로그인<br>
 챗봇 페이지<br>
-챗봇 프로토타입<br>
+챗봇(seq2seq, attention, transformer)<br>
 ## 기능 개선 진행사항
-소셜로그인 정보 처리, fastapi 연동, 챗봇 모델 개발 
+소셜로그인 정보 처리, fastapi 연동, 챗봇 파인튜닝 모델
 
 ## 변경 사항
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white) -> ![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)<br>
