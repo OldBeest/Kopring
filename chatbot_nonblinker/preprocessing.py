@@ -89,6 +89,20 @@ class WordDictionary:
             self.add_word(self.df)
             self.save_dict(self.word_to_idx, self.idx_to_word)
             self.dict_list = [self.word_to_idx, self.idx_to_word]
+            
+    def load_dict_transformer(self):
+        try:
+            with open('./dataset/vocab_trans.pkl', 'rb') as f:
+                self.word_to_idx_trans = pickle.load(f)
+                self.idx_to_word_trans = {idx : word for word, idx in self.word_to_idx_trans.items()}
+            print("단어사전을 찾았습니다.")
+            return [self.word_to_idx_trans, self.idx_to_word_trans]
+        except:
+            print("단어사전을 찾지 못했습니다. 단어 사전을 제작합니다.")
+            # self.add_word(self.df)
+            # self.save_dict(self.word_to_idx, self.idx_to_word)
+            # self.dict_list = [self.word_to_idx, self.idx_to_word]
+            pass
     
     # 학습 시 변환을 위해 단어사전 가져오기
     def get_dict_list(self):

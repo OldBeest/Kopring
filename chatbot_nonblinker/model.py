@@ -17,6 +17,7 @@ import preprocessing
 import time
 from preprocessing import TextPreprocessing, ChatbotDataset, WordDictionary
 import random
+import math
 
 FILE_PATH = preprocessing.FILE_PATH
 device = preprocessing.DEVICE
@@ -26,6 +27,12 @@ word_dictionary = WordDictionary(df)
 word_dictionary.load_dict()
 dict_list = word_dictionary.get_dict_list()
 dataset = ChatbotDataset(dict_list)
+
+t_dict_list = word_dictionary.load_dict_transformer()
+VOCAB = t_dict_list[0]
+RVOCAB = t_dict_list[1]
+VOCAB_SIZE = len(dict_list[0])
+TARGET_SEQ_LEN = 274
 
 class EncoderLSTM(nn.Module):
     def __init__(self, input_size, hidden_size):
@@ -86,6 +93,174 @@ class AttentionDecoderLSTM(nn.Module):
     
     def initHidden(self):
         return(torch.zeros(2, 1, self.hidden_size, device=device), torch.zeros(2, 1, self.hidden_size, device=device))
+
+"""
+    transformer 모델에 필요한 요소
+    1. 포지션 임베딩
+    2. 멀티헤드 어텐션
+    3. 트랜스포머 블럭
+"""
+# 단어 및 위치 임베딩 레이어
+class WordPositionEmbedding(nn.Module):
+    def __init__(self, vocab_size, max_seq_len, emb_size, device):
+        super(WordPositionEmbedding, self).__init__()
+        self.device = device
+        self.word_embedding = nn.Embedding(vocab_size, emb_size, device=device)
+
+        position = torch.arange(max_seq_len).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, emb_size, 2).float() * 
+                             (-math.log(10000.0) / emb_size))
+        pos_emb = torch.zeros(max_seq_len, emb_size)
+        pos_emb[:, 0::2] = torch.sin(position * div_term)
+        pos_emb[:, 1::2] = torch.cos(position * div_term)
+        self.register_buffer('position_embedding', pos_emb)
+
+    def forward(self, x):
+        word_embeddings = self.word_embedding(x)
+        pos_embeddings = self.position_embedding[:x.size(1), :]
+
+        # 단어 임베딩과 위치 임베딩을 결합합니다.
+        embeddings = word_embeddings + pos_embeddings
+        return embeddings
+
+# 멀티-헤드 어텐션 메커니즘 클래스
+class MultiHeadAttention(nn.Module):
+    def __init__(self, emb_size, heads):
+        super(MultiHeadAttention, self).__init__()
+        self.emb_size = emb_size
+        self.heads = heads
+        self.head_dim = emb_size // heads
+
+        assert self.head_dim * heads == emb_size, "임베딩 크기는 헤드 수로 나누어 떨어져야 합니다."
+
+        self.values = nn.Linear(self.head_dim, self.head_dim, bias=False)
+        self.keys = nn.Linear(self.head_dim, self.head_dim, bias=False)
+        self.queries = nn.Linear(self.head_dim, self.head_dim, bias=False)
+        self.fc_out = nn.Linear(heads * self.head_dim, emb_size)
+
+    def forward(self, values, keys, queries, mask=None):
+        batch_size = queries.shape[0]
+        value_len, key_len, query_len = values.shape[1], keys.shape[1], queries.shape[1]
+
+        # 임베딩을 self.heads 개의 조각으로 나눕니다.
+        values = values.reshape(batch_size, self.heads, value_len, self.head_dim)
+        keys = keys.reshape(batch_size, self.heads, key_len, self.head_dim)
+        queries = queries.reshape(batch_size, self.heads, query_len, self.head_dim)
+
+        # 선형 변환을 수행합니다.
+        values = self.values(values)
+        keys = self.keys(keys)
+        queries = self.queries(queries)
+
+        # 행렬 곱셈을 위해 전치합니다.
+        keys_transposed = keys.transpose(2, 3)
+
+        # 각 헤드에 대해 쿼리와 키의 내적을 계산합니다.
+        energy = torch.matmul(queries, keys_transposed)
+
+        if mask is not None:
+            energy = energy.masked_fill(mask == 0, float("-1e20"))
+
+        # 에너지를 키의 차원의 제곱근으로 스케일링하고 소프트맥스를 적용합니다.
+        scale = self.head_dim ** 0.5
+        attention = torch.softmax(energy / scale, dim=-1)
+
+        # 어텐션 가중치를 값에 곱합니다.
+        out = torch.matmul(attention, values)
+
+        # 모든 헤드를 하나로 연결합니다.
+        out = out.reshape(batch_size, query_len, self.heads * self.head_dim)
+
+        # 최종 선형 레이어를 적용합니다.
+        out = self.fc_out(out)
+        return out
+
+# 트랜스포머 블록, 멀티-헤드 어텐션과 피드포워드 네트워크로 구성됩니다.
+class TransformerBlock(nn.Module):
+    def __init__(self, emb_size, heads, forward_expansion, dropout_rate):
+        super(TransformerBlock, self).__init__()
+        self.attention = MultiHeadAttention(emb_size, heads)
+        self.norm1 = nn.LayerNorm(emb_size)
+        self.norm2 = nn.LayerNorm(emb_size)
+        self.feed_forward = nn.Sequential(
+            nn.Linear(emb_size, forward_expansion * emb_size),
+            nn.ReLU(),
+            nn.Linear(forward_expansion * emb_size, emb_size),
+        )
+        self.dropout = nn.Dropout(dropout_rate)
+
+    def forward(self, value, key, query, mask):
+        # 어텐션과 skip connection 연결
+        attention = self.attention(value, key, query, mask)
+        x = self.dropout(self.norm1(attention + query))
+
+        # 피드포워드와 skip connection 연결
+        forward = self.feed_forward(x)
+        out = self.norm2(self.dropout(forward + x))
+        return out
+    
+# 다중 트랜스포머 블록으로 구성된 인코더
+class TransformerEncoder(nn.Module):
+    def __init__(self, vocab_size, seq_len, emb_size, n_layers, heads, forward_expansion, 
+                 drop_out, device):
+        super(TransformerEncoder, self).__init__()
+        self.emb_size = emb_size
+        self.device = device
+        self.embedding = WordPositionEmbedding(vocab_size, seq_len, emb_size, device)
+        self.layers = nn.ModuleList([
+            TransformerBlock(emb_size, heads, forward_expansion, drop_out) for _ in range(n_layers)
+        ])
+        self.dropout = nn.Dropout(drop_out)
+
+    def forward(self, X, mask):
+        out = self.dropout(self.embedding(X))
+
+        # 각 트랜스포머 블록을 순차적으로 적용합니다.
+        for layer in self.layers:
+            out = layer(out, out, out, mask)
+
+        return out
+
+# 디코더 블록, 셀프 어텐션과 크로스 어텐션을 포함합니다.
+class DecoderBlock(nn.Module):
+    def __init__(self, emb_size, heads, forward_expansion, drop_out):
+        super(DecoderBlock, self).__init__()
+        self.attention = MultiHeadAttention(emb_size, heads)
+        self.norm = nn.LayerNorm(emb_size)
+        self.transformer_block = TransformerBlock(emb_size, heads, forward_expansion, drop_out)
+        self.dropout = nn.Dropout(drop_out)
+
+    def forward(self, X, value, key, src_mask, trg_mask):
+        # 셀프 어텐션
+        attention = self.attention(X, X, X, trg_mask)
+        query = self.dropout(self.norm(attention + X))
+        # 인코더 출력과의 크로스 어텐션
+        out = self.transformer_block(value, key, query, src_mask)
+        return out
+
+# 다중 디코더 블록으로 구성된 디코더
+class TransformerDecoder(nn.Module):
+    def __init__(self, vocab_size, seq_len, emb_size, n_layers, heads, forward_expansion, 
+                 drop_out, device):
+        super(TransformerDecoder, self).__init__()
+        self.device = device
+        self.embedding = WordPositionEmbedding(vocab_size, seq_len, emb_size, device)
+        self.layers = nn.ModuleList([
+            DecoderBlock(emb_size, heads, forward_expansion, drop_out) for _ in range(n_layers)
+        ])
+        self.fc_out = nn.Linear(emb_size, vocab_size)
+        self.dropout = nn.Dropout(drop_out)
+
+    def forward(self, X, enc_out, src_mask, trg_mask):
+        out = self.dropout(self.embedding(X))
+
+        # 각 디코더 블록을 처리합니다.
+        for layer in self.layers:
+            out = layer(out, enc_out, enc_out, src_mask, trg_mask)
+
+        # 어휘 사전으로 매핑하는 출력 레이어
+        out = self.fc_out(out)
+        return out
     
 # ver 0.1 : seq to seq 모델 teacher forcing 적용(랜덤 50%)
 class Seq2Seq(nn.Module):  
@@ -102,8 +277,38 @@ class Seq2SeqWithAttention(nn.Module):
         self.decoder = decoder
 
 # ver 0.3 : Transformer 모델
-class Transformer:
-    pass
+# 인코더와 디코더를 결합한 전체 트랜스포머 모델
+class TransformerScratch(nn.Module):
+    def __init__(self, inp_vocab_size, trg_vocab_size, src_pad_idx, trg_pad_idx, emb_size, 
+                 n_layers=1, heads=1, forward_expansion=1, drop_out=0.2, max_seq_len=100, 
+                 device=torch.device('cuda')):
+        super(TransformerScratch, self).__init__()
+
+        self.src_pad_idx = src_pad_idx
+        self.trg_pad_idx = trg_pad_idx
+        self.device = device
+
+        self.encoder = TransformerEncoder(inp_vocab_size, max_seq_len, emb_size, n_layers, heads, 
+                               forward_expansion, drop_out, device).to(device)
+        self.decoder = TransformerDecoder(trg_vocab_size, max_seq_len, emb_size, n_layers, heads, 
+                               forward_expansion, drop_out, device).to(device)
+
+    def make_src_mask(self, src):
+        src_mask = (src != self.src_pad_idx).unsqueeze(1).unsqueeze(2)
+        return src_mask.to(self.device)
+
+    def make_trg_mask(self, trg):
+        batch_size, trg_seq_len = trg.shape
+        trg_mask = torch.tril(torch.ones((trg_seq_len, trg_seq_len))).expand(
+            batch_size, 1, trg_seq_len, trg_seq_len)
+        return trg_mask.to(self.device)
+
+    def forward(self, src, trg):
+        src_mask = self.make_src_mask(src)
+        trg_mask = self.make_trg_mask(trg)
+        enc_out = self.encoder(src, src_mask)
+        out = self.decoder(trg, enc_out, src_mask, trg_mask)
+        return out
 
 # ver 0.4 : LLM 모델을 불러와서 Fine-tuning한 모델
 class FinetuningModel:
@@ -129,7 +334,20 @@ def extractModel(ver: str, input_size, hidden_size, output_size):
         decoder = AttentionDecoderLSTM(hidden_size, output_size).to(device)
         model = Seq2SeqWithAttention(encoder, decoder)
     elif(ver == "0.3"):
-        model = Transformer()
+        
+        model = TransformerScratch(
+        inp_vocab_size=VOCAB_SIZE,
+        trg_vocab_size=VOCAB_SIZE,
+        src_pad_idx=VOCAB['<PAD>'],
+        trg_pad_idx=VOCAB['<PAD>'],
+        emb_size=256,
+        n_layers=2,
+        heads=4,
+        forward_expansion=4,
+        drop_out=0.05,
+        max_seq_len=TARGET_SEQ_LEN,
+        device=device
+        ).to(device)
     elif(ver == "0.4"):
         model = FinetuningModel()
     else:
@@ -198,7 +416,7 @@ def predict(model, sentence):
     if(isinstance(model, Seq2Seq)):
         with torch.no_grad():
             indexing_list = [word_dictionary.word_to_idx.get(word, word_dictionary.word_to_idx['<UNK>']) for word in text_preprocesser.extract_morphs(sentence)]
-            indexing_list.append(2) # SOS TOKEN
+            indexing_list.append(2) # EOS TOKEN
             input_tensor = dataset.convert_to_tensor(indexing_list)
             
             encoder_hidden = model.encoder.initHidden()
@@ -264,7 +482,34 @@ def predict(model, sentence):
             final_output = ' '.join(meaningful_words)
             return final_output
         
+    elif(isinstance(model, TransformerScratch)):
+        max_length = 50
+        temperature = 1.5
+        generated_answer = []
+        indexing_list = [VOCAB.get(word, VOCAB['<UNK>']) for word in text_preprocesser.extract_morphs(sentence)]
+        indexing_list.append(2) # EOS TOKEN
+        enc_src = indexing_list[:max_length]  # 시퀀스를 최대 길이로 자름
+        padded_enc_src = F.pad(torch.LongTensor(enc_src), (0, max_length - len(enc_src)), mode='constant',
+                            value=VOCAB['<PAD>']).unsqueeze(0).to(device)  # 패딩 및 디바이스로 이동
+        # 디코더 입력을 <SOS> 토큰으로 시작하는 자리 표시자를 준비
+        dec_src = torch.LongTensor([VOCAB['<SOS>']]).unsqueeze(0).to(device)
+        with torch.no_grad():
+            for _ in range(max_length):
+                logits = model(padded_enc_src, dec_src)
+                # 마지막 토큰만 고려하도록 조정
+                predictions = F.softmax(logits[:, -1, :] / temperature, dim=1)  
+                predicted_token = torch.multinomial(predictions, num_samples=1).squeeze(1)
+#                 predicted_token = torch.argmax(predictions, dim=1)
 
+                if predicted_token.item() == VOCAB['<EOS>']:
+                    break  # EOS 토큰이 예측되면 토큰 생성을 중지
+                # 디코더 입력을 업데이트
+                dec_src = torch.cat([dec_src, predicted_token.unsqueeze(-1)], dim=1)  
+                generated_answer.append(predicted_token.item())
+                
+            answer = [RVOCAB.get(idx, RVOCAB[3]) for idx in generated_answer]
+            return ' '.join(answer)
+        
 def save_model():
     pass
 
@@ -275,6 +520,9 @@ def load_model(dict_list, ver):
     elif(ver == "0.2"):
         model = extractModel("0.2", len(dict_list[0]), 512, len(dict_list[1]))
         model.load_state_dict(torch.load('./model/attention-chatbot-epoch-3.pt'))
+    elif(ver == "0.3"):
+        model = extractModel("0.3", len(dict_list[0]), 512, len(dict_list[1])) # 가운데 숫자는 필요없음
+        model.load_state_dict(torch.load('./model/transformer-chatbot-300.pt')) 
     return model
     
     
