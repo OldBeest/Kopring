@@ -19,6 +19,21 @@ from preprocessing import TextPreprocessing, ChatbotDataset, WordDictionary
 import random
 import math
 
+from transformers import AutoTokenizer
+from transformers import AutoModelForCausalLM
+from transformers import pipeline
+
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig,
+    TrainingArguments,
+    pipeline,
+    logging,
+)
+from peft import LoraConfig, PeftModel, PeftConfig
+
+
 FILE_PATH = preprocessing.FILE_PATH
 device = preprocessing.DEVICE
 text_preprocesser = TextPreprocessing()
@@ -312,7 +327,24 @@ class TransformerScratch(nn.Module):
 
 # ver 0.4 : LLM 모델을 불러와서 Fine-tuning한 모델
 class FinetuningModel:
-    pass
+    def __init__(self):
+        #torch_dtype = torch.float16
+        self.peft_model_id = "C:/Users/Harvey/Downloads/model-save"
+        self.config = PeftConfig.from_pretrained(self.peft_model_id)
+        self.bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16
+        )
+        self.model = AutoModelForCausalLM.from_pretrained(self.config.base_model_name_or_path, quantization_config=self.bnb_config, device_map={"":0})
+        self.model = PeftModel.from_pretrained(self.model, self.peft_model_id)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.config.base_model_name_or_path)
+        self.model.config.use_cache = False
+        self.model.config.pretraining_tp = 1
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+        self.tokenizer.padding_side = "right"        
+        
 
 class HyperParameter:
     def __init__(self, model):
@@ -333,8 +365,7 @@ def extractModel(ver: str, input_size, hidden_size, output_size):
         encoder = EncoderLSTM(input_size, hidden_size).to(device)
         decoder = AttentionDecoderLSTM(hidden_size, output_size).to(device)
         model = Seq2SeqWithAttention(encoder, decoder)
-    elif(ver == "0.3"):
-        
+    elif(ver == "0.3"):      
         model = TransformerScratch(
         inp_vocab_size=VOCAB_SIZE,
         trg_vocab_size=VOCAB_SIZE,
@@ -349,7 +380,8 @@ def extractModel(ver: str, input_size, hidden_size, output_size):
         device=device
         ).to(device)
     elif(ver == "0.4"):
-        model = FinetuningModel()
+        llama2 = FinetuningModel()
+        return llama2
     else:
         model = None
         print("잘못된 버전을 입력했습니다.")
@@ -509,7 +541,13 @@ def predict(model, sentence):
                 
             answer = [RVOCAB.get(idx, RVOCAB[3]) for idx in generated_answer]
             return ' '.join(answer)
-        
+    elif(isinstance(model, FinetuningModel)):        
+        prompt = sentence
+        # prompt = "알츠하이머병 진단 방법에 대해 알려주세요"
+        pipe = pipeline(task="text-generation", model=model.model, tokenizer=model.tokenizer, max_length=200, truncation=True)
+        result = pipe(f"<s>[INST] {prompt} [/INST]")
+        return result[0]['generated_text'].split('[/INST]')[1]
+            
 def save_model():
     pass
 
@@ -523,6 +561,8 @@ def load_model(dict_list, ver):
     elif(ver == "0.3"):
         model = extractModel("0.3", len(dict_list[0]), 512, len(dict_list[1])) # 가운데 숫자는 필요없음
         model.load_state_dict(torch.load('./model/transformer-chatbot-300.pt')) 
+    elif(ver == "0.4"):
+        model = extractModel("0.4", len(dict_list[0]), 512, len(dict_list[1])) # 가운데 숫자는 필요없음
     return model
     
     

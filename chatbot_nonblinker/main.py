@@ -57,6 +57,9 @@ async def answer(question: str, ver: str):
     if (ver == "0.3"):
         bot = model.load_model(model.dict_list, ver)
         answer = model.predict(bot, question).split('<EOS>')[0]
+    if (ver == "0.4"):
+        bot = model.load_model(model.dict_list, ver)
+        answer = model.predict(bot, question)
     return {"answer" : answer}
 
 FILE_PATH = preprocessing.FILE_PATH
