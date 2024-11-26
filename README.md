@@ -17,13 +17,13 @@ JWT를 이용한 로그인 인증<br>
 2. 데이터셋 출처 : 초거대 AI 헬스케어 질의응답 데이터(aihub.or.kr)<br>
 치매, 알츠하이머병, 우울증에 대한 질문 및 답변 데이터 추출 후 질문-답변 쌍으로 학습데이터 제작
 3. 챗봇 버전 설명 :
-<br> ver 0.1 : seq-to-seq 모델 (embedding size: 512)
+<br> ver 0.1 : seq-to-seq 모델 (embedding size: 512) 
 <br> ver 0.2 : seq-to-seq + attention 모델, decoder층에 attention layer 추가 (embedding size: 512)
 <br> ver 0.3 : transformer 모델 (embedding size: 256, 4 heads)
 <br> ver 0.4 : llama2 7b finetuning 모델(beomi/open-llama-2-ko-7b 모델 기반), 4bit qlora
 <br> ver 0.4 모델 : https://huggingface.co/nijalmot/llama2-ko-dementia-half
 4. 학습 방법 :
-<br> ver 0.1, 0.2, 0.3 : optimizer : adam, learning-rate : 0.001 약 6600개 데이터 학습
+<br> ver 0.1, 0.2, 0.3 : optimizer : adam, learning-rate : 0.001 약 6600개 데이터 학습, 0.1 0.2 버전에 teacher forcing 적용 
 <br> ver 0.4 : learning-rate : 2e-4, 약 3000개의 데이터 학습
 5. 구현 화면 :
 ![답변 결과](./chatbot_nonblinker/images/result.PNG)<br>
