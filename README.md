@@ -24,7 +24,7 @@ JWT를 이용한 로그인 인증<br>
 <br> ver 0.4 모델 : https://huggingface.co/nijalmot/llama2-ko-dementia-half
 4. 학습 방법 :
 <br> ver 0.1, 0.2, 0.3 : optimizer : adam, learning-rate : 0.001 약 6600개 데이터 학습
-<br> ver 0. : learning-rate : 2e-4, 약 3000개의 데이터 학습
+<br> ver 0.4 : learning-rate : 2e-4, 약 3000개의 데이터 학습
 5. 구현 화면 :
 ![답변 결과](./chatbot_nonblinker/images/result.PNG)<br>
 ![llama2 답변 결과](./chatbot_nonblinker/images/ver04_01.png)
