@@ -194,7 +194,7 @@ function Main(){
                 </div>
                 <div className="wordcloud">
                     <h2>📊회원님 정보 분석</h2>
-                    {/* {myConfig ? <Zingchart data={myConfig}/> : <div>정보 분석중...</div>} */}
+                    {myConfig ? <Zingchart data={myConfig}/> : <div>정보 분석중...</div>}
                 </div>
                 <div className="favorite">
                     <h2>⭐즐겨찾기⭐</h2>                    
