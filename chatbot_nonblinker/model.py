@@ -1,6 +1,6 @@
 '''
 치매박사 안깜빡이 ver 0.2 named by 🌱HP
-Dementia Docter Nonblinker
+Dementia Doctor Nonblinker
 
 Started at 2024. 10. 31
 
